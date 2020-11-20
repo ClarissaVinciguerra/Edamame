@@ -21,7 +21,43 @@ class RandoCollectionViewController: UICollectionViewController {
         // Register cell classes
         self.collectionView!.register(UICollectionViewCell.self, forCellWithReuseIdentifier: reuseIdentifier)
 
-        // Do any additional setup after loading the view.
+        setupViews()
+        loadData()
+    }
+    
+    // MARK: - Class methods
+    func setupViews() {
+        let cancelBarButton = UIBarButtonItem()
+        cancelBarButton.title = "Cancel"
+        self.navigationItem.backBarButtonItem = cancelBarButton
+        refresher.attributedTitle = NSAttributedString(string: "Pull to refresh page")
+        refresher.addTarget(self, action: #selector(loadData), for: .valueChanged)
+        self.tableView.addSubview(refresher)
+    }
+    
+    @objc func loadData() {
+        guard let currentUser = UserController.shared.currentUser else { return }
+        if !currentUser.friends.isEmpty {
+
+            UserController.shared.fetchFilteredRandos(currentUser: currentUser) { (result) in
+                switch result {
+                case .success(let randos):
+                    DispatchQueue.main.async {
+                        UserController.shared.randos = randos
+                        self.updateViews()
+                    }
+                case .failure(let milestoneError):
+                    print(milestoneError.errorDescription)
+                }
+            }
+        }
+    }
+    
+    func updateViews() {
+        DispatchQueue.main.async {
+            self.tableView.reloadData()
+            self.refresher.endRefreshing()
+        }
     }
 
     
