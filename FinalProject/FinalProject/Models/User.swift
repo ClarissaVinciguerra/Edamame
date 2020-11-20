@@ -48,7 +48,7 @@ class User {
         }
     }
     
-    var imageDataArray: [Data]
+    var imageDataArray: [Data] = []
     var friends: [String]
     var pendingRequests: [String]
     var sentRequests: [String]
@@ -61,11 +61,11 @@ class User {
         self.latitude = latitude
         self.longitude = longitude
         self.uuid = uuid
-        self.images = images
         self.friends = friends
         self.pendingRequests = pendingRequests
         self.sentRequests = sentRequests
         self.blockedArray = blockedArray
+        self.images = images
     }
     
     convenience init?(document: DocumentSnapshot) {
