@@ -26,13 +26,27 @@ class EditProfileViewController: UIViewController {
     }
     
     // MARK: - Actions
+    @IBAction func addPhotoButtonTapped(_ sender: Any) {
+        
+    }
+    
+    @IBAction func saveChangesButtonTapped(_ sender: Any) {
+        updateUser()
+    }
     
     // MARK: - Class Methods
-
+    func updateUser() {
+        guard let currentUser = UserController.shared.currentUser, let bio = bioTextView.text, let type = typeOfVeganTextField.text, let name = nameTextField.text, !name.isEmpty else { return }
+        
+        currentUser.bio = bio
+        currentUser.name = name
+        currentUser.type = type
+        
+        UserController.shared.updateUserBy(currentUser, completion: <#T##(Result<User, UserError>) -> Void#>)
+    }
     
     // MARK: - Navigation
 
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destination.
         // Pass the selected object to the new view controller.
