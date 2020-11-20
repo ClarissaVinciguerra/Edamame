@@ -42,7 +42,7 @@ class EditProfileViewController: UIViewController {
         currentUser.name = name
         currentUser.type = type
         
-        UserController.shared.updateUserBy(currentUser, completion: <#T##(Result<User, UserError>) -> Void#>)
+   //     UserController.shared.updateUserBy(currentUser, completion: <#T##(Result<User, UserError>) -> Void#>)
     }
     
     // MARK: - Navigation
