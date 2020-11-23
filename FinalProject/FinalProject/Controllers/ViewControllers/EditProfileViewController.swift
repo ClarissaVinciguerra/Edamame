@@ -19,11 +19,11 @@ class EditProfileViewController: UIViewController {
     @IBOutlet weak var bioTextView: UITextView!
     @IBOutlet weak var saveChangesButton: UIButton!
     @IBOutlet weak var collectionView: UICollectionView!
+    @IBOutlet weak var cameraBarButton: UIBarButtonItem!
     
     //MARK: - Properties
     var viewsLaidOut = false
     var profileImages: [UIImage] = []
-    @IBOutlet weak var cameraBarButton: UIBarButtonItem!
     
     // MARK: - Lifecycle Functions
     override func viewDidLoad() {
@@ -33,7 +33,7 @@ class EditProfileViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         if collectionView.visibleCells.count == 5 {
-            //            cameraBarButton.isEnabled = !addBarButton.isEnabled
+            cameraBarButton.isEnabled = !cameraBarButton.isEnabled
         }
     }
     
@@ -50,7 +50,7 @@ class EditProfileViewController: UIViewController {
         selectPhotoAlert()
         
         if collectionView.visibleCells.count == 5 {
-            //            cameraPhotoButton.isEnabled = !addPhotoButton.isEnabled
+            cameraBarButton.isEnabled = !cameraBarButton.isEnabled
         }
     }
     
@@ -123,7 +123,7 @@ extension EditProfileViewController: UICollectionViewDataSource, UICollectionVie
     override func setEditing(_ editing: Bool, animated: Bool) {
         super.setEditing(editing, animated: animated)
         
-//        cameraBarButton.isEnabled = !isEditing
+        cameraBarButton.isEnabled = !isEditing
         if let indexPaths = collectionView?.indexPathsForVisibleItems {
             for indexPath in indexPaths {
                 if let cell = collectionView?.cellForItem(at: indexPath) as? EditPhotoCollectionViewCell {
