@@ -6,3 +6,8 @@
 //
 
 import Foundation
+
+public enum StorageErrors: LocalizedError {
+    case failedToUpload
+    case failedToGetDownloadURL
+}
