@@ -6,3 +6,7 @@
 //
 
 import Foundation
+
+public enum DatabaseError: LocalizedError {
+    case failedToFetch
+}

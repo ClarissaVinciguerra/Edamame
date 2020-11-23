@@ -12,6 +12,7 @@ private let reuseIdentifier = "randoCell"
 class RandoCollectionViewController: UICollectionViewController {
     // MARK: - Properties
     var refresher: UIRefreshControl = UIRefreshControl()
+    
     // MARK: - Lifecycle Functions
     override func viewDidLoad() {
         super.viewDidLoad()
