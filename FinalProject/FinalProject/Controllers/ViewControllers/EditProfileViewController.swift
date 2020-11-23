@@ -23,6 +23,7 @@ class EditProfileViewController: UIViewController {
     //MARK: - Properties
     var viewsLaidOut = false
     var profileImages: [UIImage] = []
+    @IBOutlet weak var cameraBarButton: UIBarButtonItem!
     
     // MARK: - Lifecycle Functions
     override func viewDidLoad() {
