@@ -15,8 +15,7 @@ class EditProfileViewController: UIViewController {
     @IBOutlet weak var bioTextView: UITextView!
     @IBOutlet weak var saveChangesButton: UIButton!
     @IBOutlet weak var collectionView: UICollectionView!
-    
-    
+    @IBOutlet weak var cameraBarButton: UIBarButtonItem!
     
     // MARK: - Lifecycle Functions
     override func viewDidLoad() {
