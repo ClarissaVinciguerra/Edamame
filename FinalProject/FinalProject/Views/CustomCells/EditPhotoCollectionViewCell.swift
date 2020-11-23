@@ -29,6 +29,7 @@ class EditPhotoCollectionViewCell: UICollectionViewCell {
         imageView.image = photo
         imageView.clipsToBounds = true
         imageView.contentMode = .scaleAspectFill
+        imageView.layer.cornerRadius = 32
         
         visualEffectView.layer.cornerRadius = visualEffectView.bounds.width / 2.0
         visualEffectView.layer.masksToBounds = true

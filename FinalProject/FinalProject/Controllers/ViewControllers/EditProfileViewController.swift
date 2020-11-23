@@ -8,10 +8,6 @@
 import UIKit
 
 class EditProfileViewController: UIViewController {
-    
-    private let itemsPerRow: CGFloat = 4
-    private let sectionInsets = UIEdgeInsets(top: 8.0, left: 15.0, bottom: 10.0, right: 15.0)
-    
     // MARK: - Outlets
     @IBOutlet weak var nameTextField: UITextField!
     @IBOutlet weak var typeOfVeganTextField: UITextField!
@@ -73,6 +69,7 @@ class EditProfileViewController: UIViewController {
         collectionView.isScrollEnabled = false
         collectionView.dataSource = self
         collectionView.delegate = self
+        collectionView.collectionViewLayout = configureCollectionViewLayout()
         
         navigationItem.leftBarButtonItem = editButtonItem
     }
@@ -96,6 +93,27 @@ class EditProfileViewController: UIViewController {
         
         present(alertVC, animated: true)
     }
+    
+    func configureCollectionViewLayout() -> UICollectionViewLayout {
+         
+        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalHeight(1))
+         
+         let item = NSCollectionLayoutItem(layoutSize: itemSize)
+         
+     let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalWidth(0.33))
+         
+         let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitem: item, count: 3)
+         group.interItemSpacing = .fixed(10)
+         
+         let section = NSCollectionLayoutSection(group: group)
+         section.interGroupSpacing = 10
+         section.contentInsets = .init(top: 10,
+                                       leading: 10,
+                                       bottom: 0,
+                                       trailing: 10)
+         
+         return UICollectionViewCompositionalLayout(section: section)
+     }
     
     // MARK: - Navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -144,33 +162,6 @@ extension EditProfileViewController: EditPhotoCollectionViewDelegate {
             
             collectionView.deleteItems(at: [indexPath])
         }
-    }
-}
-
-//MARK: - CV FlowLayout
-extension EditProfileViewController: UICollectionViewDelegateFlowLayout {
-    
-    func collectionView(_ collectionView: UICollectionView,
-                        layout collectionViewLayout: UICollectionViewLayout,
-                        sizeForItemAt indexPath: IndexPath) -> CGSize {
-        
-        let paddingSpace = sectionInsets.left * (itemsPerRow + 1)
-        let availableWidth = view.frame.width - paddingSpace
-        let widthPerItem = availableWidth / itemsPerRow
-        
-        return CGSize(width: widthPerItem, height: widthPerItem - 8)
-    }
-    
-    func collectionView(_ collectionView: UICollectionView,
-                        layout collectionViewLayout: UICollectionViewLayout,
-                        insetForSectionAt section: Int) -> UIEdgeInsets {
-        return sectionInsets
-    }
-    
-    func collectionView(_ collectionView: UICollectionView,
-                        layout collectionViewLayout: UICollectionViewLayout,
-                        minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        return sectionInsets.left
     }
 }
 
