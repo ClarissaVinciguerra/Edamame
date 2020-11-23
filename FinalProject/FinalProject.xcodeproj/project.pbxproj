@@ -34,6 +34,8 @@
 		706A811E2567188700A07C9C /* EditPhotoCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 706A811D2567188600A07C9C /* EditPhotoCollectionViewCell.swift */; };
 		706A8121256718AD00A07C9C /* ViewPhotoCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 706A8120256718AD00A07C9C /* ViewPhotoCollectionViewCell.swift */; };
 		706A81402567332000A07C9C /* RestaurantTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 706A813F2567332000A07C9C /* RestaurantTableViewCell.swift */; };
+		706A81892568676800A07C9C /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 706A81882568676800A07C9C /* GoogleService-Info.plist */; };
+		706A81C9256C100D00A07C9C /* RegistrationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 706A81C8256C100D00A07C9C /* RegistrationViewController.swift */; };
 		9AD7A2FE73A094F9D7F3F6C2 /* Pods_FinalProject.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 801CDC4B88149A03AEF5A1B7 /* Pods_FinalProject.framework */; };
 /* End PBXBuildFile section */
 
@@ -68,6 +70,8 @@
 		706A811D2567188600A07C9C /* EditPhotoCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditPhotoCollectionViewCell.swift; sourceTree = "<group>"; };
 		706A8120256718AD00A07C9C /* ViewPhotoCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewPhotoCollectionViewCell.swift; sourceTree = "<group>"; };
 		706A813F2567332000A07C9C /* RestaurantTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestaurantTableViewCell.swift; sourceTree = "<group>"; };
+		706A81882568676800A07C9C /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		706A81C8256C100D00A07C9C /* RegistrationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationViewController.swift; sourceTree = "<group>"; };
 		801CDC4B88149A03AEF5A1B7 /* Pods_FinalProject.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FinalProject.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8FC42AD902731E818BFE061C /* Pods-FinalProject.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FinalProject.debug.xcconfig"; path = "Target Support Files/Pods-FinalProject/Pods-FinalProject.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -125,6 +129,7 @@
 		706A80A42566DD9C00A07C9C /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				706A81882568676800A07C9C /* GoogleService-Info.plist */,
 				706A808F2566DCA400A07C9C /* AppDelegate.swift */,
 				706A80912566DCA400A07C9C /* SceneDelegate.swift */,
 				706A80982566DCA700A07C9C /* Assets.xcassets */,
@@ -173,6 +178,7 @@
 				706A80CC2566F91200A07C9C /* ProfileViewController.swift */,
 				706A80CF2566F93600A07C9C /* MessagesViewController.swift */,
 				706A80D22566F9A600A07C9C /* LogInSignUpViewController.swift */,
+				706A81C8256C100D00A07C9C /* RegistrationViewController.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -289,6 +295,7 @@
 				706A809C2566DCA700A07C9C /* LaunchScreen.storyboard in Resources */,
 				706A80992566DCA700A07C9C /* Assets.xcassets in Resources */,
 				706A80972566DCA400A07C9C /* Main.storyboard in Resources */,
+				706A81892568676800A07C9C /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -359,6 +366,7 @@
 				706A80D02566F93600A07C9C /* MessagesViewController.swift in Sources */,
 				706A81152567167200A07C9C /* StorageError.swift in Sources */,
 				706A810C2567162D00A07C9C /* Message.swift in Sources */,
+				706A81C9256C100D00A07C9C /* RegistrationViewController.swift in Sources */,
 				706A80C62566F89700A07C9C /* EditProfileViewController.swift in Sources */,
 				706A811E2567188700A07C9C /* EditPhotoCollectionViewCell.swift in Sources */,
 				706A81182567168500A07C9C /* DatabaseError.swift in Sources */,

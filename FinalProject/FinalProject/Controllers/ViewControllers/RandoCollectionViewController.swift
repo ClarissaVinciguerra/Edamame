@@ -10,6 +10,8 @@ import UIKit
 private let reuseIdentifier = "randoCell"
 
 class RandoCollectionViewController: UICollectionViewController {
+    // MARK: - Properties
+    var refresher: UIRefreshControl = UIRefreshControl()
     
     // MARK: - Lifecycle Functions
     override func viewDidLoad() {
@@ -32,7 +34,7 @@ class RandoCollectionViewController: UICollectionViewController {
         self.navigationItem.backBarButtonItem = cancelBarButton
         refresher.attributedTitle = NSAttributedString(string: "Pull to refresh page")
         refresher.addTarget(self, action: #selector(loadData), for: .valueChanged)
-        self.tableView.addSubview(refresher)
+        //self.tableView.addSubview(refresher)
     }
     
     @objc func loadData() {
@@ -55,7 +57,7 @@ class RandoCollectionViewController: UICollectionViewController {
     
     func updateViews() {
         DispatchQueue.main.async {
-            self.tableView.reloadData()
+            //self.tableView.reloadData()
             self.refresher.endRefreshing()
         }
     }

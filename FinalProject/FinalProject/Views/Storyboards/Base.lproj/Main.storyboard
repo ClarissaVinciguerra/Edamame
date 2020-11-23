@@ -106,7 +106,7 @@
                                     <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 </collectionViewFlowLayout>
                                 <cells>
-                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="Rzy-Xa-zUk" customClass="ViewPhotoCollectionViewCell" customModule="FinalProject" customModuleProvider="target">
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="profileViewCell" id="Rzy-Xa-zUk" customClass="ViewPhotoCollectionViewCell" customModule="FinalProject" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="0.0" width="128" height="128"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="Eyp-jU-arB">
@@ -439,6 +439,10 @@
                                                         <subviews>
                                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oMN-iX-bwm">
                                                                 <rect key="frame" x="0.0" y="0.0" width="20" height="20"/>
+                                                                <constraints>
+                                                                    <constraint firstAttribute="width" constant="20" id="9v8-Fx-8U6"/>
+                                                                    <constraint firstAttribute="height" constant="20" id="VkA-94-WOe"/>
+                                                                </constraints>
                                                                 <state key="normal" image="xmark" catalog="system"/>
                                                                 <connections>
                                                                     <action selector="removePhotoButtonTapped:" destination="0GX-RY-gaN" eventType="touchUpInside" id="7Z6-Ew-XmL"/>
@@ -590,7 +594,7 @@
                         </constraints>
                     </view>
                     <toolbarItems>
-                        <barButtonItem title="settings" width="106.5" id="zV3-Uk-R4M">
+                        <barButtonItem title="settings" width="73.5" id="zV3-Uk-R4M">
                             <imageReference key="image" image="gearshape.2" catalog="system" symbolScale="medium"/>
                             <connections>
                                 <segue destination="a5w-Mu-aS9" kind="show" id="aOz-XZ-emP"/>
@@ -608,6 +612,7 @@
                     <connections>
                         <outlet property="bioTextLabel" destination="LSh-BY-Kmq" id="cIE-RW-fey"/>
                         <outlet property="bioTextView" destination="hy1-eF-ErC" id="ihe-5J-5Ef"/>
+                        <outlet property="cameraBarButton" destination="v3g-Ch-4Xo" id="D1h-za-iJM"/>
                         <outlet property="collectionView" destination="p0d-gY-gwD" id="CHJ-om-5e7"/>
                         <outlet property="nameTextField" destination="Mza-ll-R68" id="piw-6l-ro6"/>
                         <outlet property="saveChangesButton" destination="XYg-Vk-axB" id="RJI-cw-U4e"/>
@@ -749,7 +754,7 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="AZf-ve-JTA"/>
+        <segue reference="6W8-AA-iph"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="gearshape.2" catalog="system" width="128" height="100"/>

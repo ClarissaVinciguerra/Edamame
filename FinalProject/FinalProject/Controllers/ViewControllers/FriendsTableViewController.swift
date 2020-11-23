@@ -8,8 +8,7 @@
 import UIKit
 
 class FriendsTableViewController: UITableViewController {
-    // MARK: - Properties
-    var refresher: UIRefreshControl = UIRefreshControl()
+
     
     // MARK: - Lifecycle Functions
     override func viewDidLoad() {
