@@ -61,8 +61,7 @@ class EditProfileViewController: UIViewController {
         currentUser.bio = bio
         currentUser.name = name
         currentUser.type = type
-        
-        //     UserController.shared.updateUserBy(currentUser, completion: <#T##(Result<User, UserError>) -> Void#>)
+ 
     }
     
     func setupViews() {
