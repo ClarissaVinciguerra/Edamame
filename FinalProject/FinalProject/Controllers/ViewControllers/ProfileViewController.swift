@@ -8,9 +8,7 @@
 import UIKit
 
 class ProfileViewController: UIViewController {
-    
-    private let itemsPerRow: CGFloat = 1
-    
+
     // MARK: - Outlets
     @IBOutlet weak var nameAndAgeLabel: UILabel!
     @IBOutlet weak var typeOfVeganLabel: UILabel!
@@ -42,6 +40,7 @@ class ProfileViewController: UIViewController {
     func setupViews() {
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.isPagingEnabled = true
+        collectionView.isScrollEnabled = false
         collectionView.dataSource = self
         collectionView.delegate = self
         collectionView.collectionViewLayout = configureCollectionViewLayout()
