@@ -8,9 +8,7 @@
 import UIKit
 
 class ProfileViewController: UIViewController {
-    
-    private let itemsPerRow: CGFloat = 1
-    
+
     // MARK: - Outlets
     @IBOutlet weak var nameAndAgeLabel: UILabel!
     @IBOutlet weak var typeOfVeganLabel: UILabel!
