@@ -23,9 +23,9 @@ class UserController {
     
     // MARK: - CREATE
 
-    func createUser(name: String, latitude: Double, longitude: Double, images: [UIImage], completion: @escaping (Result<User, UserError>) -> Void) {
+    func createUser(name: String, latitude: Double, longitude: Double, images: [UIImage], uuid: String, completion: @escaping (Result<User, UserError>) -> Void) {
 
-        let newUser = User(name: name, latitude: latitude, longitude: longitude, images: images)
+        let newUser = User(name: name, latitude: latitude, longitude: longitude, uuid: uuid, images: images)
 
         let userReference = database.collection(userCollection)
         userReference.document("\(newUser.uuid)").setData([
