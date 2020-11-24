@@ -42,6 +42,7 @@ class ProfileViewController: UIViewController {
     func setupViews() {
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.isPagingEnabled = true
+        collectionView.isScrollEnabled = false
         collectionView.dataSource = self
         collectionView.delegate = self
         collectionView.collectionViewLayout = configureCollectionViewLayout()
