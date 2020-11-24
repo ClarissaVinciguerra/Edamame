@@ -20,7 +20,7 @@
 		706A80C32566F85A00A07C9C /* PendingTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 706A80C22566F85A00A07C9C /* PendingTableViewController.swift */; };
 		706A80C62566F89700A07C9C /* EditProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 706A80C52566F89700A07C9C /* EditProfileViewController.swift */; };
 		706A80CD2566F91200A07C9C /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 706A80CC2566F91200A07C9C /* ProfileViewController.swift */; };
-		706A80D32566F9A600A07C9C /* LogInSignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 706A80D22566F9A600A07C9C /* LogInSignUpViewController.swift */; };
+		706A80D32566F9A600A07C9C /* LogInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 706A80D22566F9A600A07C9C /* LogInViewController.swift */; };
 		706A80D72566F9CA00A07C9C /* LogInSignUp.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 706A80D52566F9CA00A07C9C /* LogInSignUp.storyboard */; };
 		706A8106256715FE00A07C9C /* DatabaseController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 706A8105256715FE00A07C9C /* DatabaseController.swift */; };
 		706A81092567161900A07C9C /* StorageController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 706A81082567161900A07C9C /* StorageController.swift */; };
@@ -34,7 +34,7 @@
 		706A8121256718AD00A07C9C /* ViewPhotoCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 706A8120256718AD00A07C9C /* ViewPhotoCollectionViewCell.swift */; };
 		706A81402567332000A07C9C /* RestaurantTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 706A813F2567332000A07C9C /* RestaurantTableViewCell.swift */; };
 		706A81892568676800A07C9C /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 706A81882568676800A07C9C /* GoogleService-Info.plist */; };
-		706A81C9256C100D00A07C9C /* RegistrationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 706A81C8256C100D00A07C9C /* RegistrationViewController.swift */; };
+		706A81C9256C100D00A07C9C /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 706A81C8256C100D00A07C9C /* SignUpViewController.swift */; };
 		A60933D5256C2C0300A1C767 /* SearchResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = A60933D4256C2C0300A1C767 /* SearchResult.swift */; };
 		A60933D9256C2C9D00A1C767 /* ConversationsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A60933D8256C2C9D00A1C767 /* ConversationsViewController.swift */; };
 		A60933E0256C2CEE00A1C767 /* NewConversationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A60933DF256C2CEE00A1C767 /* NewConversationViewController.swift */; };
@@ -62,7 +62,7 @@
 		706A80C22566F85A00A07C9C /* PendingTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PendingTableViewController.swift; sourceTree = "<group>"; };
 		706A80C52566F89700A07C9C /* EditProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileViewController.swift; sourceTree = "<group>"; };
 		706A80CC2566F91200A07C9C /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
-		706A80D22566F9A600A07C9C /* LogInSignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogInSignUpViewController.swift; sourceTree = "<group>"; };
+		706A80D22566F9A600A07C9C /* LogInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogInViewController.swift; sourceTree = "<group>"; };
 		706A80D62566F9CA00A07C9C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = FinalProject/Views/Base.lproj/LogInSignUp.storyboard; sourceTree = "<group>"; };
 		706A8105256715FE00A07C9C /* DatabaseController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseController.swift; sourceTree = "<group>"; };
 		706A81082567161900A07C9C /* StorageController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageController.swift; sourceTree = "<group>"; };
@@ -76,7 +76,7 @@
 		706A8120256718AD00A07C9C /* ViewPhotoCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewPhotoCollectionViewCell.swift; sourceTree = "<group>"; };
 		706A813F2567332000A07C9C /* RestaurantTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestaurantTableViewCell.swift; sourceTree = "<group>"; };
 		706A81882568676800A07C9C /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
-		706A81C8256C100D00A07C9C /* RegistrationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationViewController.swift; sourceTree = "<group>"; };
+		706A81C8256C100D00A07C9C /* SignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
 		7CC0CC95EDF86B3CA7DE289E /* Pods-FinalProject.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FinalProject.debug.xcconfig"; path = "Target Support Files/Pods-FinalProject/Pods-FinalProject.debug.xcconfig"; sourceTree = "<group>"; };
 		A60933D4256C2C0300A1C767 /* SearchResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResult.swift; sourceTree = "<group>"; };
 		A60933D8256C2C9D00A1C767 /* ConversationsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationsViewController.swift; sourceTree = "<group>"; };
@@ -182,8 +182,7 @@
 				706A80C22566F85A00A07C9C /* PendingTableViewController.swift */,
 				706A80C52566F89700A07C9C /* EditProfileViewController.swift */,
 				706A80CC2566F91200A07C9C /* ProfileViewController.swift */,
-				706A80D22566F9A600A07C9C /* LogInSignUpViewController.swift */,
-				706A81C8256C100D00A07C9C /* RegistrationViewController.swift */,
+				A686044C256DA410008819CB /* LoginAndRegisterViewControllers */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -239,6 +238,15 @@
 				A6093407256C310000A1C767 /* ChatViewController.swift */,
 			);
 			path = MessagesViewControllers;
+			sourceTree = "<group>";
+		};
+		A686044C256DA410008819CB /* LoginAndRegisterViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				706A80D22566F9A600A07C9C /* LogInViewController.swift */,
+				706A81C8256C100D00A07C9C /* SignUpViewController.swift */,
+			);
+			path = LoginAndRegisterViewControllers;
 			sourceTree = "<group>";
 		};
 		C12AB5A2072469085A656043 /* Frameworks */ = {
@@ -386,7 +394,7 @@
 				706A80BC2566F70500A07C9C /* FriendsTableViewController.swift in Sources */,
 				706A810F2567163700A07C9C /* Sender.swift in Sources */,
 				706A80C32566F85A00A07C9C /* PendingTableViewController.swift in Sources */,
-				706A80D32566F9A600A07C9C /* LogInSignUpViewController.swift in Sources */,
+				706A80D32566F9A600A07C9C /* LogInViewController.swift in Sources */,
 				A60933D5256C2C0300A1C767 /* SearchResult.swift in Sources */,
 				A60933E6256C2DA700A1C767 /* ConversationTableViewCell.swift in Sources */,
 				706A81122567164B00A07C9C /* Conversation.swift in Sources */,
@@ -395,7 +403,7 @@
 				706A81402567332000A07C9C /* RestaurantTableViewCell.swift in Sources */,
 				706A81152567167200A07C9C /* StorageError.swift in Sources */,
 				706A810C2567162D00A07C9C /* Message.swift in Sources */,
-				706A81C9256C100D00A07C9C /* RegistrationViewController.swift in Sources */,
+				706A81C9256C100D00A07C9C /* SignUpViewController.swift in Sources */,
 				706A80C62566F89700A07C9C /* EditProfileViewController.swift in Sources */,
 				706A811E2567188700A07C9C /* EditPhotoCollectionViewCell.swift in Sources */,
 				A60933E0256C2CEE00A1C767 /* NewConversationViewController.swift in Sources */,
