@@ -95,7 +95,7 @@ class EditProfileViewController: UIViewController {
     
     func configureCollectionViewLayout() -> UICollectionViewLayout {
          
-        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalHeight(1))
+        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.95), heightDimension: .fractionalHeight(0.95))
          
          let item = NSCollectionLayoutItem(layoutSize: itemSize)
          

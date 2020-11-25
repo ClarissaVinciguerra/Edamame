@@ -42,6 +42,10 @@
 		A60933E6256C2DA700A1C767 /* ConversationTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A60933E5256C2DA700A1C767 /* ConversationTableViewCell.swift */; };
 		A6093408256C310000A1C767 /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6093407256C310000A1C767 /* ChatViewController.swift */; };
 		A6093448256C578400A1C767 /* NewConversationTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6093447256C578400A1C767 /* NewConversationTableViewCell.swift */; };
+		C33E283B256EC4390092442F /* NetworkError.swift in Sources */ = {isa = PBXBuildFile; fileRef = C33E283A256EC4390092442F /* NetworkError.swift */; };
+		C33E283E256EC45B0092442F /* Restaurant.swift in Sources */ = {isa = PBXBuildFile; fileRef = C33E283D256EC45B0092442F /* Restaurant.swift */; };
+		C33E2841256EC5390092442F /* RestaurantController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C33E2840256EC5390092442F /* RestaurantController.swift */; };
+		C33E289D256ED9780092442F /* RestaurantTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C33E289C256ED9780092442F /* RestaurantTableViewController.swift */; };
 		E2A05B51BF810B11E3D5AAEF /* Pods_FinalProject.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 50B2EE8D07267B50B0731CFE /* Pods_FinalProject.framework */; };
 /* End PBXBuildFile section */
 
@@ -85,6 +89,10 @@
 		A60933E5256C2DA700A1C767 /* ConversationTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationTableViewCell.swift; sourceTree = "<group>"; };
 		A6093407256C310000A1C767 /* ChatViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewController.swift; sourceTree = "<group>"; };
 		A6093447256C578400A1C767 /* NewConversationTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewConversationTableViewCell.swift; sourceTree = "<group>"; };
+		C33E283A256EC4390092442F /* NetworkError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkError.swift; sourceTree = "<group>"; };
+		C33E283D256EC45B0092442F /* Restaurant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Restaurant.swift; sourceTree = "<group>"; };
+		C33E2840256EC5390092442F /* RestaurantController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestaurantController.swift; sourceTree = "<group>"; };
+		C33E289C256ED9780092442F /* RestaurantTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestaurantTableViewController.swift; sourceTree = "<group>"; };
 		C6FA7A1A978F2435EBB31F65 /* Pods-FinalProject.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FinalProject.release.xcconfig"; path = "Target Support Files/Pods-FinalProject/Pods-FinalProject.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -160,6 +168,7 @@
 				706A810E2567163700A07C9C /* Sender.swift */,
 				706A81112567164B00A07C9C /* Conversation.swift */,
 				A60933D4256C2C0300A1C767 /* SearchResult.swift */,
+				C33E283D256EC45B0092442F /* Restaurant.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -183,6 +192,7 @@
 				706A80C52566F89700A07C9C /* EditProfileViewController.swift */,
 				706A80CC2566F91200A07C9C /* ProfileViewController.swift */,
 				A686044C256DA410008819CB /* LoginAndRegisterViewControllers */,
+				C33E289C256ED9780092442F /* RestaurantTableViewController.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -193,6 +203,7 @@
 				706A80B22566F62A00A07C9C /* UserController.swift */,
 				706A8105256715FE00A07C9C /* DatabaseController.swift */,
 				706A81082567161900A07C9C /* StorageController.swift */,
+				C33E2840256EC5390092442F /* RestaurantController.swift */,
 			);
 			path = ModelControllers;
 			sourceTree = "<group>";
@@ -204,6 +215,7 @@
 				706A81142567167200A07C9C /* StorageError.swift */,
 				706A81172567168500A07C9C /* DatabaseError.swift */,
 				A60933E2256C2D6E00A1C767 /* MessagesViewExtension.swift */,
+				C33E283A256EC4390092442F /* NetworkError.swift */,
 			);
 			path = HelpersAndExtensions;
 			sourceTree = "<group>";
@@ -387,8 +399,10 @@
 				706A8121256718AD00A07C9C /* ViewPhotoCollectionViewCell.swift in Sources */,
 				706A80CD2566F91200A07C9C /* ProfileViewController.swift in Sources */,
 				706A80B32566F62A00A07C9C /* UserController.swift in Sources */,
+				C33E283B256EC4390092442F /* NetworkError.swift in Sources */,
 				706A80B92566F6E000A07C9C /* RandoCollectionViewController.swift in Sources */,
 				A60933E3256C2D6E00A1C767 /* MessagesViewExtension.swift in Sources */,
+				C33E289D256ED9780092442F /* RestaurantTableViewController.swift in Sources */,
 				706A81092567161900A07C9C /* StorageController.swift in Sources */,
 				706A80B62566F64200A07C9C /* UserError.swift in Sources */,
 				706A80BC2566F70500A07C9C /* FriendsTableViewController.swift in Sources */,
@@ -401,6 +415,8 @@
 				706A80B02566F61200A07C9C /* User.swift in Sources */,
 				A6093448256C578400A1C767 /* NewConversationTableViewCell.swift in Sources */,
 				706A81402567332000A07C9C /* RestaurantTableViewCell.swift in Sources */,
+				C33E2841256EC5390092442F /* RestaurantController.swift in Sources */,
+				C33E283E256EC45B0092442F /* Restaurant.swift in Sources */,
 				706A81152567167200A07C9C /* StorageError.swift in Sources */,
 				706A810C2567162D00A07C9C /* Message.swift in Sources */,
 				706A81C9256C100D00A07C9C /* SignUpViewController.swift in Sources */,
