@@ -18,7 +18,7 @@ class RestaurantTableViewController: UITableViewController {
         
     }
     
-    //MARK: - Helpers
+    //MARK: - Helper Functions
     func fetchRestaurants() {
         guard let location = CLLocationManager().location else { return }
         //        let a = CLLocation(latitude: User.latitude, longitude: User.longitude)
@@ -51,4 +51,4 @@ class RestaurantTableViewController: UITableViewController {
         
         return cell
     }
-}//END OF CLASS
+}
