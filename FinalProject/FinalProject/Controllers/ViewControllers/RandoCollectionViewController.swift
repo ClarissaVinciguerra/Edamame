@@ -6,12 +6,16 @@
 //
 
 import UIKit
+import CoreLocation
 
 private let reuseIdentifier = "randoCell"
 
 class RandoCollectionViewController: UICollectionViewController {
     // MARK: - Properties
     var refresher: UIRefreshControl = UIRefreshControl()
+    let locationManager = CLLocationManager()
+    var latitude: Double?
+    var longitude: Double?
     
     // MARK: - Lifecycle Functions
     override func viewDidLoad() {
@@ -22,7 +26,12 @@ class RandoCollectionViewController: UICollectionViewController {
 
         // Register cell classes
         self.collectionView!.register(UICollectionViewCell.self, forCellWithReuseIdentifier: reuseIdentifier)
-
+        
+        locationManager.delegate = self
+        locationManager.desiredAccuracy = kCLLocationAccuracyBest
+        
+        retrieveCurrentLocation()
+        
         setupViews()
         loadData()
     }
@@ -34,7 +43,7 @@ class RandoCollectionViewController: UICollectionViewController {
         self.navigationItem.backBarButtonItem = cancelBarButton
         refresher.attributedTitle = NSAttributedString(string: "Pull to refresh page")
         refresher.addTarget(self, action: #selector(loadData), for: .valueChanged)
-        //self.tableView.addSubview(refresher)
+        self.collectionView.addSubview(refresher)
     }
     
     @objc func loadData() {
@@ -57,11 +66,47 @@ class RandoCollectionViewController: UICollectionViewController {
     
     func updateViews() {
         DispatchQueue.main.async {
-            //self.tableView.reloadData()
+            self.collectionView.reloadData()
             self.refresher.endRefreshing()
         }
     }
+    
+    func retrieveCurrentLocation() {
+        let status = CLLocationManager().authorizationStatus
+       
+        if (status == .denied || status == .restricted || !CLLocationManager.locationServicesEnabled()) {
+            presentLocationPermissionsAlert()
+            return
+        }
+        
+        if (status == .notDetermined) {
+            locationManager.requestWhenInUseAuthorization()
+            return
+        }
+     
+        locationManager.startUpdatingLocation()
+    }
+    
+    func presentLocationPermissionsAlert() {
+        let alertController = UIAlertController(title: "Unable to access location", message: "This app cannot be used without permission to access your location.", preferredStyle: .alert)
+        
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        
+        let settingsAction = UIAlertAction(title: "Settings", style: .default) { (_) -> Void in
+            guard let settingsUrl = URL(string: UIApplication.openSettingsURLString) else {
+                                return
+                            }
+                            if UIApplication.shared.canOpenURL(settingsUrl) {
+                                UIApplication.shared.open(settingsUrl, completionHandler: { (success) in
+                                })
+                            }
+                        }
 
+        alertController.addAction(cancelAction)
+        alertController.addAction(settingsAction)
+        
+        present(alertController, animated: true, completion: nil)
+    }
     
     // MARK: - Navigation
 
@@ -124,4 +169,50 @@ class RandoCollectionViewController: UICollectionViewController {
     }
     */
 
+}
+
+// MARK: - Extensions
+extension RandoCollectionViewController: CLLocationManagerDelegate {
+    func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
+        print("Location manager authorization status changed")
+        
+        switch status {
+        case .notDetermined:
+            locationManager.requestWhenInUseAuthorization()
+            break
+        case .restricted:
+            presentLocationPermissionsAlert()
+        break
+        case .denied:
+            presentLocationPermissionsAlert()
+        break
+        case .authorizedAlways:
+            locationManager.startUpdatingLocation()
+        case .authorizedWhenInUse:
+            locationManager.startUpdatingLocation()
+        @unknown default:
+            break
+        }
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        if let location = locations.first {
+            
+            guard let currentUser = UserController.shared.currentUser else { return }
+            currentUser.latitude = location.coordinate.latitude
+            currentUser.longitude = location.coordinate.longitude
+            
+            UserController.shared.updateUserBy(currentUser) { (result) in
+                switch result{
+                case .success(let user):
+                    DispatchQueue.main.async {
+                        UserController.shared.currentUser = user
+                        self.updateViews()
+                    }
+                case .failure(let error):
+                    print("Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")
+                }
+            }
+        }
+    }
 }
