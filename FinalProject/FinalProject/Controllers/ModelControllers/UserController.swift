@@ -69,15 +69,35 @@ class UserController {
         }
     }
     
+    func fetchUserByUUID(_ uuid: String, completion: @escaping (Result<User, UserError>) -> Void) {
+        let userDocRef = database.collection(userCollection).document(uuid)
+        
+        userDocRef.getDocument { (document, error) in
+            
+            if let document = document, document.exists {
+                guard let user = User(document: document) else { return }
+                completion(.success(user))
+                
+            } else if let error = error {
+                
+                completion(.failure(.firebaseError(error)))
+                
+            }
+        }
+    }
+    
     func fetchFilteredRandos(currentUser: User, completion: @escaping (Result<[User], UserError>) -> Void) {
         let userDocRef = database.collection(userCollection)
         
         // add a line here to filter by city/location in the real app
         userDocRef.getDocuments { (querySnapshot, error) in
             if let error = error {
+                
                 print("Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")
                 return completion(.failure(.firebaseError(error)))
+                
             } else {
+                
                 var randosToAppear: [User] = []
                 var doNotAppearArray = currentUser.blockedArray
                 doNotAppearArray.append(contentsOf: currentUser.sentRequests)
