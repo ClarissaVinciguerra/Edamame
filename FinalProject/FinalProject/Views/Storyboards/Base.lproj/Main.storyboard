@@ -4,6 +4,7 @@
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17505"/>
         <capability name="Image references" minToolsVersion="12.0"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="collection view cell content view" minToolsVersion="11.0"/>
@@ -664,23 +665,25 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="49"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="barTintColor" name="whiteSmoke"/>
+                        <color key="selectedImageTintColor" name="lightGreen"/>
                     </tabBar>
                     <connections>
-                        <segue destination="Amq-iU-gbY" kind="relationship" relationship="viewControllers" id="xSl-f6-zBl"/>
+                        <segue destination="dje-mK-I1j" kind="relationship" relationship="viewControllers" id="JFu-iy-G0z"/>
                         <segue destination="5yh-AC-1gW" kind="relationship" relationship="viewControllers" id="miP-DS-X8T"/>
                         <segue destination="ks1-g7-oMe" kind="relationship" relationship="viewControllers" id="jy9-td-uRU"/>
-                        <segue destination="dje-mK-I1j" kind="relationship" relationship="viewControllers" id="JFu-iy-G0z"/>
+                        <segue destination="Amq-iU-gbY" kind="relationship" relationship="viewControllers" id="xSl-f6-zBl"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dZa-9x-5VD" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="783" y="729"/>
         </scene>
-        <!--Item-->
+        <!--Profile-->
         <scene sceneID="G6d-2P-KTH">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="Amq-iU-gbY" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Item" id="Bil-QR-aSj"/>
+                    <tabBarItem key="tabBarItem" title="Profile" image="person" catalog="system" id="Bil-QR-aSj"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="0vY-fB-GFe">
                         <rect key="frame" x="0.0" y="44" width="414" height="44"/>
@@ -695,11 +698,11 @@
             </objects>
             <point key="canvasLocation" x="2330" y="1515"/>
         </scene>
-        <!--Item-->
+        <!--Friends-->
         <scene sceneID="DzQ-F3-Rrl">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="5yh-AC-1gW" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Item" id="uyT-Rv-RFQ"/>
+                    <tabBarItem key="tabBarItem" title="Friends" image="person.2" catalog="system" id="uyT-Rv-RFQ"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="BR5-pQ-c83">
                         <rect key="frame" x="0.0" y="44" width="414" height="44"/>
@@ -714,11 +717,11 @@
             </objects>
             <point key="canvasLocation" x="217" y="1515"/>
         </scene>
-        <!--Item-->
+        <!--Pending-->
         <scene sceneID="igz-Qc-XFP">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="ks1-g7-oMe" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Item" id="hqW-3k-xqY"/>
+                    <tabBarItem key="tabBarItem" title="Pending" image="person.crop.circle.badge.questionmark" catalog="system" id="hqW-3k-xqY"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="Nq3-pO-WEz">
                         <rect key="frame" x="0.0" y="44" width="414" height="44"/>
@@ -733,11 +736,13 @@
             </objects>
             <point key="canvasLocation" x="1241" y="1515"/>
         </scene>
-        <!--Item-->
+        <!--Connect!-->
         <scene sceneID="lFF-tP-FkR">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="dje-mK-I1j" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Item" id="D1r-SG-zow"/>
+                    <tabBarItem key="tabBarItem" title="Connect!" selectedImage="person.3" catalog="system" id="D1r-SG-zow">
+                        <imageReference key="image" image="person.3" catalog="system" renderingMode="original"/>
+                    </tabBarItem>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="JZB-XS-gJp">
                         <rect key="frame" x="0.0" y="44" width="414" height="44"/>
@@ -754,12 +759,22 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="6W8-AA-iph"/>
+        <segue reference="AZf-ve-JTA"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="gearshape.2" catalog="system" width="128" height="100"/>
         <image name="info.circle" catalog="system" width="128" height="121"/>
+        <image name="person" catalog="system" width="128" height="117"/>
+        <image name="person.2" catalog="system" width="128" height="81"/>
+        <image name="person.3" catalog="system" width="128" height="62"/>
+        <image name="person.crop.circle.badge.questionmark" catalog="system" width="128" height="113"/>
         <image name="xmark" catalog="system" width="128" height="113"/>
+        <namedColor name="lightGreen">
+            <color red="0.39215686274509803" green="0.61568627450980395" blue="0.40000000000000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="whiteSmoke">
+            <color red="0.95294117647058818" green="0.95294117647058818" blue="0.95294117647058818" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
         <systemColor name="labelColor">
             <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
