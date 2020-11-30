@@ -337,7 +337,7 @@
             </objects>
             <point key="canvasLocation" x="1241" y="3011"/>
         </scene>
-        <!--Friends Table View Controller-->
+        <!--Friends-->
         <scene sceneID="TZ1-29-mPs">
             <objects>
                 <tableViewController id="Fm9-pm-VjQ" customClass="FriendsTableViewController" customModule="FinalProject" customModuleProvider="target" sceneMemberID="viewController">
@@ -363,13 +363,13 @@
                             <outlet property="delegate" destination="Fm9-pm-VjQ" id="bDx-NQ-nKI"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" id="aXG-Wb-0CZ"/>
+                    <navigationItem key="navigationItem" title="Friends" id="aXG-Wb-0CZ"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="53d-Wo-xef" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="216" y="2255"/>
         </scene>
-        <!--Pending Table View Controller-->
+        <!--Awaiting Approval-->
         <scene sceneID="tWm-kd-d1b">
             <objects>
                 <tableViewController id="LBZ-5S-25x" customClass="PendingTableViewController" customModule="FinalProject" customModuleProvider="target" sceneMemberID="viewController">
@@ -395,13 +395,13 @@
                             <outlet property="delegate" destination="LBZ-5S-25x" id="TW8-SX-6ms"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" id="lSB-yB-age"/>
+                    <navigationItem key="navigationItem" title="Awaiting Approval" id="lSB-yB-age"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="9ep-Y2-OLu" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1241" y="2255"/>
         </scene>
-        <!--Edit Profile View Controller-->
+        <!--My Profile-->
         <scene sceneID="VCc-6M-RWF">
             <objects>
                 <viewController id="42U-x4-SU3" customClass="EditProfileViewController" customModule="FinalProject" customModuleProvider="target" sceneMemberID="viewController">
@@ -602,7 +602,7 @@
                             </connections>
                         </barButtonItem>
                     </toolbarItems>
-                    <navigationItem key="navigationItem" id="wEe-OC-XdW">
+                    <navigationItem key="navigationItem" title="My Profile" id="wEe-OC-XdW">
                         <barButtonItem key="rightBarButtonItem" systemItem="camera" id="v3g-Ch-4Xo">
                             <connections>
                                 <action selector="addPhotoButtonTapped:" destination="42U-x4-SU3" id="rPA-eR-EHx"/>
