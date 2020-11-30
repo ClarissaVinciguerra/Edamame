@@ -23,14 +23,16 @@ class UserController {
     
     // MARK: - CREATE
 
-    func createUser(name: String, dateOfBirth: Date, latitude: Double, longitude: Double, images: [UIImage], uuid: String, completion: @escaping (Result<User, UserError>) -> Void) {
+    func createUser(name: String, bio: String, type: String, dateOfBirth: Date, latitude: Double, longitude: Double, images: [UIImage], uuid: String, completion: @escaping (Result<User, UserError>) -> Void) {
 
-        let newUser = User(name: name, dateOfBirth: dateOfBirth, latitude: latitude, longitude: longitude, uuid: uuid, images: images)
+        let newUser = User(name: name, dateOfBirth: dateOfBirth, bio: bio, type: type, latitude: latitude, longitude: longitude, uuid: uuid, images: images)
         let timeInterval = newUser.dateOfBirth.timeIntervalSince1970
         
         let userReference = database.collection(userCollection)
         userReference.document("\(newUser.uuid)").setData([
             UserStrings.nameKey : "\(newUser.name)",
+            UserStrings.bioKey : "\(bio)",
+            UserStrings.type : "\(type)",
             UserStrings.dateOfBirthKey : timeInterval,
             UserStrings.imagesKey : newUser.images,
             UserStrings.latitudeKey : newUser.latitude,
