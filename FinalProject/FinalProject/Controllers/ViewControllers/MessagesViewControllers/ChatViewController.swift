@@ -28,7 +28,7 @@ class ChatViewController: MessagesViewController {
     
     private var selfSender: Sender? {
         guard let email = UserDefaults.standard.value(forKey: "email")  as? String else { return nil }
-        let safeEmail = DatabaseController.safeEmail(emailAddress: email)
+        let safeEmail = MessageController.safeEmail(emailAddress: email)
         
         return Sender(photoURL: "",
                       senderId: safeEmail,
@@ -72,7 +72,7 @@ class ChatViewController: MessagesViewController {
     }
     
     private func listenForMessages(id: String, shouldScrollToBottom: Bool) {
-        DatabaseController.shared.getAllMessagesForConversation(with: id) { [weak self] (result) in
+        MessageController.shared.getAllMessagesForConversation(with: id) { [weak self] (result) in
             switch result {
             case .success(let messages):
                 print("success in getting messages")
@@ -114,7 +114,7 @@ extension ChatViewController: InputBarAccessoryViewDelegate {
         // Send Message
         if isNewConversation {
             // create conversation in Database
-            DatabaseController.shared.createNewConversation(with: otherUserEmail, otherUserName: self.title ?? "User", firstMessage: message) { [weak self] (success) in
+            MessageController.shared.createNewConversation(with: otherUserEmail, otherUserName: self.title ?? "User", firstMessage: message) { [weak self] (success) in
                 if success {
                     print("message sent")
                     self?.isNewConversation = false
@@ -129,7 +129,7 @@ extension ChatViewController: InputBarAccessoryViewDelegate {
         } else {
             guard let conversationID = conversationID, let name = self.title else { return }
             // append to existing conversation data
-            DatabaseController.shared.sendMessage(to: conversationID, otherUserEmail: otherUserEmail, newMessage: message, name: name) { (success) in
+            MessageController.shared.sendMessage(to: conversationID, otherUserEmail: otherUserEmail, newMessage: message, name: name) { (success) in
                 if success {
                     print("message sent")
                 } else {
@@ -145,7 +145,7 @@ extension ChatViewController: InputBarAccessoryViewDelegate {
         
         guard let currentUserEmail = UserDefaults.standard.value(forKey: "email") as? String else { return nil }
         
-        let safeCurrentEmail = DatabaseController.safeEmail(emailAddress: currentUserEmail)
+        let safeCurrentEmail = MessageController.safeEmail(emailAddress: currentUserEmail)
         
         let dateString = ChatViewController.self.dateFormatter.string(from: Date())
         

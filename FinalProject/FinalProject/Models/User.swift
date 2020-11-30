@@ -11,6 +11,7 @@ import Firebase
 
 struct UserStrings {
     static let nameKey = "name"
+    static let dateOfBirthKey = "dateOfBirth"
     static let bioKey = "bio"
     static let typeKey = "type"
     static let imagesKey = "images"
@@ -26,6 +27,7 @@ struct UserStrings {
 class User {
     var name: String
     let uuid: String
+    let dateOfBirth: Date
     var bio: String
     var type: String
     var latitude: Double
@@ -54,8 +56,9 @@ class User {
     var sentRequests: [String]
     var blockedArray: [String]
     
-    init(name: String, bio: String = "", type: String = "", latitude: Double, longitude: Double, uuid: String, images: [UIImage], friends: [String] = [], pendingRequests: [String] = [], sentRequests: [String] = [], blockedArray: [String] = []) {
+    init(name: String, dateOfBirth: Date, bio: String = "", type: String = "", latitude: Double, longitude: Double, uuid: String, images: [UIImage], friends: [String] = [], pendingRequests: [String] = [], sentRequests: [String] = [], blockedArray: [String] = []) {
         self.name = name
+        self.dateOfBirth = dateOfBirth
         self.bio = bio
         self.type = type
         self.latitude = latitude
@@ -70,6 +73,7 @@ class User {
     
     convenience init?(document: DocumentSnapshot) {
         guard let name = document[UserStrings.nameKey] as? String else { return nil }
+        guard let timeInterval = document[UserStrings.dateOfBirthKey] as? Double else { return nil }
         guard let bio = document[UserStrings.bioKey] as? String else { return nil }
         guard let type = document[UserStrings.typeKey] as? String else { return nil }
         guard let latitude = document[UserStrings.latitudeKey] as? Double else { return nil }
@@ -80,7 +84,9 @@ class User {
         guard let sentRequests = document[UserStrings.sentRequestsKey] as? [String] else { return nil }
         guard let blockedArray = document[UserStrings.blockedArrayKey] as? [String] else { return nil }
         
-        self.init(name: name, bio: bio, type: type, latitude: latitude, longitude: longitude, uuid: document.documentID, images: images, friends: friends, pendingRequests: pendingRequests, sentRequests: sentRequests, blockedArray: blockedArray)
+        let dateOfBirth = Date(timeIntervalSince1970: timeInterval)
+        
+        self.init(name: name, dateOfBirth: dateOfBirth, bio: bio, type: type, latitude: latitude, longitude: longitude, uuid: document.documentID, images: images, friends: friends, pendingRequests: pendingRequests, sentRequests: sentRequests, blockedArray: blockedArray)
     }
 }
 

@@ -1,5 +1,5 @@
 //
-//  DatabaseController.swift
+//  MessageController.swift
 //  FinalProject
 //
 //  Created by Clarissa Vinciguerra on 11/19/20.
@@ -8,10 +8,10 @@
 import Foundation
 import FirebaseDatabase
 
-final class DatabaseController {
+final class MessageController {
     
     // MARK: - Properties
-    static let shared = DatabaseController()
+    static let shared = MessageController()
     
     private let database = Database.database().reference()
     
@@ -24,7 +24,7 @@ final class DatabaseController {
     // MARK: - CRUD Functions
     public func userExists(with email: String, completion: @escaping ((Bool) -> Void)) {
         
-        let safeEmail = DatabaseController.safeEmail(emailAddress: email)
+        let safeEmail = MessageController.safeEmail(emailAddress: email)
         database.child(safeEmail).observeSingleEvent(of: .value, with: { snapshot in
             guard snapshot.value as? [String: Any] != nil else {
                 completion(false)
@@ -51,7 +51,7 @@ final class DatabaseController {
 
 // MARK: - Extensions
 
-extension DatabaseController {
+extension MessageController {
     
     public func getDataFor(path: String, completion: @escaping (Result<Any, Error >) -> Void) {
         self.database.child("\(path)").observeSingleEvent(of: .value) { (snapshot) in
@@ -65,7 +65,7 @@ extension DatabaseController {
 }
 
 // MARK: - Sending Messages / Conversations
-extension DatabaseController {
+extension MessageController {
     
     /// Creates a new conversation with the target user email and first message sent
     public func createNewConversation(with otherUserEmail: String, otherUserName: String, firstMessage: Message, completion: @escaping (Bool) -> Void) {
@@ -73,7 +73,7 @@ extension DatabaseController {
             let currentName = UserDefaults.standard.value(forKey: "name") as? String else {
                 return
         }
-        let safeEmail = DatabaseController.safeEmail(emailAddress: currentEmail)
+        let safeEmail = MessageController.safeEmail(emailAddress: currentEmail)
         
         let ref = database.child("\(safeEmail)")
         
@@ -187,7 +187,6 @@ extension DatabaseController {
 //        "date": Date(),
 //        "sender_email": String,
 //        "isRead": true/false,
-//
   
         let messageDate = firstMessage.sentDate
         let dateString = ChatViewController.dateFormatter.string(from: messageDate)
@@ -223,7 +222,7 @@ extension DatabaseController {
             
         }
         
-        let currentUserEmail = DatabaseController.safeEmail(emailAddress: userEmail)
+        let currentUserEmail = MessageController.safeEmail(emailAddress: userEmail)
         
         let collectionMessage: [String : Any] = [
             "id": firstMessage.messageId,
@@ -324,7 +323,7 @@ extension DatabaseController {
             return
         }
         
-        let currentUserEmail = DatabaseController.safeEmail(emailAddress: userEmail)
+        let currentUserEmail = MessageController.safeEmail(emailAddress: userEmail)
         
         database.child("conversations/\(conversation)/messages").observeSingleEvent(of: .value) { [weak self] (snapshot) in
             guard let strongSelf = self else { return }
@@ -366,7 +365,7 @@ extension DatabaseController {
                 return
             }
             
-            let currentUserEmail = DatabaseController.safeEmail(emailAddress: userEmail)
+            let currentUserEmail = MessageController.safeEmail(emailAddress: userEmail)
             
             let newMessageEntry: [String : Any] = [
                 "id": newMessage.messageId,
@@ -411,7 +410,7 @@ extension DatabaseController {
                         } else {
                             let newConversationData: [String: Any] = [
                                 "id": conversation,
-                                "other_user_email": DatabaseController.safeEmail(emailAddress: otherUserEmail),
+                                "other_user_email": MessageController.safeEmail(emailAddress: otherUserEmail),
                                 "name": name,
                                 "latest_message": updatedValue
                             ]
@@ -421,7 +420,7 @@ extension DatabaseController {
                     } else {
                         let newConversationData: [String: Any] = [
                             "id": conversation,
-                            "other_user_email": DatabaseController.safeEmail(emailAddress: otherUserEmail),
+                            "other_user_email": MessageController.safeEmail(emailAddress: otherUserEmail),
                             "name": name,
                             "latest_message": updatedValue
                         ]
@@ -465,7 +464,7 @@ extension DatabaseController {
                                 } else {
                                     let newConversationData: [String: Any] = [
                                         "id": conversation,
-                                        "other_user_email": DatabaseController.safeEmail(emailAddress: currentUserEmail),
+                                        "other_user_email": MessageController.safeEmail(emailAddress: currentUserEmail),
                                         "name": currentUserName,
                                         "latest_message": updatedValue
                                     ]
@@ -475,7 +474,7 @@ extension DatabaseController {
                             } else {
                                 let newConversationData: [String: Any] = [
                                     "id": conversation,
-                                    "other_user_email": DatabaseController.safeEmail(emailAddress: currentUserEmail),
+                                    "other_user_email": MessageController.safeEmail(emailAddress: currentUserEmail),
                                     "name": currentUserName,
                                     "latest_message": updatedValue
                                 ]
@@ -502,7 +501,7 @@ extension DatabaseController {
         guard let email = UserDefaults.standard.value(forKey: "email") as? String else {
             return
         }
-        let safeEmail = DatabaseController.safeEmail(emailAddress: email)
+        let safeEmail = MessageController.safeEmail(emailAddress: email)
         
         print("Deleting conversation with id: \(conversationID)")
         //Get all conversations for current user
@@ -535,11 +534,11 @@ extension DatabaseController {
     }
     
     public func conversationExists(with targetRecipientEmail: String, completion: @escaping(Result<String,Error>) ->Void) {
-        let safeRecipientEmail = DatabaseController.safeEmail(emailAddress: targetRecipientEmail)
+        let safeRecipientEmail = MessageController.safeEmail(emailAddress: targetRecipientEmail)
         guard let senderEmail = UserDefaults.standard.value(forKey: "email") as? String else {
             return
         }
-        let safeSenderEmail = DatabaseController.safeEmail(emailAddress: senderEmail)
+        let safeSenderEmail = MessageController.safeEmail(emailAddress: senderEmail)
         
         database.child("\(safeRecipientEmail)/conversations").observeSingleEvent(of: .value) { (snapshot) in
             guard let collection = snapshot.value as? [[String : Any]] else {
@@ -565,6 +564,6 @@ extension DatabaseController {
             completion(.failure(DatabaseError.failedToFetch))
             return
         }
-       // DatabaseController
+       // MessageController
     }
 }
