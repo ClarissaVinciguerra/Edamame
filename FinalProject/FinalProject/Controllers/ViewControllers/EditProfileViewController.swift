@@ -113,11 +113,11 @@ class EditProfileViewController: UIViewController {
     
     func configureCollectionViewLayout() -> UICollectionViewLayout {
          
-        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalHeight(1))
+        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.95), heightDimension: .fractionalHeight(0.95))
          
          let item = NSCollectionLayoutItem(layoutSize: itemSize)
          
-     let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalWidth(0.33))
+     let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalWidth(0.31))
          
          let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitem: item, count: 3)
          group.interItemSpacing = .fixed(10)
