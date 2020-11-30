@@ -70,7 +70,7 @@ class LogInViewController: UIViewController {
             UserDefaults.standard.set(email, forKey: LogInStrings.emailKey)
             print("Logged In User: \(firebaseUser)")
             //Dismisses the current view controller and returns to the main storyboard.
-            //strongSelf.navigationController?.dismiss(animated: true, completion: nil)
+            strongSelf.navigationController?.dismiss(animated: true, completion: nil)
         }
     }
     
