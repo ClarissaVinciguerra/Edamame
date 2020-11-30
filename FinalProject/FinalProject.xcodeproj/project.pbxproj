@@ -232,7 +232,6 @@
 
 				70EB018C256EFDD30031ED9F /* AgeCalculator.swift */,
 				70EB018F256F01630031ED9F /* StyleGuide.swift */,
-
 			);
 			path = HelpersAndExtensions;
 			sourceTree = "<group>";
