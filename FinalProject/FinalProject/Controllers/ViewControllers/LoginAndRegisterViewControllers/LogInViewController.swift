@@ -19,9 +19,6 @@ struct LogInStrings {
 class LogInViewController: UIViewController {
 
     // MARK: - Outlets
-    
-    
-    
     @IBOutlet weak var emailTextField: UITextField!
     @IBOutlet weak var passwordTextField: UITextField!
     @IBOutlet weak var logInButton: UIButton!

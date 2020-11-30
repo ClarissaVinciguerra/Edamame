@@ -56,7 +56,7 @@ class User {
     var sentRequests: [String]
     var blockedArray: [String]
     
-    init(name: String, dateOfBirth: Date, bio: String = "", type: String = "", latitude: Double, longitude: Double, uuid: String, images: [UIImage], friends: [String] = [], pendingRequests: [String] = [], sentRequests: [String] = [], blockedArray: [String] = []) {
+    init(name: String, dateOfBirth: Date, bio: String, type: String, latitude: Double, longitude: Double, uuid: String, images: [UIImage], friends: [String] = [], pendingRequests: [String] = [], sentRequests: [String] = [], blockedArray: [String] = []) {
         self.name = name
         self.dateOfBirth = dateOfBirth
         self.bio = bio
