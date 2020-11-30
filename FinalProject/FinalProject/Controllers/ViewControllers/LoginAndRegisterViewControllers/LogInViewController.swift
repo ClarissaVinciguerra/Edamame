@@ -14,8 +14,6 @@ struct LogInStrings {
     static let firebaseUidKey = "firebaseUid"
 }
 
-
-
 class LogInViewController: UIViewController {
 
     // MARK: - Outlets

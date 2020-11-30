@@ -32,7 +32,7 @@ class UserController {
         userReference.document("\(newUser.uuid)").setData([
             UserStrings.nameKey : "\(newUser.name)",
             UserStrings.bioKey : "\(bio)",
-            UserStrings.type : "\(type)",
+            UserStrings.typeKey : "\(type)",
             UserStrings.dateOfBirthKey : timeInterval,
             UserStrings.imagesKey : newUser.images,
             UserStrings.latitudeKey : newUser.latitude,
@@ -88,6 +88,7 @@ class UserController {
                 
             }
         }
+        completion(.failure(.noExistingUser))
     }
     
     func fetchFilteredRandos(currentUser: User, completion: @escaping (Result<[User], UserError>) -> Void) {

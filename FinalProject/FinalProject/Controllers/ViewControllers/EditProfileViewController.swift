@@ -52,7 +52,7 @@ class EditProfileViewController: UIViewController {
     }
     
     @IBAction func saveChangesButtonTapped(_ sender: Any) {
-        updateUser()
+        createAndUpdateUser()
     }
     
     // MARK: - Class Methods
@@ -65,12 +65,50 @@ class EditProfileViewController: UIViewController {
         }
     }
     
-    func updateUser() {
+    func createAndUpdateUser() {
+        guard let uidKey = UserDefaults.standard.value(forKey: LogInStrings.firebaseUidKey) else { return }
+                
+        let uidString = "\(uidKey)"
+        UserController.shared.fetchUserByUUID(uidString) { (result) in
+            switch result {
+            case .success(_):
+                self.updateUser()
+            case .failure(_):
+                self.createUser()
+            }
+        }
+    }
+    
+   private func updateUser() {
         guard let currentUser = UserController.shared.currentUser, let bio = bioTextView.text, let type = typeOfVeganTextField.text, let name = nameTextField.text, !name.isEmpty else { return }
         
         currentUser.bio = bio
         currentUser.name = name
         currentUser.type = type
+    }
+    
+    private func createUser() {
+        guard let uidKey = UserDefaults.standard.value(forKey: LogInStrings.firebaseUidKey),
+              let nameKey = UserDefaults.standard.value(forKey: SignUpStrings.nameKey),
+              let birthdayKey = UserDefaults.standard.value(forKey: SignUpStrings.birthday) as? Date,
+              let type = typeOfVeganTextField.text,
+              let bio = bioTextView.text,
+              !bio.isEmpty else { return }
+        
+        let uid = "\(uidKey)"
+        let name = "\(nameKey)"
+        
+        UserController.shared.createUser(name: name, bio: bio, type: type, dateOfBirth: birthdayKey, latitude: 0.0, longitude: 0.0, images: profileImages, uuid: uid) { (result) in
+            switch result {
+            case .success(let user):
+                DispatchQueue.main.async {
+                    UserController.shared.currentUser = user
+                }
+            case .failure(let error):
+                print("Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")
+            }
+        }
+              
     }
     
     func setupViews() {
