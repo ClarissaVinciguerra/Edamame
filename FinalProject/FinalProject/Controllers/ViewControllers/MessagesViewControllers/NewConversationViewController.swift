@@ -129,7 +129,7 @@ extension NewConversationViewController: UISearchBarDelegate {
             filterUsers(with: query)
         } else {
             //if it does: filter
-            DatabaseController.shared.getAllUsers { [weak self] (result) in
+            MessageController.shared.getAllUsers { [weak self] (result) in
                 switch result {
                 case .success(let usersCollection):
                     self?.hasFetched = true
@@ -152,7 +152,7 @@ extension NewConversationViewController: UISearchBarDelegate {
             return
         }
         
-        let safeEmail = DatabaseController.safeEmail(emailAddress: currentUserEmail)
+        let safeEmail = MessageController.safeEmail(emailAddress: currentUserEmail)
         
         self.spinner.dismiss()
         

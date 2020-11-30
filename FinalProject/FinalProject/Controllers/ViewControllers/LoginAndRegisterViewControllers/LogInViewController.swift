@@ -10,7 +10,7 @@ import FirebaseAuth
 import JGProgressHUD
 
 struct LogInStrings {
-    fileprivate static let emailKey = "email"
+    static let emailKey = "email"
 }
 
 class LogInViewController: UIViewController {
@@ -27,7 +27,10 @@ class LogInViewController: UIViewController {
     // MARK: - Lifecycle Functions
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
         setupViews()
     }
     
@@ -89,10 +92,10 @@ class LogInViewController: UIViewController {
     
     // MARK: - Views
     func setupEmailTextField() {
-        emailTextField.autocapitalizationType = .none
-        emailTextField.autocorrectionType = .no
-        emailTextField.returnKeyType = .continue
-        emailTextField.layer.cornerRadius = 12
+        self.emailTextField.autocapitalizationType = .none
+        self.emailTextField.autocorrectionType = .no
+        self.emailTextField.returnKeyType = .continue
+        self.emailTextField.layer.cornerRadius = 12
     }
     
     func setupPasswordTextField() {
