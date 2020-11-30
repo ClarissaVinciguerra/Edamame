@@ -227,9 +227,11 @@
 				706A81142567167200A07C9C /* StorageError.swift */,
 				706A81172567168500A07C9C /* DatabaseError.swift */,
 				A60933E2256C2D6E00A1C767 /* MessagesViewExtension.swift */,
+
+				C33E283A256EC4390092442F /* NetworkError.swift */,
+
 				70EB018C256EFDD30031ED9F /* AgeCalculator.swift */,
 				70EB018F256F01630031ED9F /* StyleGuide.swift */,
-				C33E283A256EC4390092442F /* NetworkError.swift */,
 			);
 			path = HelpersAndExtensions;
 			sourceTree = "<group>";
