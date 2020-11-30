@@ -121,8 +121,8 @@ class EditProfileViewController: UIViewController {
     }
     
     func disableCameraBarButton() {
-        if collectionView.visibleCells.count == 5 {
-            cameraBarButton.isEnabled = !cameraBarButton.isEnabled
+        if profileImages.count >= 6 {
+            cameraBarButton.isEnabled = false
         }
     }
     
@@ -147,26 +147,26 @@ class EditProfileViewController: UIViewController {
     }
     
     func configureCollectionViewLayout() -> UICollectionViewLayout {
-         
-        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.99), heightDimension: .fractionalHeight(0.99))
-         
-         let item = NSCollectionLayoutItem(layoutSize: itemSize)
-         
-     let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalWidth(0.31))
-         
-         let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitem: item, count: 3)
-         group.interItemSpacing = .fixed(10)
-         
-         let section = NSCollectionLayoutSection(group: group)
-         section.interGroupSpacing = 10
-         section.contentInsets = .init(top: 10,
-                                       leading: 10,
-                                       bottom: 0,
-                                       trailing: 10)
-         
-         return UICollectionViewCompositionalLayout(section: section)
-     }
         
+        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.99), heightDimension: .fractionalHeight(0.99))
+        
+        let item = NSCollectionLayoutItem(layoutSize: itemSize)
+        
+        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalWidth(0.31))
+        
+        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitem: item, count: 3)
+        group.interItemSpacing = .fixed(10)
+        
+        let section = NSCollectionLayoutSection(group: group)
+        section.interGroupSpacing = 10
+        section.contentInsets = .init(top: 10,
+                                      leading: 10,
+                                      bottom: 0,
+                                      trailing: 10)
+        
+        return UICollectionViewCompositionalLayout(section: section)
+    }
+    
     // MARK: - Navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destination.
@@ -200,6 +200,9 @@ extension EditProfileViewController: UICollectionViewDataSource, UICollectionVie
                     cell.isEditing = editing
                 }
             }
+        }
+        if !editing {
+            disableCameraBarButton()
         }
     }
 }
@@ -262,5 +265,6 @@ extension EditProfileViewController: UIImagePickerControllerDelegate, UINavigati
             }
         }
         picker.dismiss(animated: true)
+        disableCameraBarButton()
     }
 }
