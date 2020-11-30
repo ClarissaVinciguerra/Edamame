@@ -135,7 +135,7 @@ class SignUpViewController: UIViewController {
         passwordTextField.autocorrectionType = .no
         passwordTextField.returnKeyType = .continue
         passwordTextField.layer.cornerRadius = 12
-        passwordTextField.isSecureTextEntry = true
+        passwordTextField.isSecureTextEntry = false
     }
     
     func setupConfirmPasswordTextField(){
@@ -143,7 +143,7 @@ class SignUpViewController: UIViewController {
         confirmPasswordTextField.autocorrectionType = .no
         confirmPasswordTextField.returnKeyType = .done
         confirmPasswordTextField.layer.cornerRadius = 12
-        confirmPasswordTextField.isSecureTextEntry = true
+        confirmPasswordTextField.isSecureTextEntry = false
     }
     
     func setupBirthdayDatePicker(){

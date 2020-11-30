@@ -163,7 +163,6 @@ extension EditProfileViewController: UICollectionViewDataSource, UICollectionVie
                 }
             }
         }
-        
         if !editing {
             disableCameraBarButton()
         }
