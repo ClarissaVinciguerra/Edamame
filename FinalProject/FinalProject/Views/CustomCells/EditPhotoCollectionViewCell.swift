@@ -34,6 +34,7 @@ class EditPhotoCollectionViewCell: UICollectionViewCell {
         visualEffectView.layer.cornerRadius = visualEffectView.bounds.width / 2.0
         visualEffectView.layer.masksToBounds = true
         visualEffectView.isHidden = !isEditing
+        isEditing = false
     }
     
     var isEditing: Bool = false {

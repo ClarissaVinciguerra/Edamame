@@ -29,18 +29,13 @@ class EditProfileViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        if collectionView.visibleCells.count == 5 {
-            cameraBarButton.isEnabled = !cameraBarButton.isEnabled
-        }
+        disableCameraBarButton()
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         validateAuth()
-        
     }
-    
-    
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
@@ -53,10 +48,7 @@ class EditProfileViewController: UIViewController {
     // MARK: - Actions
     @IBAction func addPhotoButtonTapped(_ sender: Any) {
         selectPhotoAlert()
-        
-        if collectionView.visibleCells.count == 5 {
-            cameraBarButton.isEnabled = !cameraBarButton.isEnabled
-        }
+        disableCameraBarButton()
     }
     
     @IBAction func saveChangesButtonTapped(_ sender: Any) {
@@ -79,7 +71,6 @@ class EditProfileViewController: UIViewController {
         currentUser.bio = bio
         currentUser.name = name
         currentUser.type = type
- 
     }
     
     func setupViews() {
@@ -89,6 +80,12 @@ class EditProfileViewController: UIViewController {
         collectionView.collectionViewLayout = configureCollectionViewLayout()
         
         navigationItem.leftBarButtonItem = editButtonItem
+    }
+    
+    func disableCameraBarButton() {
+        if collectionView.visibleCells.count == 5 {
+            cameraBarButton.isEnabled = !cameraBarButton.isEnabled
+        }
     }
     
     func selectPhotoAlert() {
@@ -131,7 +128,7 @@ class EditProfileViewController: UIViewController {
          
          return UICollectionViewCompositionalLayout(section: section)
      }
-    
+        
     // MARK: - Navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destination.
