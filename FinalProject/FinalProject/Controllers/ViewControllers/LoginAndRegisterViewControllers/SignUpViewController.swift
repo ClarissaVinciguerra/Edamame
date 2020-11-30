@@ -87,7 +87,7 @@ class SignUpViewController: UIViewController {
         }
         
         //When user is successfully create, take the user to the main storyboard.
-        //self.navigationController?.dismiss(animated: true, completion: nil)
+        self.navigationController?.dismiss(animated: true, completion: nil)
     }
     
     // MARK: - Helper Methods

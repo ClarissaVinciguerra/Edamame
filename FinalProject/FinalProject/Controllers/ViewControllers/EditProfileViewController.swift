@@ -36,7 +36,7 @@ class EditProfileViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-       // validateAuth()
+        validateAuth()
         
     }
     
@@ -64,14 +64,14 @@ class EditProfileViewController: UIViewController {
     }
     
     // MARK: - Class Methods
-//    private func validateAuth() {
-//        if FirebaseAuth.Auth.auth().currentUser == nil {
-//            guard let vc = storyboard?.instantiateViewController(withIdentifier: "LogInViewController") else { return }
-//            let nav = UINavigationController(rootViewController: vc)
-//            nav.modalPresentationStyle = .fullScreen
-//            present(nav, animated: false)
-//        }
-//    }
+    private func validateAuth() {
+        if FirebaseAuth.Auth.auth().currentUser == nil {
+            let storyboard = UIStoryboard(name: "LogInSignUp", bundle: nil)
+            guard let vc = storyboard.instantiateInitialViewController() else { return }
+            vc.modalPresentationStyle = .fullScreen
+            present(vc, animated: false)
+        }
+    }
     
     func updateUser() {
         guard let currentUser = UserController.shared.currentUser, let bio = bioTextView.text, let type = typeOfVeganTextField.text, let name = nameTextField.text, !name.isEmpty else { return }
