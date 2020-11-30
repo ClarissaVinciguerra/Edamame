@@ -35,6 +35,9 @@
 		706A81402567332000A07C9C /* RestaurantTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 706A813F2567332000A07C9C /* RestaurantTableViewCell.swift */; };
 		706A81892568676800A07C9C /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 706A81882568676800A07C9C /* GoogleService-Info.plist */; };
 		706A81C9256C100D00A07C9C /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 706A81C8256C100D00A07C9C /* SignUpViewController.swift */; };
+		70EB018D256EFDD30031ED9F /* AgeCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70EB018C256EFDD30031ED9F /* AgeCalculator.swift */; };
+		70EB0190256F01630031ED9F /* StyleGuide.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70EB018F256F01630031ED9F /* StyleGuide.swift */; };
+		70EB01A825720AD00031ED9F /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 70EB01A725720AD00031ED9F /* Colors.xcassets */; };
 		A60933D5256C2C0300A1C767 /* SearchResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = A60933D4256C2C0300A1C767 /* SearchResult.swift */; };
 		A60933D9256C2C9D00A1C767 /* ConversationsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A60933D8256C2C9D00A1C767 /* ConversationsViewController.swift */; };
 		A60933E0256C2CEE00A1C767 /* NewConversationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A60933DF256C2CEE00A1C767 /* NewConversationViewController.swift */; };
@@ -81,6 +84,13 @@
 		706A813F2567332000A07C9C /* RestaurantTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestaurantTableViewCell.swift; sourceTree = "<group>"; };
 		706A81882568676800A07C9C /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		706A81C8256C100D00A07C9C /* SignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
+		70EB018C256EFDD30031ED9F /* AgeCalculator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgeCalculator.swift; sourceTree = "<group>"; };
+		70EB018F256F01630031ED9F /* StyleGuide.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StyleGuide.swift; sourceTree = "<group>"; };
+		70EB01A2257209950031ED9F /* SourceSansPro-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SourceSansPro-Bold.ttf"; sourceTree = "<group>"; };
+		70EB01A3257209A30031ED9F /* SourceSansPro-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SourceSansPro-Regular.ttf"; sourceTree = "<group>"; };
+		70EB01A4257209B00031ED9F /* SourceSansPro-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SourceSansPro-Light.ttf"; sourceTree = "<group>"; };
+		70EB01A5257209BF0031ED9F /* SourceSansPro-ExtraLight.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SourceSansPro-ExtraLight.ttf"; sourceTree = "<group>"; };
+		70EB01A725720AD00031ED9F /* Colors.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Colors.xcassets; sourceTree = "<group>"; };
 		7CC0CC95EDF86B3CA7DE289E /* Pods-FinalProject.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FinalProject.debug.xcconfig"; path = "Target Support Files/Pods-FinalProject/Pods-FinalProject.debug.xcconfig"; sourceTree = "<group>"; };
 		A60933D4256C2C0300A1C767 /* SearchResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResult.swift; sourceTree = "<group>"; };
 		A60933D8256C2C9D00A1C767 /* ConversationsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationsViewController.swift; sourceTree = "<group>"; };
@@ -141,12 +151,14 @@
 		706A80A42566DD9C00A07C9C /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				70EB01A1257209740031ED9F /* Fonts */,
 				706A81882568676800A07C9C /* GoogleService-Info.plist */,
 				706A808F2566DCA400A07C9C /* AppDelegate.swift */,
 				706A80912566DCA400A07C9C /* SceneDelegate.swift */,
 				706A80982566DCA700A07C9C /* Assets.xcassets */,
 				706A809A2566DCA700A07C9C /* LaunchScreen.storyboard */,
 				706A809D2566DCA700A07C9C /* Info.plist */,
+				70EB01A725720AD00031ED9F /* Colors.xcassets */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -215,7 +227,12 @@
 				706A81142567167200A07C9C /* StorageError.swift */,
 				706A81172567168500A07C9C /* DatabaseError.swift */,
 				A60933E2256C2D6E00A1C767 /* MessagesViewExtension.swift */,
+
 				C33E283A256EC4390092442F /* NetworkError.swift */,
+
+				70EB018C256EFDD30031ED9F /* AgeCalculator.swift */,
+				70EB018F256F01630031ED9F /* StyleGuide.swift */,
+
 			);
 			path = HelpersAndExtensions;
 			sourceTree = "<group>";
@@ -240,6 +257,17 @@
 				A6093447256C578400A1C767 /* NewConversationTableViewCell.swift */,
 			);
 			path = CustomCells;
+			sourceTree = "<group>";
+		};
+		70EB01A1257209740031ED9F /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				70EB01A5257209BF0031ED9F /* SourceSansPro-ExtraLight.ttf */,
+				70EB01A2257209950031ED9F /* SourceSansPro-Bold.ttf */,
+				70EB01A4257209B00031ED9F /* SourceSansPro-Light.ttf */,
+				70EB01A3257209A30031ED9F /* SourceSansPro-Regular.ttf */,
+			);
+			path = Fonts;
 			sourceTree = "<group>";
 		};
 		A60933D7256C2C5B00A1C767 /* MessagesViewControllers */ = {
@@ -340,6 +368,7 @@
 				706A80D72566F9CA00A07C9C /* LogInSignUp.storyboard in Resources */,
 				706A809C2566DCA700A07C9C /* LaunchScreen.storyboard in Resources */,
 				706A80992566DCA700A07C9C /* Assets.xcassets in Resources */,
+				70EB01A825720AD00031ED9F /* Colors.xcassets in Resources */,
 				706A80972566DCA400A07C9C /* Main.storyboard in Resources */,
 				706A81892568676800A07C9C /* GoogleService-Info.plist in Resources */,
 			);
@@ -396,6 +425,7 @@
 			files = (
 				706A80902566DCA400A07C9C /* AppDelegate.swift in Sources */,
 				706A80922566DCA400A07C9C /* SceneDelegate.swift in Sources */,
+				70EB018D256EFDD30031ED9F /* AgeCalculator.swift in Sources */,
 				706A8121256718AD00A07C9C /* ViewPhotoCollectionViewCell.swift in Sources */,
 				706A80CD2566F91200A07C9C /* ProfileViewController.swift in Sources */,
 				706A80B32566F62A00A07C9C /* UserController.swift in Sources */,
@@ -405,6 +435,7 @@
 				C33E289D256ED9780092442F /* RestaurantTableViewController.swift in Sources */,
 				706A81092567161900A07C9C /* StorageController.swift in Sources */,
 				706A80B62566F64200A07C9C /* UserError.swift in Sources */,
+				70EB0190256F01630031ED9F /* StyleGuide.swift in Sources */,
 				706A80BC2566F70500A07C9C /* FriendsTableViewController.swift in Sources */,
 				706A810F2567163700A07C9C /* Sender.swift in Sources */,
 				706A80C32566F85A00A07C9C /* PendingTableViewController.swift in Sources */,

@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import FirebaseAuth
 
 class EditProfileViewController: UIViewController {
     // MARK: - Outlets
@@ -33,6 +34,14 @@ class EditProfileViewController: UIViewController {
         }
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+       // validateAuth()
+        
+    }
+    
+    
+    
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         if viewsLaidOut == false {
@@ -55,6 +64,15 @@ class EditProfileViewController: UIViewController {
     }
     
     // MARK: - Class Methods
+//    private func validateAuth() {
+//        if FirebaseAuth.Auth.auth().currentUser == nil {
+//            guard let vc = storyboard?.instantiateViewController(withIdentifier: "LogInViewController") else { return }
+//            let nav = UINavigationController(rootViewController: vc)
+//            nav.modalPresentationStyle = .fullScreen
+//            present(nav, animated: false)
+//        }
+//    }
+    
     func updateUser() {
         guard let currentUser = UserController.shared.currentUser, let bio = bioTextView.text, let type = typeOfVeganTextField.text, let name = nameTextField.text, !name.isEmpty else { return }
         

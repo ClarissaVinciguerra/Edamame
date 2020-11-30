@@ -12,7 +12,7 @@
         <!--Log In-->
         <scene sceneID="3ME-Gy-wMB">
             <objects>
-                <viewController id="DSs-Xw-wIC" customClass="LogInViewController" customModule="FinalProject" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="LoginVC" useStoryboardIdentifierAsRestorationIdentifier="YES" id="DSs-Xw-wIC" customClass="LogInViewController" customModule="FinalProject" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="wts-gF-LNt">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -77,7 +77,7 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
-                        <outlet property="emailTextField" destination="pht-K1-t6C" id="gg4-fU-2yR"/>
+                        <outlet property="emailTextField" destination="pht-K1-t6C" id="wGp-w1-yNo"/>
                         <outlet property="logInButton" destination="miU-8h-9Ol" id="1cc-g6-QmT"/>
                         <outlet property="passwordTextField" destination="LDj-h9-Jrb" id="ExA-ev-D5s"/>
                     </connections>
@@ -221,7 +221,7 @@
     </scenes>
     <resources>
         <namedColor name="outgoingMessageBackground">
-            <color red="0.20399998128414154" green="0.77999997138977051" blue="0.34899997711181641" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.20399999618530273" green="0.77999997138977051" blue="0.34900000691413879" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
