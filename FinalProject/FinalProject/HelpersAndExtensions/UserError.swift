@@ -10,7 +10,7 @@ import Foundation
 enum UserError: LocalizedError {
     case firebaseError(Error)
     case couldNotUnwrap
-    case existingUser
+    case noExistingUser
     
     var errorDescription: String {
         switch self {
@@ -18,8 +18,8 @@ enum UserError: LocalizedError {
             return "There was an error retrieving user data from Firebase ===> \(error.localizedDescription)"
         case .couldNotUnwrap:
             return "Could not unwrap user data."
-        case .existingUser:
-            return "Username already exists"
+        case .noExistingUser:
+            return "User not found."
         }
     }
 }
