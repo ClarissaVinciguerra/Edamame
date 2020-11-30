@@ -20,7 +20,6 @@ extension UIColor {
     static let grayscale = UIColor(named: "grayscale")!
     static let mainGreen = UIColor(named: "mainGreen")!
     static let softBlack = UIColor(named: "softBlack")!
-    static let goldAccent = UIColor(named: "goldAccent")!
     static let lightYellowAccent = UIColor(named: "lightYellow")!
     static let spaceBlack = UIColor(named: "spaceBlack")!
     static let whiteSmoke = UIColor(named: "whiteSmoke")!
