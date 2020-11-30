@@ -64,9 +64,9 @@ class ConversationsViewController: UIViewController {
         
         print("starting conversation fetch")
         
-        let safeEmail = DatabaseController.safeEmail(emailAddress: userEmail)
+        let safeEmail = MessageController.safeEmail(emailAddress: userEmail)
         
-        DatabaseController.shared.getAllConversations(for: safeEmail) { [weak self] (result) in
+        MessageController.shared.getAllConversations(for: safeEmail) { [weak self] (result) in
             switch result {
             case .success(let conversations):
                 print("successfully got conversation models")
@@ -107,7 +107,7 @@ class ConversationsViewController: UIViewController {
             let currentConversations = strongSelf.conversations
             
             if let targetConversation = currentConversations.first(where: {
-                $0.otherUserEmail == DatabaseController.safeEmail(emailAddress: result.email)
+                $0.otherUserEmail == MessageController.safeEmail(emailAddress: result.email)
             }) {
                 let vc = ChatViewController(with: targetConversation.otherUserEmail, id: targetConversation.id)
                 vc.isNewConversation = false
@@ -124,9 +124,9 @@ class ConversationsViewController: UIViewController {
     
     private func createNewConversation(result: SearchResult) {
         let name = result.name
-        let email = DatabaseController.safeEmail(emailAddress: result.email)
+        let email = MessageController.safeEmail(emailAddress: result.email)
         
-        DatabaseController.shared.conversationExists(with: email, completion: { [weak self] result in
+        MessageController.shared.conversationExists(with: email, completion: { [weak self] result in
             guard let strongSelf = self else {
                 return
             }
@@ -221,7 +221,7 @@ extension ConversationsViewController: UITableViewDelegate, UITableViewDataSourc
             let conversationID = conversations[indexPath.row].id
             tableView.beginUpdates()
             
-            DatabaseController.shared.deleteConversation(conversationID: conversationID) { [weak self] (success) in
+            MessageController.shared.deleteConversation(conversationID: conversationID) { [weak self] (success) in
                 if success {
                     self?.conversations.remove(at: indexPath.row)
                     tableView.deleteRows(at: [indexPath], with: .fade)
