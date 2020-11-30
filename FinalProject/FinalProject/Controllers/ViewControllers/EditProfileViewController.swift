@@ -69,11 +69,11 @@ class EditProfileViewController: UIViewController {
         guard let uidKey = UserDefaults.standard.value(forKey: LogInStrings.firebaseUidKey) else { return }
                 
         let uidString = "\(uidKey)"
-        UserController.shared.fetchUserByUUID(uidString) { (result) in
+        UserController.shared.checkThatUserExists(with: uidString) { (result) in
             switch result {
-            case .success(_):
+            case true:
                 self.updateUser()
-            case .failure(_):
+            case false:
                 self.createUser()
             }
         }

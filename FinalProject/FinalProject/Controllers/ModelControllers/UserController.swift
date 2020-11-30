@@ -91,6 +91,23 @@ class UserController {
         completion(.failure(.noExistingUser))
     }
     
+
+    func checkThatUserExists(with uuid: String, completion: @escaping ((Bool) -> Void)) {
+        let docRef = database.collection(userCollection).document(uuid)
+        
+        docRef.getDocument { (document, error) in
+            if let document = document, document.exists {
+                let dataDescription = document.data().map(String.init(describing:)) ?? "nil"
+                print("Document data: \(dataDescription)")
+                return completion(true)
+            } else {
+                print("Document does not exist")
+                return completion(false)
+            }
+        }
+
+    }
+    
     func fetchFilteredRandos(currentUser: User, completion: @escaping (Result<[User], UserError>) -> Void) {
         let userDocRef = database.collection(userCollection)
         
