@@ -313,6 +313,18 @@ class UserController {
             }
         }
     }
-    
+   
+    // MARK: - DELETE
+    func deleteUserInfoWith(_ uuid: String, completion: @escaping ((Bool) -> Void)) {
+        database.collection(userCollection).document(uuid).delete() { err in
+            if let err = err {
+                print("Error removing document: \(err)")
+                completion(false)
+            } else {
+                print("User successfully deleted.")
+                completion(true)
+            }
+        }
+    }
     
 }
