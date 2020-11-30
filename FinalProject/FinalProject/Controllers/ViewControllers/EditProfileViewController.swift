@@ -10,7 +10,8 @@ import FirebaseAuth
 
 class EditProfileViewController: UIViewController {
     // MARK: - Outlets
-    @IBOutlet weak var nameTextField: UITextField!
+    
+    @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var typeOfVeganTextField: UITextField!
     @IBOutlet weak var bioTextLabel: UILabel!
     @IBOutlet weak var bioTextView: UITextView!
@@ -30,6 +31,7 @@ class EditProfileViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         disableCameraBarButton()
+        updateViews()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -53,6 +55,10 @@ class EditProfileViewController: UIViewController {
     
     @IBAction func saveChangesButtonTapped(_ sender: Any) {
         createAndUpdateUser()
+    }
+    
+    @IBAction func infoButtonTapped(_ sender: Any) {
+    
     }
     
     // MARK: - Class Methods
@@ -79,12 +85,25 @@ class EditProfileViewController: UIViewController {
         }
     }
     
-   private func updateUser() {
-        guard let currentUser = UserController.shared.currentUser, let bio = bioTextView.text, let type = typeOfVeganTextField.text, let name = nameTextField.text, !name.isEmpty else { return }
+    private func updateUser() {
+        guard let currentUser = UserController.shared.currentUser, let bio = bioTextView.text, let type = typeOfVeganTextField.text else { return }
         
         currentUser.bio = bio
-        currentUser.name = name
         currentUser.type = type
+        currentUser.images = profileImages
+        
+        if currentUser.images.count > 1 {
+            UserController.shared.updateUserBy(currentUser) { (result) in
+                switch result {
+                case .success(_):
+                   print("User successfully updated.")
+                case .failure(let error):
+                    print("Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")
+                }
+            }
+        } else {
+            presentImageAlert()
+        }
     }
     
     private func createUser() {
@@ -97,18 +116,41 @@ class EditProfileViewController: UIViewController {
         
         let uid = "\(uidKey)"
         let name = "\(nameKey)"
-        
-        UserController.shared.createUser(name: name, bio: bio, type: type, dateOfBirth: birthdayKey, latitude: 0.0, longitude: 0.0, images: profileImages, uuid: uid) { (result) in
-            switch result {
-            case .success(let user):
-                DispatchQueue.main.async {
-                    UserController.shared.currentUser = user
+       
+        if profileImages.count > 1 {
+            UserController.shared.createUser(name: name, bio: bio, type: type, dateOfBirth: birthdayKey, latitude: 0.0, longitude: 0.0, images: profileImages, uuid: uid) { (result) in
+                switch result {
+                case .success(let user):
+                    DispatchQueue.main.async {
+                        UserController.shared.currentUser = user
+                    }
+                case .failure(let error):
+                    print("Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")
                 }
-            case .failure(let error):
-                print("Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")
             }
+        } else {
+            presentImageAlert()
         }
               
+    }
+    
+    private func presentImageAlert() {
+        
+        let alertController = UIAlertController(title: "Add some photos!", message: "Show off at least 2 pictures of yourself to save to your profile 📸", preferredStyle: .alert)
+        
+        let okayAction = UIAlertAction(title: "Okay", style: .default)
+        
+        alertController.addAction(okayAction)
+        
+        present(alertController, animated: true, completion: nil)
+        
+    }
+    
+    func updateViews() {
+        guard let currentUser = UserController.shared.currentUser else { return }
+        nameLabel.text = currentUser.name
+        
+        
     }
     
     func setupViews() {
