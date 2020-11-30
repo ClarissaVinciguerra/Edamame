@@ -11,11 +11,16 @@ import JGProgressHUD
 
 struct LogInStrings {
     static let emailKey = "email"
+    static let firebaseUidKey = "firebaseUid"
 }
+
+
 
 class LogInViewController: UIViewController {
 
     // MARK: - Outlets
+    
+    
     
     @IBOutlet weak var emailTextField: UITextField!
     @IBOutlet weak var passwordTextField: UITextField!
@@ -64,10 +69,13 @@ class LogInViewController: UIViewController {
                 print("Failed to log in user with email: \(email)")
                 return
             }
-            let firebaseUser = result.user
             
+            let firebaseUser = result.user
+            let firebaseUid = result.user.uid
             
             UserDefaults.standard.set(email, forKey: LogInStrings.emailKey)
+            UserDefaults.standard.set(firebaseUid, forKey: LogInStrings.firebaseUidKey)
+            
             print("Logged In User: \(firebaseUser)")
             //Dismisses the current view controller and returns to the main storyboard.
             strongSelf.navigationController?.dismiss(animated: true, completion: nil)

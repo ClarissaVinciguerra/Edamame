@@ -10,8 +10,10 @@ import FirebaseAuth
 import JGProgressHUD
 
 struct SignUpStrings {
-    fileprivate static let emailKey = "email"
-    fileprivate static let nameKey = "name"
+    static let emailKey = "email"
+    static let nameKey = "name"
+    static let firebaseUid = "firebaseUid"
+    static let birthday = "birthday"
 }
 
 class SignUpViewController: UIViewController {
@@ -52,6 +54,7 @@ class SignUpViewController: UIViewController {
             alertUserSignUpError()
             return
         }
+        let birthday = birthdayDatePicker.date
         
         
         //spinner.show(in: view)
@@ -70,10 +73,13 @@ class SignUpViewController: UIViewController {
             }
             
             let firebaseUser = result.user
-            
+            let firebaseUid = result.user.uid
             
             UserDefaults.standard.setValue(email, forKey: SignUpStrings.emailKey)
             UserDefaults.standard.setValue(name, forKey: SignUpStrings.nameKey)
+            UserDefaults.standard.setValue(firebaseUid, forKey: SignUpStrings.firebaseUid)
+            UserDefaults.standard.setValue(birthday, forKey: SignUpStrings.birthday)
+            
             
             // Creates a new User from the User Model
             // let newUser = User(name: name, bio: "", type: "", latitude: 33.8121, longitude: 117.9190, uuid: firebaseUser.uid, images: <#T##[UIImage]#>, friends: <#T##[String]#>, pendingRequests: <#T##[String]#>, sentRequests: <#T##[String]#>, blockedArray: <#T##[String]#>)
