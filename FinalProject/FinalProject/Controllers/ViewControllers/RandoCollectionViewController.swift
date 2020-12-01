@@ -14,7 +14,6 @@ class RandoCollectionViewController: UICollectionViewController {
     let locationManager = CLLocationManager()
     var latitude: Double?
     var longitude: Double?
-    var profileImages: [UIImage] = []
     
     // MARK: - Lifecycle Functions
     override func viewDidLoad() {
@@ -125,7 +124,13 @@ class RandoCollectionViewController: UICollectionViewController {
     
     // MARK: - Navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-       
+        if segue.identifier == "toRandoProfileVC" {
+            guard let cell = collectionView.indexPathsForSelectedItems?.first as? RandoCollectionViewCell,
+                  let destinatinon = segue.destination as? ProfileViewController
+            else { return }
+            let profile = cell.user
+            destinatinon.otherUser = profile
+        }
     }
     
     // MARK: UICollectionViewDataSource
@@ -139,7 +144,8 @@ class RandoCollectionViewController: UICollectionViewController {
         
         let rando = UserController.shared.randos[indexPath.row]
         
-        cell.photo = rando.images[indexPath.row]
+        cell.user = rando
+        cell.photo = rando.images[0]
         cell.nameLabel.text = rando.name
         cell.ageLabel.text = rando.dateOfBirth.calcAge()
     
