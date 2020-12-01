@@ -221,7 +221,7 @@ extension ProfileViewController: UICollectionViewDataSource, UICollectionViewDel
         
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "profileViewCell", for: indexPath) as? ViewPhotoCollectionViewCell else { return UICollectionViewCell() }
         
-        cell.photo = self.profileImages[indexPath.row]
+        cell.photo = UserController.shared.currentUser?.images[indexPath.row]
         
         return cell
     }
