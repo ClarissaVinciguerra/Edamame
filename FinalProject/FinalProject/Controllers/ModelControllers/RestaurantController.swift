@@ -35,7 +35,6 @@ class RestaurantController {
         request.allHTTPHeaderFields = headers
         request.httpBody = data
         
-        
         URLSession.shared.dataTask(with: request) { (data, _, error) in
             if let error = error {
                 return completion(.failure(.thrownError(error)))
