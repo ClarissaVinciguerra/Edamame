@@ -32,25 +32,27 @@ class User {
     var type: String
     var latitude: Double
     var longitude: Double
-    var images: [UIImage] {
-        get {
-            var imagesArray: [UIImage] = []
-            for data in imageDataArray {
-                if let image = UIImage(data: data) {
-                    imagesArray.append(image)
-                }
-            }
-            return imagesArray
-        } set {
-            for value in newValue {
-                if let imageData = value.jpegData(compressionQuality: 0.5) {
-                    imageDataArray.append(imageData)
-                }
-            }
-        }
-    }
+    var images: [UIImage]
+//    {
+//        get {
+//            var imagesArray: [UIImage] = []
+//            for data in imageDataArray {
+//                if let image = UIImage(data: data) {
+//                    imagesArray.append(image)
+//                }
+//            }
+//            return imagesArray
+//        } set {
+//            for value in newValue {
+//                if let imageData = value.jpegData(compressionQuality: 0.5) {
+//                    imageDataArray.append(imageData)
+//                }
+//            }
+//        }
+//    }
     
     var imageDataArray: [Data] = []
+    var imageURLs: [String] = []
     var friends: [String]
     var pendingRequests: [String]
     var sentRequests: [String]
@@ -72,17 +74,18 @@ class User {
     }
     
     convenience init?(document: DocumentSnapshot) {
-        guard let name = document[UserStrings.nameKey] as? String else { return nil }
-        guard let timeInterval = document[UserStrings.dateOfBirthKey] as? Double else { return nil }
-        guard let bio = document[UserStrings.bioKey] as? String else { return nil }
-        guard let type = document[UserStrings.typeKey] as? String else { return nil }
-        guard let latitude = document[UserStrings.latitudeKey] as? Double else { return nil }
-        guard let longitude = document[UserStrings.longitudeKey] as? Double else { return nil }
+        guard let name = document[UserStrings.nameKey] as? String,
+              let timeInterval = document[UserStrings.dateOfBirthKey] as? Double,
+              let bio = document[UserStrings.bioKey] as? String,
+              let type = document[UserStrings.typeKey] as? String,
+              let latitude = document[UserStrings.latitudeKey] as? Double,
+              let longitude = document[UserStrings.longitudeKey] as? Double,
+              let friends = document[UserStrings.friendsKey] as? [String],
+              let pendingRequests = document[UserStrings.pendingRequestsKey] as? [String],
+              let sentRequests = document[UserStrings.sentRequestsKey] as? [String],
+              let blockedArray = document[UserStrings.blockedArrayKey] as? [String] else { return nil }
+        
         guard let images = document[UserStrings.imagesKey] as? [UIImage] else { return nil }
-        guard let friends = document[UserStrings.friendsKey] as? [String] else { return nil }
-        guard let pendingRequests = document[UserStrings.pendingRequestsKey] as? [String] else { return nil }
-        guard let sentRequests = document[UserStrings.sentRequestsKey] as? [String] else { return nil }
-        guard let blockedArray = document[UserStrings.blockedArrayKey] as? [String] else { return nil }
         
         let dateOfBirth = Date(timeIntervalSince1970: timeInterval)
         

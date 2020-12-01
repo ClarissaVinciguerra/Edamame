@@ -90,7 +90,11 @@ class EditProfileViewController: UIViewController {
         
         currentUser.bio = bio
         currentUser.type = type
-        currentUser.images = profileImages
+        currentUser.images = []
+        
+        for image in profileImages {
+            currentUser.images.append(image)
+        }
         
         if currentUser.images.count > 1 {
             UserController.shared.updateUserBy(currentUser) { (result) in
@@ -116,16 +120,18 @@ class EditProfileViewController: UIViewController {
         
         let uid = "\(uidKey)"
         let name = "\(nameKey)"
-       
-        if profileImages.count > 1 {
+        
+        // change below to > 1 after testing
+        if profileImages.count >= 1 {
             UserController.shared.createUser(name: name, bio: bio, type: type, dateOfBirth: birthdayKey, latitude: 0.0, longitude: 0.0, images: profileImages, uuid: uid) { (result) in
                 switch result {
                 case .success(let user):
                     DispatchQueue.main.async {
-                        UserController.shared.currentUser = user
+                    // update button to indicate to user that profile was saved - upon changes button can change back
                     }
                 case .failure(let error):
                     print("Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")
+                    // if it doesnt work alert user here
                 }
             }
         } else {

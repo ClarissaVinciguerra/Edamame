@@ -26,28 +26,56 @@ class UserController {
     func createUser(name: String, bio: String, type: String, dateOfBirth: Date, latitude: Double, longitude: Double, images: [UIImage], uuid: String, completion: @escaping (Result<User, UserError>) -> Void) {
 
         let newUser = User(name: name, dateOfBirth: dateOfBirth, bio: bio, type: type, latitude: latitude, longitude: longitude, uuid: uuid, images: images)
+        
         let timeInterval = newUser.dateOfBirth.timeIntervalSince1970
         
-        let userReference = database.collection(userCollection)
-        userReference.document("\(newUser.uuid)").setData([
-            UserStrings.nameKey : "\(newUser.name)",
-            UserStrings.bioKey : "\(bio)",
-            UserStrings.typeKey : "\(type)",
-            UserStrings.dateOfBirthKey : timeInterval,
-            UserStrings.imagesKey : newUser.images,
-            UserStrings.latitudeKey : newUser.latitude,
-            UserStrings.longitudeKey : newUser.longitude,
-            UserStrings.friendsKey : newUser.friends,
-            UserStrings.pendingRequestsKey : newUser.pendingRequests,
-            UserStrings.sentRequestsKey : newUser.sentRequests,
-            UserStrings.blockedArrayKey : newUser.blockedArray
-        ]) { error in
-            if let error = error {
-                print("Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")
-                return completion(.failure(.firebaseError(error)))
-            } else {
-                print("Milestone document added with ID: \(newUser.uuid)")
-                return completion(.success(newUser))
+        let dispatchGroup = DispatchGroup()
+        var imageURLs: [String] = []
+
+        for image in images {
+            dispatchGroup.enter()
+            let fileName = UUID().uuidString
+
+            guard let imageData = image.jpegData(compressionQuality: 0.2) else { return completion(.failure(.errorConvertingImage))}
+            StorageController.shared.uploadImage(with: imageData, fileName: fileName) { (result) in
+                switch result {
+                case .success(let urlString):
+                    print("Image \(fileName) successfully uploaded!")
+                    imageURLs.append(urlString)
+                    dispatchGroup.leave()
+                case .failure(let error):
+                    print("Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")
+                    dispatchGroup.leave()
+                }
+            }
+        }
+        
+        dispatchGroup.notify(queue: .main) {
+            let userReference = self.database.collection(self.userCollection)
+            userReference.document("\(newUser.uuid)").setData([
+                UserStrings.nameKey : "\(newUser.name)",
+                UserStrings.bioKey : "\(bio)",
+                UserStrings.typeKey : "\(type)",
+                UserStrings.dateOfBirthKey : timeInterval,
+                //UserStrings.imagesKey : dataArray,
+                UserStrings.imagesKey : imageURLs,
+                UserStrings.latitudeKey : newUser.latitude,
+                UserStrings.longitudeKey : newUser.longitude,
+                UserStrings.friendsKey : newUser.friends,
+                UserStrings.pendingRequestsKey : newUser.pendingRequests,
+                UserStrings.sentRequestsKey : newUser.sentRequests,
+                UserStrings.blockedArrayKey : newUser.blockedArray
+                
+            ]) { error in
+                if let error = error {
+                    print("Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")
+                    return completion(.failure(.firebaseError(error)))
+                } else {
+                    print("Milestone document added with ID: \(newUser.uuid)")
+                    newUser.imageURLs = imageURLs
+                    self.currentUser = newUser
+                    return completion(.success(newUser))
+                }
             }
         }
     }

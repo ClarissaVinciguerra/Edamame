@@ -11,6 +11,7 @@ enum UserError: LocalizedError {
     case firebaseError(Error)
     case couldNotUnwrap
     case noExistingUser
+    case errorConvertingImage
     
     var errorDescription: String {
         switch self {
@@ -20,6 +21,8 @@ enum UserError: LocalizedError {
             return "Could not unwrap user data."
         case .noExistingUser:
             return "User not found."
+        case .errorConvertingImage:
+            return "Image could not be converted into data to store in Firebase."
         }
     }
 }
