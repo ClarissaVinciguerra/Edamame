@@ -14,7 +14,7 @@ class RandoCollectionViewController: UICollectionViewController {
     let locationManager = CLLocationManager()
     var latitude: Double?
     var longitude: Double?
-    var profileImages: [UIImage] = [UIImage(),UIImage(),UIImage(),UIImage(),UIImage(),UIImage()]
+    var profileImages: [UIImage] = []
     
     // MARK: - Lifecycle Functions
     override func viewDidLoad() {
@@ -131,19 +131,18 @@ class RandoCollectionViewController: UICollectionViewController {
     // MARK: UICollectionViewDataSource
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         
-        return 6
-//        return UserController.shared.randos.count
+        return UserController.shared.randos.count
     }
 
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "randoCell", for: indexPath) as? RandoCollectionViewCell else { return UICollectionViewCell() }
         
-//        cell.photo = UserController.shared.currentUser?.images[indexPath.row]
-//        cell.ageLabel.text = UserController.shared.currentUser?.dateOfBirth
-//        cell.nameLabel.text = UserController.shared.currentUser?.name
-        cell.backgroundColor = .red
-        cell.photo = self.profileImages[indexPath.row]
-        cell.layer.cornerRadius = 10
+        let rando = UserController.shared.randos[indexPath.row]
+        
+        cell.photo = rando.images[indexPath.row]
+        cell.nameLabel.text = rando.name
+        cell.ageLabel.text = rando.dateOfBirth.calcAge()
+    
         return cell
     }
     
