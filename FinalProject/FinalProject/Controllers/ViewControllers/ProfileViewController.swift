@@ -8,7 +8,7 @@
 import UIKit
 
 class ProfileViewController: UIViewController {
-
+    
     // MARK: - Outlets
     @IBOutlet weak var nameAndAgeLabel: UILabel!
     @IBOutlet weak var typeOfVeganLabel: UILabel!
@@ -48,11 +48,16 @@ class ProfileViewController: UIViewController {
     }
     
     func configureCollectionViewLayout() -> UICollectionViewLayout {
+        
         let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalHeight(1))
+        
         let layoutItem = NSCollectionLayoutItem(layoutSize: itemSize)
         layoutItem.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 5, bottom: 0, trailing: 5)
+        
         let layoutGroupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.93), heightDimension: .fractionalHeight(1))
+        
         let layoutGroup = NSCollectionLayoutGroup.horizontal(layoutSize: layoutGroupSize, subitems: [layoutItem])
+        
         let layoutSection = NSCollectionLayoutSection(group: layoutGroup)
         layoutSection.orthogonalScrollingBehavior = .groupPagingCentered
         layoutSection.contentInsets = .init(top: 5, leading: 0, bottom: 0, trailing: 0)
@@ -76,14 +81,11 @@ class ProfileViewController: UIViewController {
     @IBAction func reportButtonTapped(_ sender: Any) {
         
     }
-    
-    
-    
+
     // MARK: - Class Methods
-    
     func checkFriendStatus() {
         guard let otherUser = otherUser, let currentUser = UserController.shared.currentUser else { return }
-
+        
         if currentUser.sentRequests.contains(otherUser.uuid) {
             removeSentRequestOf(currentUser, andOtherUser: otherUser)
             
@@ -169,13 +171,13 @@ class ProfileViewController: UIViewController {
         nameAndAgeLabel.text = otherUser.name
         declineButton.alpha = 0
         addAcceptRevokeButton.alpha = 1
-       
+        
         UserController.shared.fetchUserByUUID(currentUser.uuid) { (result) in
             switch result {
             case .success(let user):
                 DispatchQueue.main.async { [self] in
                     UserController.shared.currentUser = user
-
+                    
                     // this ends up getting called before the friend request is revoked on the other queue
                     if currentUser.sentRequests.contains(otherUser.uuid) {
                         
@@ -191,7 +193,7 @@ class ProfileViewController: UIViewController {
                         
                         self.addAcceptRevokeButton.setTitle("Request Friend", for: .normal)
                     }
-
+                    
                     if currentUser.blockedArray.contains(otherUser.uuid) {
                         self.addAcceptRevokeButton.alpha = 0
                         self.blockButton.alpha = 1
@@ -204,7 +206,6 @@ class ProfileViewController: UIViewController {
                 print("Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")
             }
         }
-        
     }
 }
 
@@ -212,15 +213,15 @@ class ProfileViewController: UIViewController {
 extension ProfileViewController: UICollectionViewDataSource, UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-       // CHANGE TO POPULATE PROFILE PHOTOS FROM USER
-        return 5
+        
+        return UserController.shared.currentUser?.images.count ?? 0
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "profileViewCell", for: indexPath) as? ViewPhotoCollectionViewCell else { return UICollectionViewCell() }
         
-        // FINISH THIS PART
+        cell.photo = UserController.shared.currentUser?.images[indexPath.row]
         
         return cell
     }

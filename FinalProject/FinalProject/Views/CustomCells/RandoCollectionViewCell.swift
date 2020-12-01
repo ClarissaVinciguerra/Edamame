@@ -13,6 +13,17 @@ class RandoCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var ageLabel: UILabel!
     
+    var photo: UIImage? {
+        didSet {
+            updateViews()
+        }
+    }
     
-    
+    func updateViews() {
+        guard let photo = photo else { return }
+        imageView.image = photo
+        imageView.clipsToBounds = true
+        imageView.contentMode = .scaleAspectFill
+        imageView.layer.cornerRadius = 5.0
+    }
 }

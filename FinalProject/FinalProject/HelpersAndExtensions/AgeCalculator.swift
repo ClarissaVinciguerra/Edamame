@@ -9,13 +9,12 @@ import Foundation
 
 extension Date {
     
-    func calcAge() -> Int? {
+    func calcAge() -> String? {
 
         let calendar: NSCalendar! = NSCalendar(calendarIdentifier: .gregorian)
         let now = Date()
         let calcAge = calendar.components(.year, from: self, to: now, options: [])
-        let age = calcAge.year
-        return age
+        
+        return "\(calcAge.year ?? 800)"
     }
-    
 }
