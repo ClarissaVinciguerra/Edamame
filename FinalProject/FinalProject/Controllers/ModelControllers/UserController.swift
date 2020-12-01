@@ -58,7 +58,7 @@ class UserController {
                 UserStrings.typeKey : "\(type)",
                 UserStrings.dateOfBirthKey : timeInterval,
                 //UserStrings.imagesKey : dataArray,
-                UserStrings.imagesKey : imageURLs,
+                UserStrings.imageUUIDsKey : imageURLs,
                 UserStrings.latitudeKey : newUser.latitude,
                 UserStrings.longitudeKey : newUser.longitude,
                 UserStrings.friendsKey : newUser.friends,
@@ -72,7 +72,7 @@ class UserController {
                     return completion(.failure(.firebaseError(error)))
                 } else {
                     print("Milestone document added with ID: \(newUser.uuid)")
-                    newUser.imageURLs = imageURLs
+                    newUser.imageUUIDs = imageURLs
                     self.currentUser = newUser
                     return completion(.success(newUser))
                 }
@@ -218,7 +218,7 @@ class UserController {
                                         UserStrings.nameKey : "\(user.name)",
                                         UserStrings.latitudeKey : user.latitude,
                                         UserStrings.longitudeKey : user.longitude,
-                                        UserStrings.imagesKey : user.images,
+                                        UserStrings.imageUUIDsKey : user.images,
                                         UserStrings.friendsKey : user.friends,
                                         UserStrings.pendingRequestsKey : user.pendingRequests,
                                         UserStrings.sentRequestsKey : user.sentRequests,

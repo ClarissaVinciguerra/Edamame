@@ -14,7 +14,7 @@ struct UserStrings {
     static let dateOfBirthKey = "dateOfBirth"
     static let bioKey = "bio"
     static let typeKey = "type"
-    static let imagesKey = "images"
+    static let imageUUIDsKey = "imageUUIDs"
     static let latitudeKey = "latitude"
     static let longitudeKey = "longitude"
     static let uuidKey = "uuid"
@@ -52,7 +52,7 @@ class User {
 //    }
     
     var imageDataArray: [Data] = []
-    var imageURLs: [String] = []
+    var imageUUIDs: [String] = []
     var friends: [String]
     var pendingRequests: [String]
     var sentRequests: [String]
@@ -85,7 +85,7 @@ class User {
               let sentRequests = document[UserStrings.sentRequestsKey] as? [String],
               let blockedArray = document[UserStrings.blockedArrayKey] as? [String] else { return nil }
         
-        guard let images = document[UserStrings.imagesKey] as? [UIImage] else { return nil }
+        guard let images = document[UserStrings.imageUUIDsKey] as? [UIImage] else { return nil }
         
         let dateOfBirth = Date(timeIntervalSince1970: timeInterval)
         

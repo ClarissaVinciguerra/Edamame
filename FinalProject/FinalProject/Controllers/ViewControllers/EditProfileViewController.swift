@@ -260,12 +260,21 @@ extension EditProfileViewController: EditPhotoCollectionViewDelegate {
     
     func delete(cell: EditPhotoCollectionViewCell) {
         if let indexPath = collectionView.indexPath(for: cell) {
-            
-            profileImages.remove(at: indexPath.row)
-            
-            collectionView.deleteItems(at: [indexPath])
+             
+            StorageController.shared.deleteImage(at: indexPath.row) { (result) in
+                switch result {
+                case .success():
+                    DispatchQueue.main.async {
+                        self.profileImages.remove(at: indexPath.row)
+                        self.collectionView.deleteItems(at: [indexPath])
+                    }
+                case .failure(let error):
+                    print("Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")
+                }
+            }
         }
     }
+    
 }
 
 //MARK: - ImagePicker Delegate & NavController Delegate

@@ -71,7 +71,7 @@
                                     <outlet property="ageLabel" destination="keG-zj-smP" id="5XM-WN-fB4"/>
                                     <outlet property="imageView" destination="J6z-3m-iJ2" id="fco-Vx-Eok"/>
                                     <outlet property="nameLabel" destination="OFK-Rl-lSU" id="OB2-Fj-LBO"/>
-                                    <segue destination="DTI-oU-dNp" kind="show" identifier="" id="6W8-AA-iph"/>
+                                    <segue destination="DTI-oU-dNp" kind="show" identifier="toRandoProfileVC" id="6W8-AA-iph"/>
                                 </connections>
                             </collectionViewCell>
                         </cells>
@@ -91,7 +91,7 @@
             <objects>
                 <viewController id="DTI-oU-dNp" customClass="ProfileViewController" customModule="FinalProject" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="hKZ-Mw-aRr">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="5Wz-5M-yJK">
@@ -251,7 +251,7 @@
             <objects>
                 <viewController id="QhH-5a-1DY" customClass="MessagesViewController" customModule="FinalProject" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="9HJ-86-Lec">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="A4M-9u-SdT">
@@ -262,7 +262,7 @@
                                         <state key="normal" title="View Profile"/>
                                         <connections>
                                             <action selector="viewProfileButtonTapped:" destination="QhH-5a-1DY" eventType="touchUpInside" id="j47-cW-fIZ"/>
-                                            <segue destination="DTI-oU-dNp" kind="show" id="uaH-7g-bjn"/>
+                                            <segue destination="DTI-oU-dNp" kind="show" identifier="toProfileVC" id="uaH-7g-bjn"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7VR-wr-Eyp">
@@ -270,7 +270,7 @@
                                         <state key="normal" title="Meet Up Spots"/>
                                         <connections>
                                             <action selector="meetUpSpotsButtonTapped:" destination="QhH-5a-1DY" eventType="touchUpInside" id="gEi-yv-ToY"/>
-                                            <segue destination="xSm-gc-FSe" kind="show" id="o87-Dd-ibb"/>
+                                            <segue destination="xSm-gc-FSe" kind="show" identifier="toRestaurantTVC" id="o87-Dd-ibb"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -313,7 +313,7 @@
             <objects>
                 <tableViewController id="xSm-gc-FSe" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="gWZ-N6-kj0">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <prototypes>
@@ -395,7 +395,7 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                 </tableViewCellContentView>
                                 <connections>
-                                    <segue destination="DTI-oU-dNp" kind="show" identifier="toProfileVC" id="AZf-ve-JTA"/>
+                                    <segue destination="DTI-oU-dNp" kind="show" identifier="toPendingProfileVC" id="AZf-ve-JTA"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
