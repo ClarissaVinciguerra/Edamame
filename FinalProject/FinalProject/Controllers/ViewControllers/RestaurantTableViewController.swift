@@ -21,7 +21,10 @@ class RestaurantTableViewController: UITableViewController {
     //MARK: - Helper Functions
     func fetchRestaurants() {
         guard let location = CLLocationManager().location else { return }
-        //        let a = CLLocation(latitude: User.latitude, longitude: User.longitude)
+//                let userLocation = CLLocation(latitude: User.latitude, longitude: User.longitude)
+        
+//                let userLocation = CLLocation(latitude: UserController.shared.currentUser?.latitude ?? 0, longitude: UserController.shared.currentUser?.longitude ?? 0)
+        
         RestaurantController.fetchRestaurants(location: location) { (result) in
             DispatchQueue.main.async {
                 switch result {
