@@ -165,7 +165,6 @@ class UserController {
             if let document = document, document.exists {
                 guard let user = User(document: document) else { return completion(.failure(.couldNotUnwrap)) }
                 
-                user.images = []
                 self.currentUser = user
                 
                 let dispatchGroup = DispatchGroup()
@@ -272,7 +271,33 @@ class UserController {
                         }
                         
                         if makeThisRandoAppear {
-                            randosToAppear.append(rando)
+                            
+                            let dispatchGroup = DispatchGroup()
+                           // var images: [UIImage] = []
+                            
+                            for imageUUID in user.imageUUIDs {
+                                
+                                dispatchGroup.enter()
+                                
+                                StorageController.shared.downloadURL(for: imageUUID) { (result) in
+                                    switch result {
+                                    case .success(let url):
+                                        self.convertURLToImage(urlString: "\(url)") { (image) in
+                                            guard let image = image else { return completion(.failure(.couldNotUnwrap))}
+                                            user.images.append(image)
+                                        }
+                                        dispatchGroup.leave()
+                                        
+                                    case .failure(let error):
+                                        print("Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")
+                                        dispatchGroup.leave()
+                                    }
+                                }
+                            }
+                            
+                            dispatchGroup.notify(queue: .main) {
+                                randosToAppear.append(rando)
+                            }
                         }
                     }
                 }
