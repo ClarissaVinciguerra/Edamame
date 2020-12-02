@@ -192,6 +192,7 @@ class EditProfileViewController: UIViewController {
         collectionView.isScrollEnabled = false
         collectionView.dataSource = self
         collectionView.delegate = self
+        collectionView.backgroundColor = .edamameGreen
         collectionView.collectionViewLayout = configureCollectionViewLayout()
         
         navigationItem.leftBarButtonItem = editButtonItem

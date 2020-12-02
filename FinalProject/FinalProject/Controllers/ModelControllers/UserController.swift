@@ -275,7 +275,7 @@ class UserController {
                             let dispatchGroup = DispatchGroup()
                            // var images: [UIImage] = []
                             
-                            for imageUUID in user.imageUUIDs {
+                            for imageUUID in rando.imageUUIDs {
                                 
                                 dispatchGroup.enter()
                                 
@@ -284,7 +284,7 @@ class UserController {
                                     case .success(let url):
                                         self.convertURLToImage(urlString: "\(url)") { (image) in
                                             guard let image = image else { return completion(.failure(.couldNotUnwrap))}
-                                            user.images.append(image)
+                                            rando.images.append(image)
                                         }
                                         dispatchGroup.leave()
                                         
