@@ -118,13 +118,8 @@ class EditProfileViewController: UIViewController {
         
         currentUser.bio = bio
         currentUser.type = type
-        currentUser.images = []
         
-        for image in profileImages {
-            currentUser.images.append(image)
-        }
-        
-        if currentUser.images.count > 1 {
+        if profileImages.count > 1 {
             UserController.shared.updateUserBy(currentUser) { (result) in
                 switch result {
                 case .success(_):
@@ -185,6 +180,9 @@ class EditProfileViewController: UIViewController {
         guard let currentUser = UserController.shared.currentUser else { return }
         nameLabel.text = currentUser.name
         
+        saveChangesButton.backgroundColor = .edamameGreen
+        saveChangesButton.addCornerRadius()
+        saveChangesButton.tintColor = .whiteSmoke
         
     }
     
