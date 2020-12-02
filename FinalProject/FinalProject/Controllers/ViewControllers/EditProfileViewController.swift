@@ -52,6 +52,7 @@ class EditProfileViewController: UIViewController {
     @IBAction func addPhotoButtonTapped(_ sender: Any) {
         selectPhotoAlert()
         disableCameraBarButton()
+        
     }
     
     @IBAction func saveChangesButtonTapped(_ sender: Any) {
@@ -80,6 +81,8 @@ class EditProfileViewController: UIViewController {
             case .success(let user):
                 DispatchQueue.main.async {
                     UserController.shared.currentUser = user
+                    self.profileImages = user.images
+                    self.setupViews()
                     self.updateViews()
                 }
             case .failure(let error):
@@ -200,7 +203,7 @@ class EditProfileViewController: UIViewController {
         }
     }
     
-    func selectPhotoAlert() {
+    private func selectPhotoAlert() {
         let alertVC = UIAlertController(title: "Add a Photo", message: nil, preferredStyle: .alert)
         
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
@@ -239,6 +242,21 @@ class EditProfileViewController: UIViewController {
                                       trailing: 10)
         
         return UICollectionViewCompositionalLayout(section: section)
+    }
+    
+    private func appendImageToCloud(image: UIImage) {
+        guard let currentUser = UserController.shared.currentUser else { return }
+        UserController.shared.appendImage(image: image, user: currentUser) { (result) in
+            switch result {
+            case .success():
+                DispatchQueue.main.async {
+                    self.collectionView.reloadData()
+                }
+            case .failure(let error):
+                print("Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")
+                // present alert to user that iamge didnt save
+            }
+        }
     }
     
     // MARK: - Navigation
@@ -340,7 +358,8 @@ extension EditProfileViewController: UIImagePickerControllerDelegate, UINavigati
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         if let selectedImage = info[.editedImage] as? UIImage {
             self.profileImages.append(selectedImage)
-            self.collectionView.reloadData()
+            self.appendImageToCloud(image: selectedImage)
+            
         } else {
             if let selectedImage = info[.originalImage] as? UIImage {
                 self.profileImages.append(selectedImage)
