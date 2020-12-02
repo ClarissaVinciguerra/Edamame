@@ -341,7 +341,7 @@ class UserController {
                                         UserStrings.nameKey : "\(user.name)",
                                         UserStrings.latitudeKey : user.latitude,
                                         UserStrings.longitudeKey : user.longitude,
-                                        UserStrings.imageUUIDsKey : user.images,
+                                        // UserStrings.imageUUIDsKey : user.images,
                                         UserStrings.friendsKey : user.friends,
                                         UserStrings.pendingRequestsKey : user.pendingRequests,
                                         UserStrings.sentRequestsKey : user.sentRequests,
