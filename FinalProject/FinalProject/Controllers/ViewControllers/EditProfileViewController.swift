@@ -22,6 +22,7 @@ class EditProfileViewController: UIViewController {
     //MARK: - Properties
     var viewsLaidOut = false
     var profileImages: [UIImage] = []
+    var userExists: Bool = true
     
     // MARK: - Lifecycle Functions
     override func viewDidLoad() {
@@ -54,7 +55,7 @@ class EditProfileViewController: UIViewController {
     }
     
     @IBAction func saveChangesButtonTapped(_ sender: Any) {
-        createAndUpdateUser()
+        createOrUpdateUser()
     }
     
     @IBAction func infoButtonTapped(_ sender: Any) {
@@ -68,20 +69,44 @@ class EditProfileViewController: UIViewController {
             guard let vc = storyboard.instantiateInitialViewController() else { return }
             vc.modalPresentationStyle = .fullScreen
             present(vc, animated: false)
+        } else {
+           checkForUser()
         }
     }
     
-    func createAndUpdateUser() {
+    private func fetchUser(with uuid: String) {
+        UserController.shared.fetchUser(with: uuid) { (result) in
+            switch result {
+            case .success(let user):
+                DispatchQueue.main.async {
+                    UserController.shared.currentUser = user
+                    self.updateViews()
+                }
+            case .failure(let error):
+                print("Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")
+            }
+        }
+    }
+    
+    func checkForUser() {
         guard let uidKey = UserDefaults.standard.value(forKey: LogInStrings.firebaseUidKey) else { return }
-                
         let uidString = "\(uidKey)"
+        
         UserController.shared.checkThatUserExists(with: uidString) { (result) in
             switch result {
             case true:
-                self.updateUser()
+                self.fetchUser(with: uidString)
             case false:
-                self.createUser()
+                self.userExists = false
             }
+        }
+    }
+    
+    func createOrUpdateUser() {
+        if userExists {
+            updateUser()
+        } else {
+            createUser()
         }
     }
     
@@ -123,10 +148,11 @@ class EditProfileViewController: UIViewController {
         
         // change below to > 1 after testing
         if profileImages.count >= 1 {
-            UserController.shared.createUser(name: name, bio: bio, type: type, dateOfBirth: birthdayKey, latitude: 0.0, longitude: 0.0, images: profileImages, uuid: uid) { (result) in
+            UserController.shared.createUser(name: name, bio: bio, type: type, dateOfBirth: birthdayKey, latitude: 0.0, longitude: 0.0, images: profileImages, firebaseUID: uid) { (result) in
                 switch result {
                 case .success(let user):
                     DispatchQueue.main.async {
+                        self.userExists = true
                     // update button to indicate to user that profile was saved - upon changes button can change back
                     }
                 case .failure(let error):
@@ -260,12 +286,21 @@ extension EditProfileViewController: EditPhotoCollectionViewDelegate {
     
     func delete(cell: EditPhotoCollectionViewCell) {
         if let indexPath = collectionView.indexPath(for: cell) {
-            
-            profileImages.remove(at: indexPath.row)
-            
-            collectionView.deleteItems(at: [indexPath])
+             
+            StorageController.shared.deleteImage(at: indexPath.row) { (result) in
+                switch result {
+                case .success():
+                    DispatchQueue.main.async {
+                        self.profileImages.remove(at: indexPath.row)
+                        self.collectionView.deleteItems(at: [indexPath])
+                    }
+                case .failure(let error):
+                    print("Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")
+                }
+            }
         }
     }
+    
 }
 
 //MARK: - ImagePicker Delegate & NavController Delegate
