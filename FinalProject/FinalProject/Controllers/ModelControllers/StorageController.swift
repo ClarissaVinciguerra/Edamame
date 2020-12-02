@@ -29,18 +29,6 @@ final class StorageController {
             }
             
             completion(.success(fileName))
-//            self.storage.child("images/\(fileName)").downloadURL (completion: { url, error in
-//                guard let url = url else {
-//                    print("Failed to get download url")
-//                    completion(.failure(StorageErrors.failedToGetDownloadURL))
-//                    return
-//                }
-//
-//                let urlString = url.absoluteString
-//                print("download url returned: \(urlString)")
-//                completion(.success(urlString))
-//                return
-//            })
         })
     }
     

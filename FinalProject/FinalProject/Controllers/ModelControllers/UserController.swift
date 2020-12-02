@@ -38,7 +38,7 @@ class UserController {
             dispatchGroup.enter()
             let fileName = UUID().uuidString + ".jpeg"
 
-            guard let imageData = image.jpegData(compressionQuality: 0.2) else { return completion(.failure(.errorConvertingImage))}
+            guard let imageData = image.jpegData(compressionQuality: 0.5) else { return completion(.failure(.errorConvertingImage))}
            
             StorageController.shared.uploadImage(with: imageData, fileName: fileName) { (result) in
                 switch result {
@@ -82,27 +82,37 @@ class UserController {
             }
         }
     }
-
+    
+    func appendImage(image: UIImage, user: User, completion: @escaping (Result<Void, UserError>) -> Void) {
+        let documentReference = database.collection(userCollection).document(user.uuid)
+        
+        guard let imageData = image.jpegData(compressionQuality: 0.5) else { return completion(.failure(.errorConvertingImage))}
+        
+        StorageController.shared.uploadImage(with: imageData, fileName: UUID().uuidString) { (result) in
+            switch result {
+            case .success(let fileName):
+                
+                documentReference.updateData([
+                    
+                    UserStrings.imageUUIDsKey : FieldValue.arrayUnion([fileName])
+                    
+                ]) { (error) in
+                    if let error = error {
+                        print("Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")
+                        return completion(.failure(.firebaseError(error)))
+                    } else {
+                        return completion(.success(()))
+                    }
+                }
+            case .failure(let error):
+                return completion(.failure(.firebaseError(error)))
+            }
+        }
+        
+    }
     
     
     // MARK: - READ
-    func fetchUserByName(_ name: String, completion: @escaping (Result<User, UserError>) -> Void) {
-        let userReference = database.collection(userCollection)
-        
-       userReference.whereField(UserStrings.nameKey, isEqualTo: name).getDocuments { (querySnapshot, error) in
-            if let error = error {
-                print("Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")
-                return completion(.failure(.firebaseError(error)))
-            } else {
-                if let doc = querySnapshot!.documents.first {
-                    guard let fetchedUser = User(document: doc) else {
-                        return completion(.failure(.couldNotUnwrap))
-                    }
-                    return completion(.success(fetchedUser))
-                }
-            }
-        }
-    }
     
     func fetchUser(with uuid: String, completion: @escaping (Result<User, UserError>) -> Void) {
         let docRef = database.collection(userCollection)
@@ -113,10 +123,9 @@ class UserController {
             } else {
                 guard let doc = querySnapshot!.documents.first, let fetchedUser = User(document: doc) else { return completion(.failure(.couldNotUnwrap)) }
                 
-                self.currentUser = fetchedUser
+                fetchedUser.images = []
                 
                 let dispatchGroup = DispatchGroup()
-               var images: [UIImage] = []
                 
                 for imageUUID in fetchedUser.imageUUIDs {
                     
@@ -128,18 +137,19 @@ class UserController {
                             self.convertURLToImage(urlString: "\(url)") { (image) in
                                 guard let image = image else { return completion(.failure(.couldNotUnwrap))}
                                 fetchedUser.images.append(image)
+                                dispatchGroup.leave()
                             }
-                            dispatchGroup.leave()
                             
                         case .failure(let error):
                             print("Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")
                             dispatchGroup.leave()
                         }
+                        
                     }
                 }
                 
                 dispatchGroup.notify(queue: .main) {
-                    
+                    self.currentUser = fetchedUser
                     completion(.success(fetchedUser))
                 }
             }

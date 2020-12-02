@@ -25,7 +25,7 @@ struct UserStrings {
     static let blockedArrayKey = "blocked"
 }
 
-class User: Decodable {
+class User {
     var name: String
     let uuid: String
     let firebaseUID: String
@@ -34,23 +34,26 @@ class User: Decodable {
     var type: String
     var latitude: Double
     var longitude: Double
-    var images: [UIImage] {
-        get {
-            var imagesArray: [UIImage] = []
-            for data in imageDataArray {
-                if let image = UIImage(data: data) {
-                    imagesArray.append(image)
-                }
-            }
-            return imagesArray
-        } set {
-            for value in newValue {
-                if let imageData = value.jpegData(compressionQuality: 0.5) {
-                    imageDataArray.append(imageData)
-                }
-            }
-        }
-    }
+    var images: [UIImage]
+//    {
+//        get {
+//            var imagesArray: [UIImage] = []
+//            for data in imageDataArray {
+//                if let image = UIImage(data: data) {
+//                    imagesArray.append(image)
+//                }
+//            }
+//            return imagesArray
+//        } set {
+//            for value in newValue {
+//                if let imageData = value.jpegData(compressionQuality: 0.5) {
+//                    imageDataArray.append(imageData)
+//                }
+////            if let imageData = newValue.jpegData(compressionQuality: 0.5) {
+////                imageDataArray.append(imageData)
+////            }
+//        }
+//    }
     
     var imageDataArray: [Data] = []
     var imageUUIDs: [String]
