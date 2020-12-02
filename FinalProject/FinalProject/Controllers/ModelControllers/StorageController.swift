@@ -45,7 +45,7 @@ final class StorageController {
     }
     
     public func downloadURL(for path: String, completion: @escaping (Result<URL, Error>) -> Void) {
-        let reference = storage.child(path)
+        let reference = storage.child("images/\(path)")
         
         reference.downloadURL { (url, error) in
             guard let url = url, error == nil else {
