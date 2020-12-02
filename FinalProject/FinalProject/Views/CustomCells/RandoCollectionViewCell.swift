@@ -13,6 +13,8 @@ class RandoCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var ageLabel: UILabel!
     
+    var user: User?
+    
     var photo: UIImage? {
         didSet {
             updateViews()

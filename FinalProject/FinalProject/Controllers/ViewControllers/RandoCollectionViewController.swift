@@ -14,15 +14,14 @@ class RandoCollectionViewController: UICollectionViewController {
     let locationManager = CLLocationManager()
     var latitude: Double?
     var longitude: Double?
-    var profileImages: [UIImage] = []
     
     // MARK: - Lifecycle Functions
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
-
+        
         locationManager.delegate = self
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
         
@@ -46,7 +45,7 @@ class RandoCollectionViewController: UICollectionViewController {
     @objc func loadData() {
         guard let currentUser = UserController.shared.currentUser else { return }
         if !currentUser.friends.isEmpty {
-
+            
             UserController.shared.fetchFilteredRandos(currentUser: currentUser) { (result) in
                 switch result {
                 case .success(let randos):
@@ -70,7 +69,7 @@ class RandoCollectionViewController: UICollectionViewController {
     
     func retrieveCurrentLocation() {
         let status = CLLocationManager().authorizationStatus
-       
+        
         if (status == .denied || status == .restricted || !CLLocationManager.locationServicesEnabled()) {
             presentLocationPermissionsAlert()
             return
@@ -80,7 +79,7 @@ class RandoCollectionViewController: UICollectionViewController {
             locationManager.requestWhenInUseAuthorization()
             return
         }
-     
+        
         locationManager.startUpdatingLocation()
     }
     
@@ -89,14 +88,14 @@ class RandoCollectionViewController: UICollectionViewController {
         
         let settingsAction = UIAlertAction(title: "Settings", style: .default) { (_) -> Void in
             guard let settingsUrl = URL(string: UIApplication.openSettingsURLString) else {
-                                return
-                            }
-                            if UIApplication.shared.canOpenURL(settingsUrl) {
-                                UIApplication.shared.open(settingsUrl, completionHandler: { (success) in
-                                })
-                            }
-                        }
-
+                return
+            }
+            if UIApplication.shared.canOpenURL(settingsUrl) {
+                UIApplication.shared.open(settingsUrl, completionHandler: { (success) in
+                })
+            }
+        }
+        
         alertController.addAction(settingsAction)
         
         present(alertController, animated: true, completion: nil)
@@ -119,13 +118,20 @@ class RandoCollectionViewController: UICollectionViewController {
                                       leading: 10,
                                       bottom: 0,
                                       trailing: 10)
-         
-         return UICollectionViewCompositionalLayout(section: section)
-     }
+        
+        return UICollectionViewCompositionalLayout(section: section)
+    }
     
     // MARK: - Navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-       
+        if segue.identifier == "toRandoProfileVC" {
+            guard let indexPath = collectionView.indexPathsForSelectedItems?.first,
+                  let cell = collectionView.cellForItem(at: indexPath) as? RandoCollectionViewCell
+            else { return }
+            let destinatinon = segue.destination as? ProfileViewController
+            let profile = cell.user
+            destinatinon?.otherUser = profile
+        }
     }
     
     // MARK: UICollectionViewDataSource
@@ -133,16 +139,17 @@ class RandoCollectionViewController: UICollectionViewController {
         
         return UserController.shared.randos.count
     }
-
+    
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "randoCell", for: indexPath) as? RandoCollectionViewCell else { return UICollectionViewCell() }
         
         let rando = UserController.shared.randos[indexPath.row]
         
-        cell.photo = rando.images[indexPath.row]
+        cell.user = rando
+        cell.photo = rando.images[0]
         cell.nameLabel.text = rando.name
         cell.ageLabel.text = rando.dateOfBirth.calcAge()
-    
+        
         return cell
     }
     
@@ -164,10 +171,10 @@ extension RandoCollectionViewController: CLLocationManagerDelegate {
             break
         case .restricted:
             presentLocationPermissionsAlert()
-        break
+            break
         case .denied:
             presentLocationPermissionsAlert()
-        break
+            break
         case .authorizedAlways:
             locationManager.startUpdatingLocation()
         case .authorizedWhenInUse:
