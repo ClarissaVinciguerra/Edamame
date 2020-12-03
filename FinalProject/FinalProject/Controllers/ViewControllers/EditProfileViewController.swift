@@ -18,6 +18,7 @@ class EditProfileViewController: UIViewController {
     @IBOutlet weak var saveChangesButton: UIButton!
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var cameraBarButton: UIBarButtonItem!
+    @IBOutlet weak var infoButton: UIButton!
     
     //MARK: - Properties
     var viewsLaidOut = false
@@ -60,7 +61,7 @@ class EditProfileViewController: UIViewController {
     }
     
     @IBAction func infoButtonTapped(_ sender: Any) {
-    
+        presentInfoAlert()
     }
     
     // MARK: - Class Methods
@@ -177,13 +178,26 @@ class EditProfileViewController: UIViewController {
         
     }
     
+    private func presentInfoAlert() {
+        
+        let alertController = UIAlertController(title: "The type of plant based diet you identify most with 🌱", message: "Common types include but are not limited to: dietary vegan, cheegan, vegetarian, ovo-vegetarian, 98% vegan, vegan, etc.", preferredStyle: .alert)
+        
+        let okayAction = UIAlertAction(title: "Okay", style: .default)
+        
+        alertController.addAction(okayAction)
+        
+        present(alertController, animated: true, completion: nil)
+        
+    }
+    
     func updateViews() {
         guard let currentUser = UserController.shared.currentUser else { return }
-        nameLabel.text = currentUser.name
         
-        saveChangesButton.backgroundColor = .edamameGreen
-        saveChangesButton.addCornerRadius()
-        saveChangesButton.tintColor = .whiteSmoke
+        nameLabel.text = currentUser.name
+        typeOfVeganTextField.text = currentUser.type
+        bioTextView.text = currentUser.bio
+        
+
         
     }
     
@@ -195,6 +209,12 @@ class EditProfileViewController: UIViewController {
         collectionView.collectionViewLayout = configureCollectionViewLayout()
         
         navigationItem.leftBarButtonItem = editButtonItem
+        
+        saveChangesButton.backgroundColor = .edamameGreen
+        saveChangesButton.addCornerRadius()
+        saveChangesButton.tintColor = .whiteSmoke
+        
+        
     }
     
     func disableCameraBarButton() {

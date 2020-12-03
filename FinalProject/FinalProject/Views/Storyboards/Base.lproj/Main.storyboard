@@ -645,6 +645,7 @@
                         <outlet property="bioTextView" destination="hy1-eF-ErC" id="ihe-5J-5Ef"/>
                         <outlet property="cameraBarButton" destination="v3g-Ch-4Xo" id="D1h-za-iJM"/>
                         <outlet property="collectionView" destination="p0d-gY-gwD" id="CHJ-om-5e7"/>
+                        <outlet property="infoButton" destination="FAs-7q-O7b" id="xwc-zS-JOO"/>
                         <outlet property="nameLabel" destination="VcL-3K-vBd" id="3ZN-Dl-GqA"/>
                         <outlet property="saveChangesButton" destination="XYg-Vk-axB" id="RJI-cw-U4e"/>
                         <outlet property="typeOfVeganTextField" destination="sL8-nm-HtJ" id="w3d-gE-28E"/>
