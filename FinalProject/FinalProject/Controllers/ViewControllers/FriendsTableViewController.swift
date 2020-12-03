@@ -64,8 +64,15 @@ class FriendsTableViewController: UITableViewController {
                 MessageController.shared.userExists(with: userUid) { [weak self] (exists) in
                     guard let strongSelf = self else { return }
                     let chatUser = MessageAppUser(name: UserController.shared.currentUser!.name, uid: userUid)
-                    
-                    
+                    MessageController.shared.insertUser(with: chatUser) { (success) in
+                        print("created chat app user successfully")
+                    }
+                }
+                MessageController.shared.userExists(with: otherUserUid) { (exists) in
+                    let chatUser = MessageAppUser(name: otherUserName, uid: otherUserUid)
+                    MessageController.shared.insertUser(with: chatUser) { (success) in
+                        print("created chat app user successfully")
+                    }
                 }
                 let vc = ChatViewController(with: otherUserUid, id: nil)
                 vc.isNewConversation = true
