@@ -358,7 +358,6 @@ extension EditProfileViewController: UIImagePickerControllerDelegate, UINavigati
         if let selectedImage = info[.editedImage] as? UIImage {
             self.profileImages.append(selectedImage)
             self.appendImageToCloud(image: selectedImage)
-            
         } else {
             if let selectedImage = info[.originalImage] as? UIImage {
                 self.profileImages.append(selectedImage)

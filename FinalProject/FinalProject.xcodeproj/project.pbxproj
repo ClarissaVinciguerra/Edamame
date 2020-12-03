@@ -49,6 +49,9 @@
 		C33E283E256EC45B0092442F /* Restaurant.swift in Sources */ = {isa = PBXBuildFile; fileRef = C33E283D256EC45B0092442F /* Restaurant.swift */; };
 		C33E2841256EC5390092442F /* RestaurantController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C33E2840256EC5390092442F /* RestaurantController.swift */; };
 		C33E289D256ED9780092442F /* RestaurantTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C33E289C256ED9780092442F /* RestaurantTableViewController.swift */; };
+		C37190B025794D8C006D1A01 /* EdamameLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C37190AF25794D8C006D1A01 /* EdamameLabel.swift */; };
+		C37191122579512A006D1A01 /* EdamameButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C37191112579512A006D1A01 /* EdamameButton.swift */; };
+		C371911525795226006D1A01 /* EdamameTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = C371911425795226006D1A01 /* EdamameTextField.swift */; };
 		E2A05B51BF810B11E3D5AAEF /* Pods_FinalProject.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 50B2EE8D07267B50B0731CFE /* Pods_FinalProject.framework */; };
 /* End PBXBuildFile section */
 
@@ -103,6 +106,9 @@
 		C33E283D256EC45B0092442F /* Restaurant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Restaurant.swift; sourceTree = "<group>"; };
 		C33E2840256EC5390092442F /* RestaurantController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestaurantController.swift; sourceTree = "<group>"; };
 		C33E289C256ED9780092442F /* RestaurantTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestaurantTableViewController.swift; sourceTree = "<group>"; };
+		C37190AF25794D8C006D1A01 /* EdamameLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EdamameLabel.swift; sourceTree = "<group>"; };
+		C37191112579512A006D1A01 /* EdamameButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EdamameButton.swift; sourceTree = "<group>"; };
+		C371911425795226006D1A01 /* EdamameTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EdamameTextField.swift; sourceTree = "<group>"; };
 		C6FA7A1A978F2435EBB31F65 /* Pods-FinalProject.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FinalProject.release.xcconfig"; path = "Target Support Files/Pods-FinalProject/Pods-FinalProject.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -168,6 +174,7 @@
 			children = (
 				706A80DA2567008600A07C9C /* Storyboards */,
 				706A8123256718B700A07C9C /* CustomCells */,
+				C37190AD25794BEA006D1A01 /* CustomUI */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -227,9 +234,7 @@
 				706A81142567167200A07C9C /* StorageError.swift */,
 				706A81172567168500A07C9C /* DatabaseError.swift */,
 				A60933E2256C2D6E00A1C767 /* MessagesViewExtension.swift */,
-
 				C33E283A256EC4390092442F /* NetworkError.swift */,
-
 				70EB018C256EFDD30031ED9F /* AgeCalculator.swift */,
 				70EB018F256F01630031ED9F /* StyleGuide.swift */,
 			);
@@ -294,6 +299,40 @@
 				50B2EE8D07267B50B0731CFE /* Pods_FinalProject.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		C37190AD25794BEA006D1A01 /* CustomUI */ = {
+			isa = PBXGroup;
+			children = (
+				C37190F0257950D5006D1A01 /* CustomLabels */,
+				C371910F257950E5006D1A01 /* CustomButtons */,
+				C3719110257950ED006D1A01 /* CustomTextFields */,
+			);
+			path = CustomUI;
+			sourceTree = "<group>";
+		};
+		C37190F0257950D5006D1A01 /* CustomLabels */ = {
+			isa = PBXGroup;
+			children = (
+				C37190AF25794D8C006D1A01 /* EdamameLabel.swift */,
+			);
+			path = CustomLabels;
+			sourceTree = "<group>";
+		};
+		C371910F257950E5006D1A01 /* CustomButtons */ = {
+			isa = PBXGroup;
+			children = (
+				C37191112579512A006D1A01 /* EdamameButton.swift */,
+			);
+			path = CustomButtons;
+			sourceTree = "<group>";
+		};
+		C3719110257950ED006D1A01 /* CustomTextFields */ = {
+			isa = PBXGroup;
+			children = (
+				C371911425795226006D1A01 /* EdamameTextField.swift */,
+			);
+			path = CustomTextFields;
 			sourceTree = "<group>";
 		};
 		EBA4F03A3B6BF980D11A7753 /* Pods */ = {
@@ -435,6 +474,7 @@
 				706A81092567161900A07C9C /* StorageController.swift in Sources */,
 				706A80B62566F64200A07C9C /* UserError.swift in Sources */,
 				70EB0190256F01630031ED9F /* StyleGuide.swift in Sources */,
+				C37190B025794D8C006D1A01 /* EdamameLabel.swift in Sources */,
 				706A80BC2566F70500A07C9C /* FriendsTableViewController.swift in Sources */,
 				706A810F2567163700A07C9C /* Sender.swift in Sources */,
 				706A80C32566F85A00A07C9C /* PendingTableViewController.swift in Sources */,
@@ -455,8 +495,10 @@
 				A60933E0256C2CEE00A1C767 /* NewConversationViewController.swift in Sources */,
 				706A81182567168500A07C9C /* DatabaseError.swift in Sources */,
 				706A8106256715FE00A07C9C /* DatabaseController.swift in Sources */,
+				C37191122579512A006D1A01 /* EdamameButton.swift in Sources */,
 				706A811B2567184E00A07C9C /* RandoCollectionViewCell.swift in Sources */,
 				A6093408256C310000A1C767 /* ChatViewController.swift in Sources */,
+				C371911525795226006D1A01 /* EdamameTextField.swift in Sources */,
 				A60933D9256C2C9D00A1C767 /* ConversationsViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
