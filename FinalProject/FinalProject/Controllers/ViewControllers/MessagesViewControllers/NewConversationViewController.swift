@@ -148,16 +148,16 @@ extension NewConversationViewController: UISearchBarDelegate {
     }
     
     func filterUsers(with term: String) {
-        guard let currentUserEmail = UserDefaults.standard.value(forKey: "email") as? String, hasFetched else {
+        guard let currentUserUid = UserDefaults.standard.value(forKey: LogInStrings.firebaseUidKey) as? String, hasFetched else {
             return
         }
         
-        let safeEmail = MessageController.safeEmail(emailAddress: currentUserEmail)
+        //let safeEmail = MessageController.safeEmail(emailAddress: currentUserEmail)
         
         self.spinner.dismiss()
         
         let results: [SearchResult] = users.filter({
-            guard let email = $0["email"], email != safeEmail else { return false }
+            guard let uid = $0[LogInStrings.firebaseUidKey], uid != currentUserUid else { return false }
         
             guard let name = $0["name"]?.lowercased() else {
                 return false
@@ -166,12 +166,12 @@ extension NewConversationViewController: UISearchBarDelegate {
             return name.hasPrefix(term.lowercased())
         }).compactMap({
             
-            guard let email = $0["email"],
+            guard let uid = $0[LogInStrings.firebaseUidKey],
                 let name = $0["name"] else {
                     return nil
             }
             
-            return SearchResult(name: name, email: email)
+            return SearchResult(name: name, uid: uid)
         })
         
         self.results = results

@@ -68,14 +68,14 @@ extension MessageController {
 extension MessageController {
     
     /// Creates a new conversation with the target user email and first message sent
-    public func createNewConversation(with otherUserEmail: String, otherUserName: String, firstMessage: Message, completion: @escaping (Bool) -> Void) {
-        guard let currentEmail = UserDefaults.standard.value(forKey: "email") as? String,
+    public func createNewConversation(with otherUserUid: String, otherUserName: String, firstMessage: Message, completion: @escaping (Bool) -> Void) {
+        guard let currentUid = UserDefaults.standard.value(forKey: LogInStrings.firebaseUidKey) as? String,
             let currentName = UserDefaults.standard.value(forKey: "name") as? String else {
                 return
         }
-        let safeEmail = MessageController.safeEmail(emailAddress: currentEmail)
+        let safeEmail = MessageController.safeEmail(emailAddress: currentUid)
         
-        let ref = database.child("\(safeEmail)")
+        let ref = database.child("\(currentUid)")
         
             ref.observeSingleEvent(of: .value, with: { [weak self] (snapshot) in
                 guard var userNode = snapshot.value as? [String: Any] else {
@@ -116,8 +116,8 @@ extension MessageController {
                 
                 let newConversationData: [String: Any] = [
                     "id" : conversationID,
-                    "other_user_email": otherUserEmail,
-                    "name": otherUserName,
+                    "other_user_uid": otherUserUid,
+                    "other_user_name": otherUserName,
                     "latest_message" : [
                         "date": dateString,
                         "message" : message,
@@ -127,8 +127,8 @@ extension MessageController {
                 
                 let recipient_newConversationData: [String: Any] = [
                     "id" : conversationID,
-                    "other_user_email": safeEmail,
-                    "name": currentName,
+                    "other_user_uid": currentUid,
+                    "other_user_name": currentName,
                     "latest_message" : [
                         "date": dateString,
                         "message" : message,
@@ -137,14 +137,14 @@ extension MessageController {
                 ]
                 
                 // Update recipient conversation entry
-                self?.database.child("\(otherUserEmail)/conversations").observeSingleEvent(of: .value) { [weak self] (snapshot) in
+                self?.database.child("\(otherUserUid)/conversations").observeSingleEvent(of: .value) { [weak self] (snapshot) in
                     if var conversations = snapshot.value as? [[String : Any]] {
                         //append
                         conversations.append(recipient_newConversationData)
-                        self?.database.child("\(otherUserEmail)/conversations").setValue(conversations)
+                        self?.database.child("\(otherUserUid)/conversations").setValue(conversations)
                     } else {
                         // create
-                        self?.database.child("\(otherUserEmail)/conversations").setValue([recipient_newConversationData])
+                        self?.database.child("\(otherUserUid)/conversations").setValue([recipient_newConversationData])
                     }
                 }
                 
@@ -187,6 +187,7 @@ extension MessageController {
 //        "date": Date(),
 //        "sender_email": String,
 //        "isRead": true/false,
+//
   
         let messageDate = firstMessage.sentDate
         let dateString = ChatViewController.dateFormatter.string(from: messageDate)
@@ -216,20 +217,20 @@ extension MessageController {
             break
         }
         
-        guard let userEmail = UserDefaults.standard.value(forKey: "email") as? String else {
+        guard let userUid = UserDefaults.standard.value(forKey: LogInStrings.firebaseUidKey) as? String else {
             completion(false)
             return
             
         }
         
-        let currentUserEmail = MessageController.safeEmail(emailAddress: userEmail)
+        //let currentUserEmail = MessageController.safeEmail(emailAddress: userEmail)
         
         let collectionMessage: [String : Any] = [
             "id": firstMessage.messageId,
             "type": firstMessage.kind.messageKindString,
             "content": message,
             "date": dateString,
-            "sender_email": currentUserEmail,
+            "sender_uid": userUid,
             "is_read": false,
             "name": name
         ]
@@ -240,6 +241,8 @@ extension MessageController {
             ]
         ]
         
+//        let conversations: [String: Any] = [
+//            "conversations":]
         
         database.child("conversations/\(conversationID)").setValue(value, withCompletionBlock: { (error, _) in
             guard error == nil else {
@@ -250,9 +253,9 @@ extension MessageController {
         })
     }
     
-    /// Fetches and returns all conversations for the user with passed email.
-    public func getAllConversations(for email: String, completion: @escaping(Result<[Conversation], Error>) -> Void) {
-        database.child("\(email)/conversations").observe(.value) { (snapshot) in
+    /// Fetches and returns all conversations for the user with passed email
+    public func getAllConversations(for uid: String, completion: @escaping(Result<[Conversation], Error>) -> Void) {
+        database.child("\(uid)/conversations").observe(.value) { (snapshot) in
             guard let value = snapshot.value as? [[String : Any]] else {
                 completion(.failure(DatabaseError.failedToFetch))
                 return
@@ -261,7 +264,7 @@ extension MessageController {
             let conversations: [Conversation] = value.compactMap { (dictionary) in
                 guard let conversationID = dictionary["id"] as? String,
                     let name = dictionary["name"] as? String,
-                    let otherUserEmail = dictionary["other_user_email"] as? String,
+                    let otherUserUid = dictionary["other_user_uid"] as? String,
                     let latestMessage = dictionary["latest_message"] as? [String : Any],
                     let date = latestMessage["date"] as? String,
                     let message = latestMessage["message"] as? String,
@@ -273,7 +276,7 @@ extension MessageController {
                 let latestMessageObject = LatestMessage(date: date,
                                                         text: message,
                                                         isRead: isRead)
-                return Conversation(id: conversationID, name: name, otherUserEmail: otherUserEmail, latestMessage: latestMessageObject)
+                return Conversation(id: conversationID, name: name, otherUserUid: otherUserUid, latestMessage: latestMessageObject)
                 
             }
             completion(.success(conversations))
@@ -294,13 +297,13 @@ extension MessageController {
                     let messageID = dictionary["id"] as? String,
                     let isRead = dictionary["is_read"] as? Bool,
                     let name = dictionary["name"] as? String,
-                    let senderEmail = dictionary["sender_email"] as? String,
+                    let senderUid = dictionary["sender_uid"] as? String,
                     let type = dictionary["type"] as? String,
                     let date = ChatViewController.dateFormatter.date(from: dateString) else {
                         return nil
                     
                 }
-                let sender = Sender(photoURL: "", senderId: senderEmail, displayName: name)
+                let sender = Sender(photoURL: "", senderId: senderUid, displayName: name)
                 
                     return Message(sender: sender,
                                    messageId: messageID,
@@ -313,23 +316,23 @@ extension MessageController {
     }
     
     /// Sends a message with target conversation and message
-    public func sendMessage(to conversation: String, otherUserEmail: String, newMessage: Message, name: String, completion: @escaping(Bool) -> Void) {
+    public func sendMessage(to conversation: String, otherUserUid: String, newMessage: Message, name: String, completion: @escaping(Bool) -> Void) {
         // add new message to messages array.
         
         // update sender latest message
         // update recipient latest message
-        guard let userEmail = UserDefaults.standard.value(forKey: "email") as? String else {
+        guard let userUid = UserDefaults.standard.value(forKey: LogInStrings.firebaseUidKey) as? String else {
             completion(false)
             return
         }
         
-        let currentUserEmail = MessageController.safeEmail(emailAddress: userEmail)
+        //let currentUserEmail = MessageController.safeEmail(emailAddress: userEmail)
         
         database.child("conversations/\(conversation)/messages").observeSingleEvent(of: .value) { [weak self] (snapshot) in
             guard let strongSelf = self else { return }
             guard var currentMessages = snapshot.value as? [[String: Any]] else {
-            completion(false)
-            return
+                completion(false)
+                return
         }
             
             let messageDate = newMessage.sentDate
@@ -360,19 +363,19 @@ extension MessageController {
                 break
             }
             
-            guard let userEmail = UserDefaults.standard.value(forKey: "email") as? String else {
+            guard let userUid = UserDefaults.standard.value(forKey: LogInStrings.firebaseUidKey) as? String else {
                 completion(false)
                 return
             }
             
-            let currentUserEmail = MessageController.safeEmail(emailAddress: userEmail)
+            //let currentUserEmail = MessageController.safeEmail(emailAddress: userEmail)
             
             let newMessageEntry: [String : Any] = [
                 "id": newMessage.messageId,
                 "type": newMessage.kind.messageKindString,
                 "content": message,
                 "date": dateString,
-                "sender_email": currentUserEmail,
+                "sender_uid": userUid,
                 "is_read": false,
                 "name": name
             ]
@@ -384,7 +387,7 @@ extension MessageController {
                     return
                 }
                 
-                strongSelf.database.child("\(currentUserEmail)/conversations").observeSingleEvent(of: .value) { (snapshot) in
+                strongSelf.database.child("\(userUid)/conversations").observeSingleEvent(of: .value) { (snapshot) in
                     var databaseEntryConversations =  [[String : Any]]()
                     let updatedValue: [String: Any] = [
                         "date": dateString,
@@ -410,7 +413,7 @@ extension MessageController {
                         } else {
                             let newConversationData: [String: Any] = [
                                 "id": conversation,
-                                "other_user_email": MessageController.safeEmail(emailAddress: otherUserEmail),
+                                "other_user_uid": otherUserUid,
                                 "name": name,
                                 "latest_message": updatedValue
                             ]
@@ -420,7 +423,7 @@ extension MessageController {
                     } else {
                         let newConversationData: [String: Any] = [
                             "id": conversation,
-                            "other_user_email": MessageController.safeEmail(emailAddress: otherUserEmail),
+                            "other_user_email": otherUserUid,
                             "name": name,
                             "latest_message": updatedValue
                         ]
@@ -429,14 +432,15 @@ extension MessageController {
                         ]
                     }
                     
-                    strongSelf.database.child("\(currentUserEmail)/conversations").setValue(databaseEntryConversations) { (error, _) in
+                    strongSelf.database.child("\(userUid)/conversations").setValue(databaseEntryConversations) { (error, _) in
                         guard error == nil else {
                             completion(false)
                             return
                         }
                         
                         // Update latest message for recipeient user.
-                        strongSelf.database.child("\(otherUserEmail)/conversations").observeSingleEvent(of: .value) { (snapshot) in
+                        
+                        strongSelf.database.child("\(otherUserUid)/conversations").observeSingleEvent(of: .value) { (snapshot) in
                             let updatedValue: [String: Any] = [
                                 "date": dateString,
                                 "is_read": false,
@@ -464,7 +468,7 @@ extension MessageController {
                                 } else {
                                     let newConversationData: [String: Any] = [
                                         "id": conversation,
-                                        "other_user_email": MessageController.safeEmail(emailAddress: currentUserEmail),
+                                        "other_user_uid": userUid,
                                         "name": currentUserName,
                                         "latest_message": updatedValue
                                     ]
@@ -472,9 +476,10 @@ extension MessageController {
                                     databaseEntryConversations = otherUserConversations
                                 }
                             } else {
+                                // current collection does not exist
                                 let newConversationData: [String: Any] = [
                                     "id": conversation,
-                                    "other_user_email": MessageController.safeEmail(emailAddress: currentUserEmail),
+                                    "other_user_email": userUid,
                                     "name": currentUserName,
                                     "latest_message": updatedValue
                                 ]
@@ -483,7 +488,7 @@ extension MessageController {
                                 ]
                             }
                             
-                            strongSelf.database.child("\(otherUserEmail)/conversations").setValue(databaseEntryConversations) { (error, _) in
+                            strongSelf.database.child("\(otherUserUid)/conversations").setValue(databaseEntryConversations) { (error, _) in
                                 guard error == nil else {
                                     completion(false)
                                     return
@@ -498,16 +503,16 @@ extension MessageController {
     }
     
     public func deleteConversation(conversationID: String, completion: @escaping(Bool) -> Void) {
-        guard let email = UserDefaults.standard.value(forKey: "email") as? String else {
+        guard let uid = UserDefaults.standard.value(forKey: LogInStrings.firebaseUidKey) as? String else {
             return
         }
-        let safeEmail = MessageController.safeEmail(emailAddress: email)
+        //let safeEmail = MessageController.safeEmail(emailAddress: email)
         
         print("Deleting conversation with id: \(conversationID)")
         //Get all conversations for current user
         //delete conversation in collection with target id
         //reset those conversations for the user in database
-        let ref = database.child("\(safeEmail)/conversations")
+        let ref = database.child("\(uid)/conversations")
         ref.observeSingleEvent(of: .value) { (snapshot) in
             if var conversations = snapshot.value as? [[String: Any]] {
                 var positionToRemove = 0
@@ -533,14 +538,14 @@ extension MessageController {
         }
     }
     
-    public func conversationExists(with targetRecipientEmail: String, completion: @escaping(Result<String,Error>) ->Void) {
-        let safeRecipientEmail = MessageController.safeEmail(emailAddress: targetRecipientEmail)
-        guard let senderEmail = UserDefaults.standard.value(forKey: "email") as? String else {
+    public func conversationExists(with targetRecipientUid: String, completion: @escaping(Result<String,Error>) ->Void) {
+        //let safeRecipientEmail = MessageController.safeEmail(emailAddress: targetRecipientEmail)
+        guard let senderUid = UserDefaults.standard.value(forKey: LogInStrings.firebaseUidKey) as? String else {
             return
         }
-        let safeSenderEmail = MessageController.safeEmail(emailAddress: senderEmail)
+        //let safeSenderEmail = MessageController.safeEmail(emailAddress: senderEmail)
         
-        database.child("\(safeRecipientEmail)/conversations").observeSingleEvent(of: .value) { (snapshot) in
+        database.child("\(targetRecipientUid)/conversations").observeSingleEvent(of: .value) { (snapshot) in
             guard let collection = snapshot.value as? [[String : Any]] else {
                 completion(.failure(DatabaseError.failedToFetch))
                 return
@@ -548,11 +553,11 @@ extension MessageController {
             
             // iterate and find conversation with target sender
             if let conversation = collection.first(where: {
-                guard let targetSenderEmail = $0["other_user_email"] as? String else {
+                guard let targetSenderUid = $0["other_user_uid"] as? String else {
                     return false
                     
                 }
-                return safeSenderEmail == targetSenderEmail
+                return senderUid == targetSenderUid
             }) {
                 //get id
                 guard let id = conversation["id"] as? String else {

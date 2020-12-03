@@ -59,16 +59,16 @@ class ConversationTableViewCell: UITableViewCell {
         self.userMessageLabel.text = model.latestMessage.text
         self.userNameLabel.text = model.name
         
-        let path = "images/\(model.otherUserEmail)_profile_picture.png"
-        StorageController.shared.downloadURL(for: path) { [weak self] (result) in
-            switch result {
-            case .success(let url):
-                DispatchQueue.main.async {
-                    self?.userimageView.sd_setImage(with: url, completed: nil)
-                }
-            case .failure(let error):
-                print("Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")
-            }
-        }
+//        let path = "images/\(model.otherUserEmail)_profile_picture.png"
+//        StorageController.shared.downloadURL(for: path) { [weak self] (result) in
+//            switch result {
+//            case .success(let url):
+//                DispatchQueue.main.async {
+//                    self?.userimageView.sd_setImage(with: url, completed: nil)
+//                }
+//            case .failure(let error):
+//                print("Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")
+//            }
+//        }
     }
 }

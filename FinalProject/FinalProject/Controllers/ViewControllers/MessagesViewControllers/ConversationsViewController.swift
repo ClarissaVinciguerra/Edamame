@@ -56,7 +56,7 @@ class ConversationsViewController: UIViewController {
     
     // MARK: - Helper Functions
     private func startListeningForConversations() {
-        guard let userEmail = UserDefaults.standard.value(forKey: "email") as? String else { return }
+        guard let userUid = UserDefaults.standard.value(forKey: LogInStrings.firebaseUidKey) as? String else { return }
         
         if let observer = loginObserver {
             NotificationCenter.default.removeObserver(observer)
@@ -64,9 +64,9 @@ class ConversationsViewController: UIViewController {
         
         print("starting conversation fetch")
         
-        let safeEmail = MessageController.safeEmail(emailAddress: userEmail)
+        //let safeEmail = MessageController.safeEmail(emailAddress: userEmail)
         
-        MessageController.shared.getAllConversations(for: safeEmail) { [weak self] (result) in
+        MessageController.shared.getAllConversations(for: userUid) { [weak self] (result) in
             switch result {
             case .success(let conversations):
                 print("successfully got conversation models")
@@ -107,9 +107,9 @@ class ConversationsViewController: UIViewController {
             let currentConversations = strongSelf.conversations
             
             if let targetConversation = currentConversations.first(where: {
-                $0.otherUserEmail == MessageController.safeEmail(emailAddress: result.email)
+                $0.otherUserUid == MessageController.safeEmail(emailAddress: result.uid)
             }) {
-                let vc = ChatViewController(with: targetConversation.otherUserEmail, id: targetConversation.id)
+                let vc = ChatViewController(with: targetConversation.otherUserUid, id: targetConversation.id)
                 vc.isNewConversation = false
                 vc.title = targetConversation.name
                 vc.navigationItem.largeTitleDisplayMode = .never
@@ -124,7 +124,7 @@ class ConversationsViewController: UIViewController {
     
     private func createNewConversation(result: SearchResult) {
         let name = result.name
-        let email = MessageController.safeEmail(emailAddress: result.email)
+        let email = MessageController.safeEmail(emailAddress: result.uid)
         
         MessageController.shared.conversationExists(with: email, completion: { [weak self] result in
             guard let strongSelf = self else {
@@ -201,7 +201,7 @@ extension ConversationsViewController: UITableViewDelegate, UITableViewDataSourc
     }
     
     func openConversation(_ model: Conversation) {
-        let vc = ChatViewController(with: model.otherUserEmail, id: model.id)
+        let vc = ChatViewController(with: model.otherUserUid, id: model.id)
                vc.title = model.name
                vc.navigationItem.largeTitleDisplayMode = .never
                navigationController?.pushViewController(vc, animated: true)

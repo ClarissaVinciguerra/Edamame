@@ -22,7 +22,7 @@
 		706A80CD2566F91200A07C9C /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 706A80CC2566F91200A07C9C /* ProfileViewController.swift */; };
 		706A80D32566F9A600A07C9C /* LogInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 706A80D22566F9A600A07C9C /* LogInViewController.swift */; };
 		706A80D72566F9CA00A07C9C /* LogInSignUp.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 706A80D52566F9CA00A07C9C /* LogInSignUp.storyboard */; };
-		706A8106256715FE00A07C9C /* DatabaseController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 706A8105256715FE00A07C9C /* DatabaseController.swift */; };
+		706A8106256715FE00A07C9C /* MessageController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 706A8105256715FE00A07C9C /* MessageController.swift */; };
 		706A81092567161900A07C9C /* StorageController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 706A81082567161900A07C9C /* StorageController.swift */; };
 		706A810C2567162D00A07C9C /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 706A810B2567162D00A07C9C /* Message.swift */; };
 		706A810F2567163700A07C9C /* Sender.swift in Sources */ = {isa = PBXBuildFile; fileRef = 706A810E2567163700A07C9C /* Sender.swift */; };
@@ -71,7 +71,7 @@
 		706A80CC2566F91200A07C9C /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		706A80D22566F9A600A07C9C /* LogInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogInViewController.swift; sourceTree = "<group>"; };
 		706A80D62566F9CA00A07C9C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = FinalProject/Views/Base.lproj/LogInSignUp.storyboard; sourceTree = "<group>"; };
-		706A8105256715FE00A07C9C /* DatabaseController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseController.swift; sourceTree = "<group>"; };
+		706A8105256715FE00A07C9C /* MessageController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageController.swift; sourceTree = "<group>"; };
 		706A81082567161900A07C9C /* StorageController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageController.swift; sourceTree = "<group>"; };
 		706A810B2567162D00A07C9C /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
 		706A810E2567163700A07C9C /* Sender.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sender.swift; sourceTree = "<group>"; };
@@ -213,7 +213,7 @@
 			isa = PBXGroup;
 			children = (
 				706A80B22566F62A00A07C9C /* UserController.swift */,
-				706A8105256715FE00A07C9C /* DatabaseController.swift */,
+				706A8105256715FE00A07C9C /* MessageController.swift */,
 				706A81082567161900A07C9C /* StorageController.swift */,
 				C33E2840256EC5390092442F /* RestaurantController.swift */,
 			);
@@ -227,9 +227,7 @@
 				706A81142567167200A07C9C /* StorageError.swift */,
 				706A81172567168500A07C9C /* DatabaseError.swift */,
 				A60933E2256C2D6E00A1C767 /* MessagesViewExtension.swift */,
-
 				C33E283A256EC4390092442F /* NetworkError.swift */,
-
 				70EB018C256EFDD30031ED9F /* AgeCalculator.swift */,
 				70EB018F256F01630031ED9F /* StyleGuide.swift */,
 			);
@@ -454,7 +452,7 @@
 				706A811E2567188700A07C9C /* EditPhotoCollectionViewCell.swift in Sources */,
 				A60933E0256C2CEE00A1C767 /* NewConversationViewController.swift in Sources */,
 				706A81182567168500A07C9C /* DatabaseError.swift in Sources */,
-				706A8106256715FE00A07C9C /* DatabaseController.swift in Sources */,
+				706A8106256715FE00A07C9C /* MessageController.swift in Sources */,
 				706A811B2567184E00A07C9C /* RandoCollectionViewCell.swift in Sources */,
 				A6093408256C310000A1C767 /* ChatViewController.swift in Sources */,
 				A60933D9256C2C9D00A1C767 /* ConversationsViewController.swift in Sources */,
