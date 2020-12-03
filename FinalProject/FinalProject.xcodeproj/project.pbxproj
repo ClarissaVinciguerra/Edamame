@@ -45,6 +45,7 @@
 		A60933E6256C2DA700A1C767 /* ConversationTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A60933E5256C2DA700A1C767 /* ConversationTableViewCell.swift */; };
 		A6093408256C310000A1C767 /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6093407256C310000A1C767 /* ChatViewController.swift */; };
 		A6093448256C578400A1C767 /* NewConversationTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6093447256C578400A1C767 /* NewConversationTableViewCell.swift */; };
+		A66A5B8E25795FD8001046EB /* MessageAppUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = A66A5B8D25795FD8001046EB /* MessageAppUser.swift */; };
 		C33E283B256EC4390092442F /* NetworkError.swift in Sources */ = {isa = PBXBuildFile; fileRef = C33E283A256EC4390092442F /* NetworkError.swift */; };
 		C33E283E256EC45B0092442F /* Restaurant.swift in Sources */ = {isa = PBXBuildFile; fileRef = C33E283D256EC45B0092442F /* Restaurant.swift */; };
 		C33E2841256EC5390092442F /* RestaurantController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C33E2840256EC5390092442F /* RestaurantController.swift */; };
@@ -102,6 +103,7 @@
 		A60933E5256C2DA700A1C767 /* ConversationTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationTableViewCell.swift; sourceTree = "<group>"; };
 		A6093407256C310000A1C767 /* ChatViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewController.swift; sourceTree = "<group>"; };
 		A6093447256C578400A1C767 /* NewConversationTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewConversationTableViewCell.swift; sourceTree = "<group>"; };
+		A66A5B8D25795FD8001046EB /* MessageAppUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageAppUser.swift; sourceTree = "<group>"; };
 		C33E283A256EC4390092442F /* NetworkError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkError.swift; sourceTree = "<group>"; };
 		C33E283D256EC45B0092442F /* Restaurant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Restaurant.swift; sourceTree = "<group>"; };
 		C33E2840256EC5390092442F /* RestaurantController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestaurantController.swift; sourceTree = "<group>"; };
@@ -188,6 +190,7 @@
 				706A81112567164B00A07C9C /* Conversation.swift */,
 				A60933D4256C2C0300A1C767 /* SearchResult.swift */,
 				C33E283D256EC45B0092442F /* Restaurant.swift */,
+				A66A5B8D25795FD8001046EB /* MessageAppUser.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -461,6 +464,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A66A5B8E25795FD8001046EB /* MessageAppUser.swift in Sources */,
 				706A80902566DCA400A07C9C /* AppDelegate.swift in Sources */,
 				706A80922566DCA400A07C9C /* SceneDelegate.swift in Sources */,
 				70EB018D256EFDD30031ED9F /* AgeCalculator.swift in Sources */,

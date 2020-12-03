@@ -9,6 +9,7 @@ import UIKit
 
 class FriendsTableViewController: UITableViewController {
 
+    // MARK: - Properties
     
     // MARK: - Lifecycle Functions
     override func viewDidLoad() {
@@ -44,30 +45,38 @@ class FriendsTableViewController: UITableViewController {
         navigationController?.pushViewController(vc, animated: true)
     }
     
-    private func createNewConversation(result: SearchResult) {
-        let name = result.name
-        let email = MessageController.safeEmail(emailAddress: result.uid)
+    private func createNewConversation(otherUserName: String, otherUserUid: String) {
+        //let uid = MessageController.safeEmail(uid: result.uid)
         
-        MessageController.shared.conversationExists(with: email, completion: { [weak self] result in
+        MessageController.shared.conversationExists(with: otherUserUid, completion: { [weak self] result in
             guard let strongSelf = self else {
                 return
             }
             switch result {
             case .success(let conversationId):
-                let vc = ChatViewController(with: email, id: conversationId)
+                let vc = ChatViewController(with: otherUserUid, id: conversationId)
                 vc.isNewConversation = false
-                vc.title = name
+                vc.title = otherUserName
                 vc.navigationItem.largeTitleDisplayMode = .never
                 strongSelf.navigationController?.pushViewController(vc, animated: true)
             case .failure(_):
-                let vc = ChatViewController(with: email, id: nil)
+                guard let userUid = UserDefaults.standard.value(forKey: LogInStrings.firebaseUidKey) as? String else { return }
+                MessageController.shared.userExists(with: userUid) { [weak self] (exists) in
+                    guard let strongSelf = self else { return }
+                    let chatUser = MessageAppUser(name: UserController.shared.currentUser!.name, uid: userUid)
+                    
+                    
+                }
+                let vc = ChatViewController(with: otherUserUid, id: nil)
                 vc.isNewConversation = true
-                vc.title = name
+                vc.title = otherUserName
                 vc.navigationItem.largeTitleDisplayMode = .never
                 strongSelf.navigationController?.pushViewController(vc, animated: true)
             }
         })
     }
+    
+    
 
     // MARK: - Table view data source
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -84,6 +93,12 @@ class FriendsTableViewController: UITableViewController {
         
         return cell
     }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        let otherUser = UserController.shared.friends[indexPath.row]
+        createNewConversation(otherUserName: otherUser.name, otherUserUid: otherUser.firebaseUID)
+    }
 
     // DO WE WANT TO REMOVE FRIENDSHIPS THIS WAY OR IS IT TOO RISKY?
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
@@ -99,5 +114,4 @@ class FriendsTableViewController: UITableViewController {
             
         }
     }
-
 }
