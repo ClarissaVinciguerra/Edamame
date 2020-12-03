@@ -269,6 +269,8 @@ class EditProfileViewController: UIViewController {
             switch result {
             case .success():
                 DispatchQueue.main.async {
+                    guard let currentUser = UserController.shared.currentUser else { return }
+                    currentUser.images.append(image)
                     self.collectionView.reloadData()
                 }
             case .failure(let error):
@@ -387,8 +389,8 @@ extension EditProfileViewController: UIImagePickerControllerDelegate, UINavigati
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         if let selectedImage = info[.editedImage] as? UIImage {
+            
             self.profileImages.append(selectedImage)
-            self.appendImageToCloud(image: selectedImage)
 
             guard let uidKey = UserDefaults.standard.value(forKey: LogInStrings.firebaseUidKey) else { return }
             let uidString = "\(uidKey)"

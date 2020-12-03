@@ -205,10 +205,10 @@
 			isa = PBXGroup;
 			children = (
 				A60933D7256C2C5B00A1C767 /* MessagesViewControllers */,
-				706A80B82566F6E000A07C9C /* RandoCollectionViewController.swift */,
 				706A80BB2566F70500A07C9C /* FriendsTableViewController.swift */,
 				706A80C22566F85A00A07C9C /* PendingTableViewController.swift */,
 				706A80C52566F89700A07C9C /* EditProfileViewController.swift */,
+				706A80B82566F6E000A07C9C /* RandoCollectionViewController.swift */,
 				706A80CC2566F91200A07C9C /* ProfileViewController.swift */,
 				A686044C256DA410008819CB /* LoginAndRegisterViewControllers */,
 				C33E289C256ED9780092442F /* RestaurantTableViewController.swift */,
@@ -494,12 +494,9 @@
 				706A811E2567188700A07C9C /* EditPhotoCollectionViewCell.swift in Sources */,
 				A60933E0256C2CEE00A1C767 /* NewConversationViewController.swift in Sources */,
 				706A81182567168500A07C9C /* DatabaseError.swift in Sources */,
-
-				706A8106256715FE00A07C9C /* DatabaseController.swift in Sources */,
-				C37191122579512A006D1A01 /* EdamameButton.swift in Sources */,
-
 				706A8106256715FE00A07C9C /* MessageController.swift in Sources */,
-
+				C37191122579512A006D1A01 /* EdamameButton.swift in Sources */,
+				706A8106256715FE00A07C9C /* MessageController.swift in Sources */,
 				706A811B2567184E00A07C9C /* RandoCollectionViewCell.swift in Sources */,
 				A6093408256C310000A1C767 /* ChatViewController.swift in Sources */,
 				C371911525795226006D1A01 /* EdamameTextField.swift in Sources */,

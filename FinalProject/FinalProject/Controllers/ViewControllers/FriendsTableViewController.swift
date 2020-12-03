@@ -23,7 +23,9 @@ class FriendsTableViewController: UITableViewController {
     
     // MARK: - Class Methods
     func updateViews() {
+        
         guard let friends = UserController.shared.currentUser?.friends else { return }
+        
         UserController.shared.fetchUsersFrom(friends) { (result) in
             switch result {
             case .success(let friends):
