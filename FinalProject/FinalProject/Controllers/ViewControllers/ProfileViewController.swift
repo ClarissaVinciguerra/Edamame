@@ -45,6 +45,29 @@ class ProfileViewController: UIViewController {
         collectionView.dataSource = self
         collectionView.delegate = self
         collectionView.collectionViewLayout = configureCollectionViewLayout()
+        collectionView.backgroundColor = .edamameGreen
+        
+        nameAndAgeLabel.textColor = .softBlack
+        distanceLabel.textColor = .softBlack
+        typeOfVeganLabel.textColor = .softBlack
+        bioLabel.textColor = .softBlack
+        
+        addAcceptRevokeButton.backgroundColor = .edamameGreen
+        addAcceptRevokeButton.tintColor = .whiteSmoke
+        addAcceptRevokeButton.clipsToBounds = true
+        
+        declineButton.backgroundColor = .edamameGreen
+        declineButton.tintColor = .whiteSmoke
+        declineButton.clipsToBounds = true
+        
+        blockButton.backgroundColor = .edamameGreen
+        blockButton.tintColor = .whiteSmoke
+        blockButton.clipsToBounds = true
+        
+        reportButton.backgroundColor = .whiteSmoke
+        reportButton.addAccentBorder()
+        reportButton.tintColor = .edamameGreen
+        reportButton.clipsToBounds = true
     }
     
     func configureCollectionViewLayout() -> UICollectionViewLayout {
