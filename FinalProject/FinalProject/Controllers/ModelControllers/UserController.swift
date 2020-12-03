@@ -24,7 +24,7 @@ class UserController {
     
     // MARK: - CREATE
 
-    func createUser(name: String, bio: String, type: String, dateOfBirth: Date, latitude: Double, longitude: Double, images: [UIImage], firebaseUID: String, completion: @escaping (Result<User, UserError>) -> Void) {
+    func createUser(name: String, bio: String, type: String, images: [UIImage], dateOfBirth: Date, latitude: Double, longitude: Double, firebaseUID: String, completion: @escaping (Result<User, UserError>) -> Void) {
 
         let newUser = User(name: name, dateOfBirth: dateOfBirth, bio: bio, type: type, latitude: latitude, longitude: longitude, firebaseUID: firebaseUID, images: images)
         
@@ -34,12 +34,12 @@ class UserController {
         var imageUUIDs: [String] = []
 
         for image in images {
-            
+
             dispatchGroup.enter()
             let fileName = UUID().uuidString + ".jpeg"
 
             guard let imageData = image.jpegData(compressionQuality: 0.5) else { return completion(.failure(.errorConvertingImage))}
-           
+
             StorageController.shared.uploadImage(with: imageData, fileName: fileName) { (result) in
                 switch result {
                 case .success(let fileName):

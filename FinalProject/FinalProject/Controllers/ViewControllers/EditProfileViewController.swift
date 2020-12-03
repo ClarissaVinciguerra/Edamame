@@ -146,7 +146,7 @@ class EditProfileViewController: UIViewController {
         
         // change below to > 1 after testing
         if profileImages.count >= 1 {
-            UserController.shared.createUser(name: name, bio: bio, type: type, dateOfBirth: birthdayKey, latitude: 0.0, longitude: 0.0, images: profileImages, firebaseUID: uid) { (result) in
+            UserController.shared.createUser(name: name, bio: bio, type: type, images: profileImages, dateOfBirth: birthdayKey, latitude: 0.0, longitude: 0.0, firebaseUID: uid) { (result) in
                 switch result {
                 case .success(let user):
                     DispatchQueue.main.async {
@@ -303,16 +303,23 @@ extension EditProfileViewController: EditPhotoCollectionViewDelegate {
     
     func delete(cell: EditPhotoCollectionViewCell) {
         if let indexPath = collectionView.indexPath(for: cell) {
-             
-            StorageController.shared.deleteImage(at: indexPath.row) { (result) in
+            UserController.shared.checkThatUserExists(with: LogInStrings.firebaseUidKey) { (result) in
                 switch result {
-                case .success():
-                    DispatchQueue.main.async {
-                        self.profileImages.remove(at: indexPath.row)
-                        self.collectionView.deleteItems(at: [indexPath])
+                case true:
+                    StorageController.shared.deleteImage(at: indexPath.row) { (result) in
+                        switch result {
+                        case .success():
+                            DispatchQueue.main.async {
+                                self.profileImages.remove(at: indexPath.row)
+                                self.collectionView.deleteItems(at: [indexPath])
+                            }
+                        case .failure(let error):
+                            print("Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")
+                        }
                     }
-                case .failure(let error):
-                    print("Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")
+                case false:
+                    self.profileImages.remove(at: indexPath.row)
+                    self.collectionView.deleteItems(at: [indexPath])
                 }
             }
         }
@@ -358,10 +365,28 @@ extension EditProfileViewController: UIImagePickerControllerDelegate, UINavigati
         if let selectedImage = info[.editedImage] as? UIImage {
             self.profileImages.append(selectedImage)
             self.appendImageToCloud(image: selectedImage)
+
+            UserController.shared.checkThatUserExists(with: LogInStrings.firebaseUidKey) { (result) in
+                switch result {
+                case true:
+                    self.appendImageToCloud(image: selectedImage)
+                case false:
+                    self.collectionView.reloadData()
+                }
+            }
+          
         } else {
             if let selectedImage = info[.originalImage] as? UIImage {
                 self.profileImages.append(selectedImage)
-                self.collectionView.reloadData()
+                UserController.shared.checkThatUserExists(with: LogInStrings.firebaseUidKey) { (result) in
+                    switch result {
+                    case true:
+                        self.appendImageToCloud(image: selectedImage)
+                    case false:
+                        self.collectionView.reloadData()
+                    }
+                    
+                }
             }
         }
         picker.dismiss(animated: true)

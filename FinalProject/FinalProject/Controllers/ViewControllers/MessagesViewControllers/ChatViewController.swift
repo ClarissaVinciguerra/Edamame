@@ -21,24 +21,24 @@ class ChatViewController: MessagesViewController {
     }()
     
     public var isNewConversation = false
-    public let otherUserEmail: String
+    public let otherUserUid: String
     private var conversationID: String?
     
     private var messages = [Message]()
     
     private var selfSender: Sender? {
-        guard let email = UserDefaults.standard.value(forKey: "email")  as? String else { return nil }
-        let safeEmail = MessageController.safeEmail(emailAddress: email)
+        guard let userUid = UserDefaults.standard.value(forKey: LogInStrings.firebaseUidKey)  as? String else { return nil }
+        //let safeEmail = MessageController.safeEmail(emailAddress: email)
         
         return Sender(photoURL: "",
-                      senderId: safeEmail,
+                      senderId: userUid,
                       displayName: "Me")
     }
     
     
     
-    init(with email: String, id: String?) {
-        self.otherUserEmail = email
+    init(with otherUserUid: String, id: String?) {
+        self.otherUserUid = otherUserUid
         self.conversationID = id
         super.init(nibName: nil, bundle: nil)
         
@@ -114,7 +114,7 @@ extension ChatViewController: InputBarAccessoryViewDelegate {
         // Send Message
         if isNewConversation {
             // create conversation in Database
-            MessageController.shared.createNewConversation(with: otherUserEmail, otherUserName: self.title ?? "User", firstMessage: message) { [weak self] (success) in
+            MessageController.shared.createNewConversation(with: otherUserUid, otherUserName: self.title ?? "User", firstMessage: message) { [weak self] (success) in
                 if success {
                     print("message sent")
                     self?.isNewConversation = false
@@ -129,7 +129,7 @@ extension ChatViewController: InputBarAccessoryViewDelegate {
         } else {
             guard let conversationID = conversationID, let name = self.title else { return }
             // append to existing conversation data
-            MessageController.shared.sendMessage(to: conversationID, otherUserEmail: otherUserEmail, newMessage: message, name: name) { (success) in
+            MessageController.shared.sendMessage(to: conversationID, otherUserUid: otherUserUid, newMessage: message, name: name) { (success) in
                 if success {
                     print("message sent")
                 } else {
@@ -143,13 +143,13 @@ extension ChatViewController: InputBarAccessoryViewDelegate {
     private func createMessageID() -> String? {
         // date, otherUserEmail, senderEmail, randomInt
         
-        guard let currentUserEmail = UserDefaults.standard.value(forKey: "email") as? String else { return nil }
+        guard let currentUserUid = UserDefaults.standard.value(forKey: LogInStrings.firebaseUidKey) as? String else { return nil }
         
-        let safeCurrentEmail = MessageController.safeEmail(emailAddress: currentUserEmail)
+        //let safeCurrentEmail = MessageController.safeEmail(emailAddress: currentUserEmail)
         
         let dateString = ChatViewController.self.dateFormatter.string(from: Date())
         
-        let newIdentifier = "\(otherUserEmail)_\(safeCurrentEmail)_\(dateString)"
+        let newIdentifier = "\(otherUserUid)_\(currentUserUid)_\(dateString)"
         
         print("Created message id: \(newIdentifier)")
         
