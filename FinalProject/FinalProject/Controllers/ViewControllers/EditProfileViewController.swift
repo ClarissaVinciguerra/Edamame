@@ -84,6 +84,7 @@ class EditProfileViewController: UIViewController {
                     self.profileImages = user.images
                     self.setupViews()
                     self.updateViews()
+                    self.disableCameraBarButton()
                 }
             case .failure(let error):
                 print("Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")
@@ -256,12 +257,6 @@ class EditProfileViewController: UIViewController {
                 // present alert to user that iamge didnt save
             }
         }
-    }
-    
-    // MARK: - Navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
     }
 }
 
