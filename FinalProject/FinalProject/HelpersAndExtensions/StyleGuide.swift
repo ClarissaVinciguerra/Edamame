@@ -24,7 +24,7 @@ extension UIColor {
     static let spaceBlack = UIColor(named: "spaceBlack")!
     static let whiteSmoke = UIColor(named: "whiteSmoke")!
     static let subtleText = UIColor(named: "subtleText")!
-    static let borderHighlight = UIColor(named: "borderHighlight")!
+    static let borderHighlight = UIColor(named: "borderhighlight")!
 }
 
 extension UIView {
