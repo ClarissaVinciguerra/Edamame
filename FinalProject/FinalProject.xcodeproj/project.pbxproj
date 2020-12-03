@@ -222,8 +222,8 @@
 		706A80AC2566DE6100A07C9C /* ModelControllers */ = {
 			isa = PBXGroup;
 			children = (
-				706A80B22566F62A00A07C9C /* UserController.swift */,
 				706A8105256715FE00A07C9C /* MessageController.swift */,
+				706A80B22566F62A00A07C9C /* UserController.swift */,
 				706A81082567161900A07C9C /* StorageController.swift */,
 				C33E2840256EC5390092442F /* RestaurantController.swift */,
 			);

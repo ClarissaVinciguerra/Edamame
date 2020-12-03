@@ -22,7 +22,7 @@ class FriendsTableViewController: UITableViewController {
         updateViews()
     }
     
-    // MARK: - Class Methods
+    // MARK: - Class Metobarhods
     func updateViews() {
         
         guard let friends = UserController.shared.currentUser?.friends else { return }
@@ -98,7 +98,7 @@ class FriendsTableViewController: UITableViewController {
         let friend = UserController.shared.friends[indexPath.row]
         
         cell.textLabel?.text = friend.name
-        cell.imageView?.image = friend.images[0]
+        //cell.imageView?.image = friend.images[0]
         
         return cell
     }
