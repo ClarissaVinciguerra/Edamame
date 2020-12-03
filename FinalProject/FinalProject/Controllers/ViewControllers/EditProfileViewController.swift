@@ -364,6 +364,8 @@ extension EditProfileViewController: UIImagePickerControllerDelegate, UINavigati
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         if let selectedImage = info[.editedImage] as? UIImage {
             self.profileImages.append(selectedImage)
+            self.appendImageToCloud(image: selectedImage)
+
             UserController.shared.checkThatUserExists(with: LogInStrings.firebaseUidKey) { (result) in
                 switch result {
                 case true:
@@ -372,7 +374,7 @@ extension EditProfileViewController: UIImagePickerControllerDelegate, UINavigati
                     self.collectionView.reloadData()
                 }
             }
-            
+          
         } else {
             if let selectedImage = info[.originalImage] as? UIImage {
                 self.profileImages.append(selectedImage)
