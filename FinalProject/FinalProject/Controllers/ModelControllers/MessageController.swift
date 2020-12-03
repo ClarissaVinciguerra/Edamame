@@ -22,10 +22,10 @@ final class MessageController {
     }
     
     // MARK: - CRUD Functions
-    public func userExists(with email: String, completion: @escaping ((Bool) -> Void)) {
+    public func userExists(with uid: String, completion: @escaping ((Bool) -> Void)) {
         
-        let safeEmail = MessageController.safeEmail(emailAddress: email)
-        database.child(safeEmail).observeSingleEvent(of: .value, with: { snapshot in
+        //let safeEmail = MessageController.safeEmail(emailAddress: email)
+        database.child(uid).observeSingleEvent(of: .value, with: { snapshot in
             guard snapshot.value as? [String: Any] != nil else {
                 completion(false)
                 return
@@ -33,6 +33,57 @@ final class MessageController {
             completion(true)
         })
     }
+    
+    
+    /// Inserts new user to database
+    public func insertUser(with user: MessageAppUser, completion: @escaping (Bool) -> Void) {
+        database.child(user.uid).setValue([
+            "name": user.name,
+            ], withCompletionBlock: { error, _ in
+                guard error == nil else {
+                    print("Failed to write to the database.")
+                    completion(false)
+                    return
+                }
+                
+                self.database.child("users").observeSingleEvent(of: .value) { (snapshot) in
+                    if var usersCollection = snapshot.value as? [[String: String]] {
+                        //append to user dictionary
+                        let newElement = [
+                            "name" : user.name,
+                            "uid" : user.uid
+                        ]
+                        usersCollection.append(newElement)
+                        
+                        self.database.child("users").setValue(usersCollection, withCompletionBlock: { error, _ in
+                            guard error == nil else {
+                                completion(false)
+                                return
+                            }
+                            completion(true)
+                        })
+                    } else {
+                        // create that array if it doesn't exist
+                        let newCollection: [[String: String]] = [
+                            [
+                                "name": user.name,
+                                "uid": user.uid
+                            ]
+                        ]
+                        
+                        self.database.child("users").setValue(newCollection, withCompletionBlock: { error, _ in
+                            guard error == nil else {
+                                completion(false)
+                                return
+                            }
+                            completion(true)
+                        })
+                    }
+                }
+        })
+    }
+    
+    
     
    
     

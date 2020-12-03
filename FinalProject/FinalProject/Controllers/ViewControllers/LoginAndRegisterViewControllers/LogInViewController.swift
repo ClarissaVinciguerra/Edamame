@@ -12,6 +12,7 @@ import JGProgressHUD
 struct LogInStrings {
     static let emailKey = "email"
     static let firebaseUidKey = "firebaseUid"
+    static let nameKey = "name"
 }
 
 class LogInViewController: UIViewController {
