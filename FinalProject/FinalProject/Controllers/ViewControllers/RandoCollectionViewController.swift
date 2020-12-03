@@ -31,6 +31,11 @@ class RandoCollectionViewController: UICollectionViewController {
         loadData()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        setupViews()
+        loadData()
+    }
+    
     // MARK: - Class methods
     func setupViews() {
         let backBarButton = UIBarButtonItem()
@@ -40,11 +45,13 @@ class RandoCollectionViewController: UICollectionViewController {
         refresher.addTarget(self, action: #selector(loadData), for: .valueChanged)
         self.collectionView.addSubview(refresher)
         collectionView.collectionViewLayout = configureCollectionViewLayout()
+        collectionView.backgroundColor = .edamameGreen
     }
     
     @objc func loadData() {
         guard let currentUser = UserController.shared.currentUser else { return }
-        if !currentUser.friends.isEmpty {
+        
+//        if !currentUser.friends.isEmpty {
             
             UserController.shared.fetchFilteredRandos(currentUser: currentUser) { (result) in
                 switch result {
@@ -53,11 +60,10 @@ class RandoCollectionViewController: UICollectionViewController {
                         UserController.shared.randos = randos
                         self.updateViews()
                     }
-                case .failure(let milestoneError):
-                    print(milestoneError.errorDescription)
-                }
+                case .failure(let error):
+                    print("Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")                }
             }
-        }
+//        }
     }
     
     func updateViews() {

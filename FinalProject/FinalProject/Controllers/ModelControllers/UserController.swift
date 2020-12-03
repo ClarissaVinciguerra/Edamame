@@ -114,7 +114,7 @@ class UserController {
     
     // MARK: - READ
     
-    func fetchUser(with uuid: String, completion: @escaping (Result<User, UserError>) -> Void) {
+    func fetchUserByField(with uuid: String, completion: @escaping (Result<User, UserError>) -> Void) {
         let docRef = database.collection(userCollection)
 
         docRef.whereField(UserStrings.firebaseUIDKey, isEqualTo: uuid).getDocuments { (querySnapshot, error) in
@@ -251,9 +251,12 @@ class UserController {
                 doNotAppearArray.append(contentsOf: currentUser.sentRequests)
                 doNotAppearArray.append(contentsOf: currentUser.friends)
                 doNotAppearArray.append(currentUser.uuid)
+                let outerDispatchGroup = DispatchGroup()
                 
                 for document in querySnapshot!.documents {
-                    // print("\(document.documentID) => \(document.data())")
+                    
+                    outerDispatchGroup.enter()
+                    
                     if let rando = User(document: document) {
                         
                         for uuid in rando.blockedArray {
@@ -267,17 +270,19 @@ class UserController {
                         for uuid in doNotAppearArray {
                             if rando.uuid == uuid {
                                 makeThisRandoAppear = false
+                                outerDispatchGroup.leave()
                             }
                         }
                         
                         if makeThisRandoAppear {
                             
                             let dispatchGroup = DispatchGroup()
-                           // var images: [UIImage] = []
+                            // var images: [UIImage] = []
                             
                             for imageUUID in rando.imageUUIDs {
                                 
                                 dispatchGroup.enter()
+                                
                                 
                                 StorageController.shared.downloadURL(for: imageUUID) { (result) in
                                     switch result {
@@ -285,8 +290,8 @@ class UserController {
                                         self.convertURLToImage(urlString: "\(url)") { (image) in
                                             guard let image = image else { return completion(.failure(.couldNotUnwrap))}
                                             rando.images.append(image)
+                                            dispatchGroup.leave()
                                         }
-                                        dispatchGroup.leave()
                                         
                                     case .failure(let error):
                                         print("Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")
@@ -297,11 +302,15 @@ class UserController {
                             
                             dispatchGroup.notify(queue: .main) {
                                 randosToAppear.append(rando)
+                                outerDispatchGroup.leave()
                             }
                         }
                     }
                 }
-                completion(.success(randosToAppear))
+                
+                outerDispatchGroup.notify(queue: .main) {
+                    completion(.success(randosToAppear))
+                }
             }
         }
     }

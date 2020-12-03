@@ -77,7 +77,7 @@ class EditProfileViewController: UIViewController {
     }
     
     private func fetchUser(with uuid: String) {
-        UserController.shared.fetchUser(with: uuid) { (result) in
+        UserController.shared.fetchUserByField(with: uuid) { (result) in
             switch result {
             case .success(let user):
                 DispatchQueue.main.async {
