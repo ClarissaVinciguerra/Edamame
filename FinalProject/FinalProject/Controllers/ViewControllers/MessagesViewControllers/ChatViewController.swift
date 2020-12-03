@@ -137,7 +137,7 @@ extension ChatViewController: InputBarAccessoryViewDelegate {
                 }
             }
         }
-        //inputBar.tex = ""
+        inputBar.inputTextView.text = ""
     }
     
     private func createMessageID() -> String? {
