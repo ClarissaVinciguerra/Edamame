@@ -298,7 +298,11 @@ extension EditProfileViewController: EditPhotoCollectionViewDelegate {
     
     func delete(cell: EditPhotoCollectionViewCell) {
         if let indexPath = collectionView.indexPath(for: cell) {
-            UserController.shared.checkThatUserExists(with: LogInStrings.firebaseUidKey) { (result) in
+           
+            guard let uidKey = UserDefaults.standard.value(forKey: LogInStrings.firebaseUidKey) else { return }
+            let uidString = "\(uidKey)"
+            
+            UserController.shared.checkThatUserExists(with: uidString) { (result) in
                 switch result {
                 case true:
                     StorageController.shared.deleteImage(at: indexPath.row) { (result) in
@@ -361,7 +365,10 @@ extension EditProfileViewController: UIImagePickerControllerDelegate, UINavigati
             self.profileImages.append(selectedImage)
             self.appendImageToCloud(image: selectedImage)
 
-            UserController.shared.checkThatUserExists(with: LogInStrings.firebaseUidKey) { (result) in
+            guard let uidKey = UserDefaults.standard.value(forKey: LogInStrings.firebaseUidKey) else { return }
+            let uidString = "\(uidKey)"
+            
+            UserController.shared.checkThatUserExists(with: uidString) { (result) in
                 switch result {
                 case true:
                     self.appendImageToCloud(image: selectedImage)
