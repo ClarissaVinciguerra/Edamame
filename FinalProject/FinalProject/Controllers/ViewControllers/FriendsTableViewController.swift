@@ -41,6 +41,7 @@ class FriendsTableViewController: UITableViewController {
     }
     
     func openConversation(_ model: Conversation) {
+        
         let vc = ChatViewController(with: model.otherUserUid, id: model.id)
         vc.title = model.name
         vc.navigationItem.largeTitleDisplayMode = .never
@@ -61,19 +62,29 @@ class FriendsTableViewController: UITableViewController {
                 vc.title = otherUserName
                 vc.navigationItem.largeTitleDisplayMode = .never
                 strongSelf.navigationController?.pushViewController(vc, animated: true)
+                
             case .failure(_):
                 guard let userUid = UserDefaults.standard.value(forKey: LogInStrings.firebaseUidKey) as? String else { return }
-                MessageController.shared.userExists(with: userUid) { [weak self] (exists) in
-                    guard let strongSelf = self else { return }
-                    let chatUser = MessageAppUser(name: UserController.shared.currentUser!.name, uid: userUid)
-                    MessageController.shared.insertUser(with: chatUser) { (success) in
-                        print("created chat app user successfully")
+                MessageController.shared.userExists(with: userUid) { (result) in
+                    switch result {
+                    case true:
+                        return
+                    case false:
+                        let chatUser = MessageAppUser(name: UserController.shared.currentUser!.name, uid: userUid)
+                        MessageController.shared.insertUser(with: chatUser) { (success) in
+                            print("created chat app user successfully")
+                        }
                     }
                 }
-                MessageController.shared.userExists(with: otherUserUid) { (exists) in
-                    let chatUser = MessageAppUser(name: otherUserName, uid: otherUserUid)
-                    MessageController.shared.insertUser(with: chatUser) { (success) in
-                        print("created chat app user successfully")
+                MessageController.shared.userExists(with: otherUserUid) { (result) in
+                    switch result {
+                    case true:
+                        return
+                    case false:
+                        let chatUser = MessageAppUser(name: UserController.shared.currentUser!.name, uid: userUid)
+                        MessageController.shared.insertUser(with: chatUser) { (success) in
+                            print("created chat app user successfully")
+                        }
                     }
                 }
                 let vc = ChatViewController(with: otherUserUid, id: nil)
@@ -118,9 +129,10 @@ class FriendsTableViewController: UITableViewController {
     }
 
     // MARK: - Navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "toMessagesTVC" {
-            
-        }
-    }
+//    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+//        if segue.identifier == "toMessagesTVC" {
+//
+//        }
+//    }
 }
+

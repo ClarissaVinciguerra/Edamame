@@ -474,7 +474,7 @@ extension MessageController {
                     } else {
                         let newConversationData: [String: Any] = [
                             "id": conversation,
-                            "other_user_email": otherUserUid,
+                            "other_user_uid": otherUserUid,
                             "name": name,
                             "latest_message": updatedValue
                         ]
@@ -616,6 +616,7 @@ extension MessageController {
                     return
                 }
                 completion(.success(id))
+                return
             }
             completion(.failure(DatabaseError.failedToFetch))
             return
