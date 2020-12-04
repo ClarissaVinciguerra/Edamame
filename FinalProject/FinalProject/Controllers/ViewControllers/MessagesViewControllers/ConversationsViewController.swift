@@ -95,6 +95,7 @@ class ConversationsViewController: UIViewController {
     }
     
     @IBAction func meetUpSpotsButtonTapped(_ sender: Any) {
+        
     }
     
     @objc private func didTapComposeButton() {
