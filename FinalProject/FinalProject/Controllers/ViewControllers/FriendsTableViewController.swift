@@ -14,7 +14,6 @@ class FriendsTableViewController: UITableViewController {
     // MARK: - Lifecycle Functions
     override func viewDidLoad() {
         super.viewDidLoad()
-      
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -109,7 +108,7 @@ class FriendsTableViewController: UITableViewController {
         let friend = UserController.shared.friends[indexPath.row]
         
         cell.textLabel?.text = friend.name
-        //cell.imageView?.image = friend.images[0]
+        cell.imageView?.image = friend.images[0]
         
         return cell
     }

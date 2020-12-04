@@ -54,13 +54,10 @@ class ChatViewController: MessagesViewController {
         super.viewDidLoad()
         view.backgroundColor = .white
         
-        
         messagesCollectionView.messagesDataSource = self
         messagesCollectionView.messagesLayoutDelegate = self
         messagesCollectionView.messagesDisplayDelegate = self
         messageInputBar.delegate = self
-        
-        
     }
     
     override func viewDidAppear(_ animated: Bool) {
