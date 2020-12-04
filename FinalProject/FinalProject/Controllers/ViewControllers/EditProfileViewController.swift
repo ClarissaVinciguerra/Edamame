@@ -193,7 +193,7 @@ class EditProfileViewController: UIViewController {
     func updateViews() {
         guard let currentUser = UserController.shared.currentUser else { return }
         
-        nameLabel.text = currentUser.name
+//        nameLabel.text = currentUser.name
         typeOfVeganTextField.text = currentUser.type
         bioTextView.text = currentUser.bio
         
