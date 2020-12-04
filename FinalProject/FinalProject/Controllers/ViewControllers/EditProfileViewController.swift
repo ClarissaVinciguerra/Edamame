@@ -181,14 +181,18 @@ class EditProfileViewController: UIViewController {
         collectionView.isScrollEnabled = false
         collectionView.dataSource = self
         collectionView.delegate = self
-        collectionView.backgroundColor = .edamameGreen
+        collectionView.backgroundColor = .whiteSmoke
         collectionView.collectionViewLayout = configureCollectionViewLayout()
         
         navigationItem.leftBarButtonItem = editButtonItem
         
-        saveChangesButton.backgroundColor = .edamameGreen
+        
+        
+        saveChangesButton.backgroundColor = .lightYellowAccent
         saveChangesButton.addCornerRadius()
-        saveChangesButton.tintColor = .whiteSmoke
+        saveChangesButton.tintColor = .spaceBlack
+        
+        view.backgroundColor = .edamameGreen
     }
     
     func disableCameraBarButton() {
