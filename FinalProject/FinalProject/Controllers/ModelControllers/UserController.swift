@@ -344,22 +344,67 @@ class UserController {
     // MARK: - UPDATE
     // this update function will be used as we append to arrays locally and update remotely: send friend request and confirm friend request
     func updateUserBy(_ user: User, completion: @escaping (Result<User, UserError>) -> Void) {
-        let documentReference = database.collection(userCollection).document(user.uuid)
         
-        documentReference.updateData([
-                                        UserStrings.nameKey : "\(user.name)",
-                                        UserStrings.latitudeKey : user.latitude,
-                                        UserStrings.longitudeKey : user.longitude,
-                                        // UserStrings.imageUUIDsKey : user.images,
-                                        UserStrings.friendsKey : user.friends,
-                                        UserStrings.pendingRequestsKey : user.pendingRequests,
-                                        UserStrings.sentRequestsKey : user.sentRequests,
-                                        UserStrings.blockedArrayKey : user.blockedArray        ]) { (error) in
-            if let error = error {
-                print("Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")
-                return completion(.failure(.firebaseError(error)))
-            } else {
-                return completion(.success(user))
+        let deletionDispatchGroup = DispatchGroup()
+        
+        for imageUUID in user.imageUUIDs {
+            deletionDispatchGroup.enter()
+            StorageController.shared.deleteImageFromStorage(with: imageUUID) { (result) in
+                switch result {
+                case .success():
+                    print("Image with documentID \(imageUUID) successfully deleted.")
+                    user.imageUUIDs.removeFirst()
+                    deletionDispatchGroup.leave()
+                case .failure(let error):
+                    print("Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")
+                }
+            }
+        }
+        
+        deletionDispatchGroup.notify(queue: .main) {
+
+            let saveImageDispatchGroup = DispatchGroup()
+            var imageUUIDs: [String] = []
+            
+            for image in user.images {
+                
+                saveImageDispatchGroup.enter()
+                let fileName = UUID().uuidString + ".jpeg"
+                
+                guard let imageData = image.jpegData(compressionQuality: 0.5) else { return completion(.failure(.errorConvertingImage))}
+                
+                StorageController.shared.uploadImage(with: imageData, fileName: fileName) { (result) in
+                    switch result {
+                    case .success(let fileName):
+                        print("Image \(fileName) successfully uploaded!")
+                        imageUUIDs.append(fileName)
+                        saveImageDispatchGroup.leave()
+                    case .failure(let error):
+                        print("Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")
+                        saveImageDispatchGroup.leave()
+                    }
+                }
+            }
+            
+            saveImageDispatchGroup.notify(queue: .main) {
+                let documentReference = self.database.collection(self.userCollection).document(user.uuid)
+                
+                documentReference.updateData([
+                                                UserStrings.nameKey : "\(user.name)",
+                                                UserStrings.latitudeKey : user.latitude,
+                                                UserStrings.longitudeKey : user.longitude,
+                                                UserStrings.imageUUIDsKey : imageUUIDs,
+                                                UserStrings.friendsKey : user.friends,
+                                                UserStrings.pendingRequestsKey : user.pendingRequests,
+                                                UserStrings.sentRequestsKey : user.sentRequests,
+                                                UserStrings.blockedArrayKey : user.blockedArray        ]) { (error) in
+                    if let error = error {
+                        print("Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")
+                        return completion(.failure(.firebaseError(error)))
+                    } else {
+                        return completion(.success(user))
+                    }
+                }
             }
         }
     }
