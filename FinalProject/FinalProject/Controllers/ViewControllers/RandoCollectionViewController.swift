@@ -19,16 +19,10 @@ class RandoCollectionViewController: UICollectionViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-        
         locationManager.delegate = self
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
         
         retrieveCurrentLocation()
-        
-        setupViews()
-        loadData()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -61,7 +55,9 @@ class RandoCollectionViewController: UICollectionViewController {
                         self.updateViews()
                     }
                 case .failure(let error):
-                    print("Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")                }
+                    print("Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")
+                    
+                }
             }
 //        }
     }

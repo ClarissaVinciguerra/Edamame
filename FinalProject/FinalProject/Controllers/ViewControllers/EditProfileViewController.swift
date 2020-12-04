@@ -341,13 +341,15 @@ extension EditProfileViewController: UIImagePickerControllerDelegate, UINavigati
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         if let selectedImage = info[.editedImage] as? UIImage {
             
-            self.profileImages.append(selectedImage)
+            profileImages.append(selectedImage)
+            
             if let currentUser = UserController.shared.currentUser {
                 currentUser.images.append(selectedImage)
             }
             
             picker.dismiss(animated: true)
             disableCameraBarButton()
+            collectionView.reloadData()
         }
     }
 }
