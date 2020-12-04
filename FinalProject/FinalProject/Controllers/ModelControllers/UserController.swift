@@ -224,8 +224,6 @@ class UserController {
         
         docRef.whereField(UserStrings.firebaseUIDKey, isEqualTo: uuid).getDocuments { (querySnapshot, error) in
             if let document = querySnapshot!.documents.first {
-//                let dataDescription = document.data().map(String.init(describing:)) ?? "nil"
-//                print("Document data: \(dataDescription.first)")
                 return completion(true)
             } else {
                 print("Document does not exist")
@@ -277,7 +275,6 @@ class UserController {
                         if makeThisRandoAppear {
                             
                             let dispatchGroup = DispatchGroup()
-                            // var images: [UIImage] = []
                             
                             for imageUUID in rando.imageUUIDs {
                                 
@@ -342,7 +339,6 @@ class UserController {
     }
     
     // MARK: - UPDATE
-    // this update function will be used as we append to arrays locally and update remotely: send friend request and confirm friend request
     func updateUserBy(_ user: User, completion: @escaping (Result<User, UserError>) -> Void) {
         
         let deletionDispatchGroup = DispatchGroup()
@@ -357,6 +353,7 @@ class UserController {
                     deletionDispatchGroup.leave()
                 case .failure(let error):
                     print("Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")
+                    deletionDispatchGroup.leave()
                 }
             }
         }
@@ -377,7 +374,7 @@ class UserController {
                     switch result {
                     case .success(let fileName):
                         print("Image \(fileName) successfully uploaded!")
-                        imageUUIDs.append(fileName)
+                        user.imageUUIDs.append(fileName)
                         saveImageDispatchGroup.leave()
                     case .failure(let error):
                         print("Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")
@@ -393,7 +390,7 @@ class UserController {
                                                 UserStrings.nameKey : "\(user.name)",
                                                 UserStrings.latitudeKey : user.latitude,
                                                 UserStrings.longitudeKey : user.longitude,
-                                                UserStrings.imageUUIDsKey : imageUUIDs,
+                                                UserStrings.imageUUIDsKey : user.imageUUIDs,
                                                 UserStrings.friendsKey : user.friends,
                                                 UserStrings.pendingRequestsKey : user.pendingRequests,
                                                 UserStrings.sentRequestsKey : user.sentRequests,
@@ -484,8 +481,6 @@ class UserController {
         }
     }
  
-    
-    // The following function may not be necessary in our app. In order to unblock a user, you'd need to be able to search for them! The whole idea is that you wouldn't show up in their search and they'd no longer show up in yours. Please bring it to my attention if there is an important gap in that logic
     func removeFromBlockedArrayOf (currentUser: User, blockedUserUUID: String, completion: @escaping (Result<User, UserError>) -> Void) {
         
         let unblockedDocRef = database.collection(userCollection).document(currentUser.uuid)
