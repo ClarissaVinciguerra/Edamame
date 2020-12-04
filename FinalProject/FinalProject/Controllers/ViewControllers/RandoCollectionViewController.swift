@@ -44,8 +44,6 @@ class RandoCollectionViewController: UICollectionViewController {
     
     @objc func loadData() {
         guard let currentUser = UserController.shared.currentUser else { return }
-        
-//        if !currentUser.friends.isEmpty {
             
             UserController.shared.fetchFilteredRandos(currentUser: currentUser) { (result) in
                 switch result {
@@ -59,7 +57,6 @@ class RandoCollectionViewController: UICollectionViewController {
                     
                 }
             }
-//        }
     }
     
     func updateViews() {

@@ -55,14 +55,14 @@ class User {
 //        }
 //    }
     
-    var imageDataArray: [Data] = []
+    var unsavedImages: [UIImage] = []
     var imageUUIDs: [String]
     var friends: [String]
     var pendingRequests: [String]
     var sentRequests: [String]
     var blockedArray: [String]
     
-    init(name: String, dateOfBirth: Date, bio: String, type: String, latitude: Double, longitude: Double, uuid: String = UUID().uuidString, firebaseUID: String, images: [UIImage], imageUUIDs: [String] = [], friends: [String] = [], pendingRequests: [String] = [], sentRequests: [String] = [], blockedArray: [String] = []) {
+    init(name: String, dateOfBirth: Date, bio: String, type: String, latitude: Double, longitude: Double, uuid: String = UUID().uuidString, firebaseUID: String, images: [UIImage] = [], unsavedImages: [UIImage] = [], imageUUIDs: [String] = [], friends: [String] = [], pendingRequests: [String] = [], sentRequests: [String] = [], blockedArray: [String] = []) {
         self.name = name
         self.dateOfBirth = dateOfBirth
         self.bio = bio
@@ -77,6 +77,7 @@ class User {
         self.blockedArray = blockedArray
         self.imageUUIDs = imageUUIDs
         self.images = images
+        self.unsavedImages = images
     }
     
     convenience init?(document: DocumentSnapshot) {

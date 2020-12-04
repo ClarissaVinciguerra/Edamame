@@ -133,7 +133,7 @@ class EditProfileViewController: UIViewController {
         let name = "\(nameKey)"
         
         if profileImages.count > 1 {
-            UserController.shared.createUser(name: name, bio: bio, type: type, images: profileImages, dateOfBirth: birthdayKey, latitude: 0.0, longitude: 0.0, firebaseUID: uid) { (result) in
+            UserController.shared.createUser(name: name, bio: bio, type: type, unsavedImages: profileImages, dateOfBirth: birthdayKey, latitude: 0.0, longitude: 0.0, firebaseUID: uid) { (result) in
                 switch result {
                 case .success(_):
                     DispatchQueue.main.async {
@@ -171,8 +171,7 @@ class EditProfileViewController: UIViewController {
     
     func updateViews() {
         guard let currentUser = UserController.shared.currentUser else { return }
-        
-//        nameLabel.text = currentUser.name
+    
         typeOfVeganTextField.text = currentUser.type
         bioTextView.text = currentUser.bio
     }
@@ -185,8 +184,6 @@ class EditProfileViewController: UIViewController {
         collectionView.collectionViewLayout = configureCollectionViewLayout()
         
         navigationItem.leftBarButtonItem = editButtonItem
-        
-        
         
         saveChangesButton.backgroundColor = .lightYellowAccent
         saveChangesButton.addCornerRadius()
@@ -348,7 +345,7 @@ extension EditProfileViewController: UIImagePickerControllerDelegate, UINavigati
             profileImages.append(selectedImage)
             
             if let currentUser = UserController.shared.currentUser {
-                currentUser.images.append(selectedImage)
+                currentUser.unsavedImages.append(selectedImage)
             }
             
             picker.dismiss(animated: true)
