@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import CoreLocation
 
 class ProfileViewController: UIViewController {
     
@@ -28,6 +29,8 @@ class ProfileViewController: UIViewController {
     // MARK: - Lifecyle Functions
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        updateViews()
     }
     
     override func viewDidLayoutSubviews() {
@@ -191,6 +194,10 @@ class ProfileViewController: UIViewController {
     func updateViews() {
         guard let otherUser = otherUser, let currentUser = UserController.shared.currentUser else { return }
         
+        let currentUserLocation = CLLocation(latitude: currentUser.latitude, longitude: currentUser.longitude)
+        let otherUserLocation = CLLocation(latitude: otherUser.latitude, longitude: otherUser.longitude)
+        
+        distanceLabel.text = "\(round(currentUserLocation.distance(from: otherUserLocation) * 0.000621371)) mi"
         nameAndAgeLabel.text = otherUser.name
         declineButton.alpha = 0
         addAcceptRevokeButton.alpha = 1

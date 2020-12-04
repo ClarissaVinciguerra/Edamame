@@ -414,6 +414,7 @@ class UserController {
     // MARK: - REMOVE
    
     func removeFromSentRequestsOf (_ user: User, andOtherUser: User, completion: @escaping (Result<Bool, UserError>) -> Void) {
+        
         let pendingRequestsDocRef = database.collection(userCollection).document(andOtherUser.uuid)
         let sentRequestsDocRef = database.collection(userCollection).document(user.uuid)
         
