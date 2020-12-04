@@ -42,7 +42,7 @@ class PendingTableViewController: UITableViewController {
         let pendingRequest = UserController.shared.pendingRequests[indexPath.row]
         
         cell.textLabel?.text = pendingRequest.name
-        //cell.imageView?.image = pendingRequest.images[0]
+        cell.imageView?.image = pendingRequest.images[0]
         
         return cell
     }

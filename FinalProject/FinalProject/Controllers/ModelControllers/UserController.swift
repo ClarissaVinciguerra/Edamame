@@ -314,26 +314,51 @@ class UserController {
     
     func fetchUsersFrom (_ currentUserArray: [String], completion: @escaping (Result<[User], UserError>) -> Void) {
         
-        let dispatchGroup = DispatchGroup()
+        let outerDispatchGroup = DispatchGroup()
         var fetchedUsers: [User] = []
         
         for uuid in currentUserArray {
             
-            dispatchGroup.enter()
+            outerDispatchGroup.enter()
             
             let docRef = database.collection(userCollection).document(uuid)
             docRef.getDocument { (document, error) in
                 
+                
+                let imageDispatchGroup = DispatchGroup()
+                
                 if let document = document, document.exists {
+                    
                     guard let user = User(document: document) else { return }
-                    fetchedUsers.append(user)
-                    dispatchGroup.leave()
+                    
+                    for imageUUID in user.imageUUIDs {
+                        imageDispatchGroup.enter()
+                        
+                        StorageController.shared.downloadURL(for: imageUUID) { (result) in
+                            switch result {
+                            case .success(let url):
+                                self.convertURLToImage(urlString: "\(url)") { (image) in
+                                    guard let image = image else { return completion(.failure(.couldNotUnwrap))}
+                                    user.images.append(image)
+                                    imageDispatchGroup.leave()
+                                }
+                            case .failure(let error):
+                                print("Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")
+                                imageDispatchGroup.leave()
+                            }
+                        }
+                        
+                    }
+                    imageDispatchGroup.notify(queue: .main) {
+                        fetchedUsers.append(user)
+                        outerDispatchGroup.leave()
+                    }
                 } else if let error = error {
                     completion(.failure(.firebaseError(error)))
                 }
             }
         }
-        dispatchGroup.notify(queue: .main) {
+        outerDispatchGroup.notify(queue: .main) {
             return completion(.success(fetchedUsers))
         }
     }
