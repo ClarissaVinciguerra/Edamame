@@ -124,7 +124,7 @@ extension MessageController {
             let currentName = UserDefaults.standard.value(forKey: "name") as? String else {
                 return
         }
-        let safeEmail = MessageController.safeEmail(emailAddress: currentUid)
+        //let safeEmail = MessageController.safeEmail(emailAddress: currentUid)
         
         let ref = database.child("\(currentUid)")
         

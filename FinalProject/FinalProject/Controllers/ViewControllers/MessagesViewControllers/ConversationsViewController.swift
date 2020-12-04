@@ -109,7 +109,7 @@ class ConversationsViewController: UIViewController {
             if let targetConversation = currentConversations.first(where: {
                 $0.otherUserUid == MessageController.safeEmail(emailAddress: result.uid)
             }) {
-                let vc = ChatViewController(with: targetConversation.otherUserUid, id: targetConversation.id)
+                let vc = ChatViewController(with: targetConversation.otherUserUid, otherUserName: targetConversation.name, id: targetConversation.id)
                 vc.isNewConversation = false
                 vc.title = targetConversation.name
                 vc.navigationItem.largeTitleDisplayMode = .never
@@ -132,13 +132,13 @@ class ConversationsViewController: UIViewController {
             }
             switch result {
             case .success(let conversationId):
-                let vc = ChatViewController(with: email, id: conversationId)
+                let vc = ChatViewController(with: email, otherUserName: name, id: conversationId)
                 vc.isNewConversation = false
                 vc.title = name
                 vc.navigationItem.largeTitleDisplayMode = .never
                 strongSelf.navigationController?.pushViewController(vc, animated: true)
             case .failure(_):
-                let vc = ChatViewController(with: email, id: nil)
+                let vc = ChatViewController(with: email, otherUserName: name, id: nil)
                 vc.isNewConversation = true
                 vc.title = name
                 vc.navigationItem.largeTitleDisplayMode = .never
@@ -201,7 +201,7 @@ extension ConversationsViewController: UITableViewDelegate, UITableViewDataSourc
     }
     
     func openConversation(_ model: Conversation) {
-        let vc = ChatViewController(with: model.otherUserUid, id: model.id)
+        let vc = ChatViewController(with: model.otherUserUid, otherUserName: model.name, id: model.id)
                vc.title = model.name
                vc.navigationItem.largeTitleDisplayMode = .never
                navigationController?.pushViewController(vc, animated: true)

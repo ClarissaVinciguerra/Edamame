@@ -42,7 +42,7 @@ class FriendsTableViewController: UITableViewController {
     
     func openConversation(_ model: Conversation) {
         
-        let vc = ChatViewController(with: model.otherUserUid, id: model.id)
+        let vc = ChatViewController(with: model.otherUserUid, otherUserName: model.name, id: model.id)
         vc.title = model.name
         vc.navigationItem.largeTitleDisplayMode = .never
         navigationController?.pushViewController(vc, animated: true)
@@ -57,7 +57,7 @@ class FriendsTableViewController: UITableViewController {
             }
             switch result {
             case .success(let conversationId):
-                let vc = ChatViewController(with: otherUserUid, id: conversationId)
+                let vc = ChatViewController(with: otherUserUid, otherUserName: otherUserName, id: conversationId)
                 vc.isNewConversation = false
                 vc.title = otherUserName
                 vc.navigationItem.largeTitleDisplayMode = .never
@@ -87,7 +87,7 @@ class FriendsTableViewController: UITableViewController {
                         }
                     }
                 }
-                let vc = ChatViewController(with: otherUserUid, id: nil)
+                let vc = ChatViewController(with: otherUserUid, otherUserName: otherUserName, id: nil)
                 vc.isNewConversation = true
                 vc.title = otherUserName
                 vc.navigationItem.largeTitleDisplayMode = .never

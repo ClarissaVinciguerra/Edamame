@@ -22,8 +22,9 @@ class ChatViewController: MessagesViewController {
     
     public var isNewConversation = false
     public let otherUserUid: String
+    public let otherUserName: String?
+    var otherUser: User?
     private var conversationID: String?
-    
     private var messages = [Message]()
     
     private var selfSender: Sender? {
@@ -37,8 +38,9 @@ class ChatViewController: MessagesViewController {
     
     
     
-    init(with otherUserUid: String, id: String?) {
+    init(with otherUserUid: String, otherUserName: String?, id: String?) {
         self.otherUserUid = otherUserUid
+        self.otherUserName = otherUserName
         self.conversationID = id
         super.init(nibName: nil, bundle: nil)
         
@@ -53,14 +55,11 @@ class ChatViewController: MessagesViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
-        
-        
         messagesCollectionView.messagesDataSource = self
         messagesCollectionView.messagesLayoutDelegate = self
         messagesCollectionView.messagesDisplayDelegate = self
         messageInputBar.delegate = self
-        
-        
+        setupViews()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -94,6 +93,55 @@ class ChatViewController: MessagesViewController {
             }
         }
     }
+    // MARK: - Actions
+    @objc private func meetupSpotsTapped() {
+        let vc = RestaurantTableViewController()
+        vc.title = "Restauraunts"
+        navigationController?.pushViewController(vc, animated: true)
+    }
+    
+    @objc private func titleButtonTapped() {
+        let vc = ProfileViewController()
+        vc.title = "Profile"
+        //vc.otherUser =
+        present(vc, animated: true)
+    }
+    
+    
+    
+//    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+//        if segue.identifier == "toRandoProfileVC" {
+//            guard let indexPath = collectionView.indexPathsForSelectedItems?.first,
+//                  let cell = collectionView.cellForItem(at: indexPath) as? RandoCollectionViewCell
+//            else { return }
+//            let destinatinon = segue.destination as? ProfileViewController
+//            let profile = cell.user
+//            destinatinon?.otherUser = profile
+//        }
+//    }
+    
+    // MARK: - Views
+    func setupViews(){
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Meetup Spots",
+                                                            style: .done,
+                                                            target: self,
+                                                            action: #selector(meetupSpotsTapped))
+        createTitleButton()
+      
+    }
+    
+    private func createTitleButton() {
+        let titleButton = UIButton(type: .custom)
+        titleButton.frame = CGRect(x: 0, y: 0, width: 100, height: 40)
+        titleButton.backgroundColor = .none
+        titleButton.setTitle(otherUserName, for: .normal)
+        titleButton.setTitleColor(.link, for: .normal)
+        titleButton.addTarget(self, action: #selector(titleButtonTapped), for:. touchUpInside)
+        navigationItem.titleView = titleButton
+    }
+    
+    
+   
     
 }// End of Class
 
@@ -173,4 +221,7 @@ extension ChatViewController: MessagesDataSource, MessagesLayoutDelegate, Messag
         return messages.count
     }
 }
+
+
+
 
