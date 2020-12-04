@@ -9,8 +9,8 @@ import UIKit
 import FirebaseAuth
 
 class EditProfileViewController: UIViewController {
-    // MARK: - Outlets
     
+    // MARK: - Outlets
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var typeOfVeganTextField: UITextField!
     @IBOutlet weak var bioTextLabel: UILabel!
@@ -23,7 +23,6 @@ class EditProfileViewController: UIViewController {
     //MARK: - Properties
     var viewsLaidOut = false
     var profileImages: [UIImage] = []
-    var userExists: Bool = true
     
     // MARK: - Lifecycle Functions
     override func viewDidLoad() {
@@ -53,7 +52,6 @@ class EditProfileViewController: UIViewController {
     @IBAction func addPhotoButtonTapped(_ sender: Any) {
         selectPhotoAlert()
         disableCameraBarButton()
-        
     }
     
     @IBAction func saveChangesButtonTapped(_ sender: Any) {
@@ -72,7 +70,9 @@ class EditProfileViewController: UIViewController {
             vc.modalPresentationStyle = .fullScreen
             present(vc, animated: false)
         } else {
-           checkForUser()
+            guard let uidKey = UserDefaults.standard.value(forKey: LogInStrings.firebaseUidKey) else { return }
+            let uidString = "\(uidKey)"
+            fetchUser(with: uidString)
         }
     }
     
@@ -87,28 +87,14 @@ class EditProfileViewController: UIViewController {
                     self.updateViews()
                     self.disableCameraBarButton()
                 }
-            case .failure(let error):
-                print("Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")
-            }
-        }
-    }
-    
-    func checkForUser() {
-        guard let uidKey = UserDefaults.standard.value(forKey: LogInStrings.firebaseUidKey) else { return }
-        let uidString = "\(uidKey)"
-        
-        UserController.shared.checkThatUserExists(with: uidString) { (result) in
-            switch result {
-            case true:
-                self.fetchUser(with: uidString)
-            case false:
-                self.userExists = false
+            case .failure(_):
+                print("User does not yet exist in database")
             }
         }
     }
     
     func createOrUpdateUser() {
-        if userExists {
+        if UserController.shared.currentUser != nil {
             updateUser()
         } else {
             createUser()
@@ -121,7 +107,7 @@ class EditProfileViewController: UIViewController {
         currentUser.bio = bio
         currentUser.type = type
         
-        if profileImages.count > 1 {
+        if currentUser.images.count > 1 {
             UserController.shared.updateUserBy(currentUser) { (result) in
                 switch result {
                 case .success(_):
@@ -146,14 +132,12 @@ class EditProfileViewController: UIViewController {
         let uid = "\(uidKey)"
         let name = "\(nameKey)"
         
-        // change below to > 1 after testing
-        if profileImages.count >= 1 {
+        if profileImages.count > 1 {
             UserController.shared.createUser(name: name, bio: bio, type: type, images: profileImages, dateOfBirth: birthdayKey, latitude: 0.0, longitude: 0.0, firebaseUID: uid) { (result) in
                 switch result {
-                case .success(let user):
+                case .success(_):
                     DispatchQueue.main.async {
-                        self.userExists = true
-                    // update button to indicate to user that profile was saved - upon changes button can change back
+                        // change text on button to "Profile Saved!"
                     }
                 case .failure(let error):
                     print("Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")
@@ -163,11 +147,9 @@ class EditProfileViewController: UIViewController {
         } else {
             presentImageAlert()
         }
-              
     }
     
     private func presentImageAlert() {
-        
         let alertController = UIAlertController(title: "Add some photos!", message: "Show off at least 2 pictures of yourself to save to your profile 📸", preferredStyle: .alert)
         
         let okayAction = UIAlertAction(title: "Okay", style: .default)
@@ -175,11 +157,9 @@ class EditProfileViewController: UIViewController {
         alertController.addAction(okayAction)
         
         present(alertController, animated: true, completion: nil)
-        
     }
     
     private func presentInfoAlert() {
-        
         let alertController = UIAlertController(title: "The type of plant based diet you identify most with 🌱", message: "Common types include but are not limited to: dietary vegan, cheegan, vegetarian, ovo-vegetarian, 98% vegan, vegan, etc.", preferredStyle: .alert)
         
         let okayAction = UIAlertAction(title: "Okay", style: .default)
@@ -187,18 +167,14 @@ class EditProfileViewController: UIViewController {
         alertController.addAction(okayAction)
         
         present(alertController, animated: true, completion: nil)
-        
     }
     
     func updateViews() {
         guard let currentUser = UserController.shared.currentUser else { return }
         
-        nameLabel.text = currentUser.name
+//        nameLabel.text = currentUser.name
         typeOfVeganTextField.text = currentUser.type
         bioTextView.text = currentUser.bio
-        
-
-        
     }
     
     func setupViews() {
@@ -213,8 +189,6 @@ class EditProfileViewController: UIViewController {
         saveChangesButton.backgroundColor = .edamameGreen
         saveChangesButton.addCornerRadius()
         saveChangesButton.tintColor = .whiteSmoke
-        
-        
     }
     
     func disableCameraBarButton() {
@@ -321,31 +295,13 @@ extension EditProfileViewController: EditPhotoCollectionViewDelegate {
     func delete(cell: EditPhotoCollectionViewCell) {
         if let indexPath = collectionView.indexPath(for: cell) {
            
-            guard let uidKey = UserDefaults.standard.value(forKey: LogInStrings.firebaseUidKey) else { return }
-            let uidString = "\(uidKey)"
-            
-            UserController.shared.checkThatUserExists(with: uidString) { (result) in
-                switch result {
-                case true:
-                    StorageController.shared.deleteImage(at: indexPath.row) { (result) in
-                        switch result {
-                        case .success():
-                            DispatchQueue.main.async {
-                                self.profileImages.remove(at: indexPath.row)
-                                self.collectionView.deleteItems(at: [indexPath])
-                            }
-                        case .failure(let error):
-                            print("Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")
-                        }
-                    }
-                case false:
-                    self.profileImages.remove(at: indexPath.row)
-                    self.collectionView.deleteItems(at: [indexPath])
-                }
+            if let currentUser = UserController.shared.currentUser {
+                currentUser.images.remove(at: indexPath.row)
             }
+            profileImages.remove(at: indexPath.row)
+            collectionView.deleteItems(at: [indexPath])
         }
     }
-    
 }
 
 //MARK: - ImagePicker Delegate & NavController Delegate
@@ -386,34 +342,12 @@ extension EditProfileViewController: UIImagePickerControllerDelegate, UINavigati
         if let selectedImage = info[.editedImage] as? UIImage {
             
             self.profileImages.append(selectedImage)
-
-            guard let uidKey = UserDefaults.standard.value(forKey: LogInStrings.firebaseUidKey) else { return }
-            let uidString = "\(uidKey)"
+            if let currentUser = UserController.shared.currentUser {
+                currentUser.images.append(selectedImage)
+            }
             
-            UserController.shared.checkThatUserExists(with: uidString) { (result) in
-                switch result {
-                case true:
-                    self.appendImageToCloud(image: selectedImage)
-                case false:
-                    self.collectionView.reloadData()
-                }
-            }
-          
-        } else {
-            if let selectedImage = info[.originalImage] as? UIImage {
-                self.profileImages.append(selectedImage)
-                UserController.shared.checkThatUserExists(with: LogInStrings.firebaseUidKey) { (result) in
-                    switch result {
-                    case true:
-                        self.appendImageToCloud(image: selectedImage)
-                    case false:
-                        self.collectionView.reloadData()
-                    }
-                    
-                }
-            }
+            picker.dismiss(animated: true)
+            disableCameraBarButton()
         }
-        picker.dismiss(animated: true)
-        disableCameraBarButton()
     }
 }
