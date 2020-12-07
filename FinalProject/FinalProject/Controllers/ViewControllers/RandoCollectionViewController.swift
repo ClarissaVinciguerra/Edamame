@@ -23,6 +23,7 @@ class RandoCollectionViewController: UICollectionViewController {
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
         
         retrieveCurrentLocation()
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {

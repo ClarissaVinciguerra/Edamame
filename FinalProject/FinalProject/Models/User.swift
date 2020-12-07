@@ -23,7 +23,8 @@ struct UserStrings {
     static let pendingRequestsKey = "pendingRequests"
     static let sentRequestsKey = "sentRequests"
     static let blockedArrayKey = "blocked"
-    static let reportCount = "reportCount"
+    static let reportCountKey = "reportCount"
+    static let reportedThrice = "reportedThrice"
 }
 
 class User {
@@ -43,8 +44,9 @@ class User {
     var sentRequests: [String]
     var blockedArray: [String]
     var reportCount: Int
+    var reportedThrice: Bool
     
-    init(name: String, dateOfBirth: Date, bio: String, type: String, latitude: Double, longitude: Double, uuid: String = UUID().uuidString, firebaseUID: String, images: [UIImage] = [], unsavedImages: [UIImage] = [], imageUUIDs: [String] = [], friends: [String] = [], pendingRequests: [String] = [], sentRequests: [String] = [], blockedArray: [String] = [], reportCount: Int = 0) {
+    init(name: String, dateOfBirth: Date, bio: String, type: String, latitude: Double, longitude: Double, uuid: String = UUID().uuidString, firebaseUID: String, images: [UIImage] = [], unsavedImages: [UIImage] = [], imageUUIDs: [String] = [], friends: [String] = [], pendingRequests: [String] = [], sentRequests: [String] = [], blockedArray: [String] = [], reportCount: Int = 0, reportedThrice: Bool = false) {
         self.name = name
         self.dateOfBirth = dateOfBirth
         self.bio = bio
@@ -61,6 +63,7 @@ class User {
         self.imageUUIDs = imageUUIDs
         self.images = images
         self.unsavedImages = images
+        self.reportedThrice = reportedThrice
     }
     
     convenience init?(document: DocumentSnapshot) {
@@ -76,13 +79,14 @@ class User {
               let pendingRequests = document[UserStrings.pendingRequestsKey] as? [String],
               let sentRequests = document[UserStrings.sentRequestsKey] as? [String],
               let blockedArray = document[UserStrings.blockedArrayKey] as? [String],
-              let reportCount = document[UserStrings.reportCount] as? Int else { return nil }
+              let reportCount = document[UserStrings.reportCountKey] as? Int,
+              let reportedThrice = document[UserStrings.reportedThrice] as? Bool else { return nil }
         
         let images: [UIImage] = []
         
         let dateOfBirth = Date(timeIntervalSince1970: timeInterval)
         
-        self.init(name: name, dateOfBirth: dateOfBirth, bio: bio, type: type, latitude: latitude, longitude: longitude, uuid: document.documentID, firebaseUID: firebaseUID, images: images, imageUUIDs: imageUUIDs, friends: friends, pendingRequests: pendingRequests, sentRequests: sentRequests, blockedArray: blockedArray, reportCount: reportCount)
+        self.init(name: name, dateOfBirth: dateOfBirth, bio: bio, type: type, latitude: latitude, longitude: longitude, uuid: document.documentID, firebaseUID: firebaseUID, images: images, imageUUIDs: imageUUIDs, friends: friends, pendingRequests: pendingRequests, sentRequests: sentRequests, blockedArray: blockedArray, reportCount: reportCount, reportedThrice: reportedThrice)
     }
 }
 

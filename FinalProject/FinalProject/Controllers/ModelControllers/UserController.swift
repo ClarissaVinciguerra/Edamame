@@ -262,6 +262,10 @@ class UserController {
                             }
                         }
                         
+                        if rando.reportedThrice == true {
+                            doNotAppearArray.append(rando.uuid)
+                        }
+                        
                         var makeThisRandoAppear = true
                         
                         for uuid in doNotAppearArray {
@@ -520,6 +524,7 @@ class UserController {
     }
    
     // MARK: - DELETE
+
     func deleteUserInfoWith(_ uuid: String, completion: @escaping (Result<Void, UserError>) -> Void) {
         database.collection(userCollection).document(uuid).delete() { err in
             if let err = err {

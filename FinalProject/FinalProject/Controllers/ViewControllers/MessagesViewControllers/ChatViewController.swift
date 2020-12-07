@@ -96,7 +96,8 @@ class ChatViewController: MessagesViewController {
     }
     // MARK: - Actions
     @objc private func meetupSpotsTapped() {
-        let vc = RestaurantTableViewController()
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let vc = storyboard.instantiateViewController(withIdentifier: "RestaurantTableViewController")
         vc.title = "Restauraunts"
         navigationController?.pushViewController(vc, animated: true)
     }
