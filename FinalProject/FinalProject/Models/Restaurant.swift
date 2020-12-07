@@ -14,9 +14,5 @@ struct TopLevelObject: Codable {
 struct Restaurant: Codable {
     let name: String
     let rating: Double
-    let yelpRestaurantURL: String
-    
-//    enum CodingKeys: String, CodingKey {
-//        case yelpRestaurantURL = "url"
-//    }
+    let url: URL
 }

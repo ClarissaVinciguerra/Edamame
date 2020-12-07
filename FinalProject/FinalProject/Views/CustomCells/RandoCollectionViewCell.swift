@@ -15,9 +15,8 @@ class RandoCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var backgroundPlaceHolder: UIView!
     
     //MARK: - Properties
-    let gradientLayer = CAGradientLayer()
-    var indexPath: IndexPath!
     var user: User?
+    let gradientLayer = CAGradientLayer()
     
     var photo: UIImage? {
         didSet {
@@ -49,6 +48,6 @@ class RandoCollectionViewCell: UICollectionViewCell {
         gradientLayer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
         gradientLayer.frame = self.backgroundPlaceHolder.bounds
         
-        self.backgroundPlaceHolder.layer.insertSublayer(gradientLayer, at: 0)
+        self.backgroundPlaceHolder.layer.insertSublayer(gradientLayer, at: UInt32(0.5))
     }
 }

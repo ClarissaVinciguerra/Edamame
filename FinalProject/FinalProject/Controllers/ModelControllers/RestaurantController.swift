@@ -23,8 +23,8 @@ class RestaurantController {
         let queryItems = parameters.compactMap{URLQueryItem(name: $0.key, value: $0.value)}
         components?.queryItems = queryItems
         
-        guard let url = components?.url,
-              let data = "accessToken=cvNn1hjiH75zWVNtEwt75YOT8mlMJMB2NPCxAZF3UeY9ufpAYwxfW_ahE3C40VpCuV6qjloF3FSpBxtY0B-5XGpxB0uPMsTcLGRJKs9oPf5ln2xsOFDqfSBEfC-sX3Yx".data(using: String.Encoding.utf8)
+        guard let url = components?.url
+
         else { return completion(.failure(.invalidURL))}
         
         let headers = [
@@ -33,9 +33,8 @@ class RestaurantController {
         
         var request = URLRequest(url: url)
         
-        request.httpMethod = "POST"
+        request.httpMethod = "GET"
         request.allHTTPHeaderFields = headers
-        request.httpBody = data
         
         URLSession.shared.dataTask(with: request) { (data, _, error) in
             if let error = error {

@@ -16,7 +16,7 @@ class RestaurantTableViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        fetchRestaurants()
     }
     
     //MARK: - Helper Functions
@@ -43,13 +43,13 @@ class RestaurantTableViewController: UITableViewController {
         return restaurants.count
     }
     
-//    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-//    
-//        let selectedRestaurant = 
-//        guard let vc = SFSafariViewController(url: URL(string: "") ) else { return }
-//        
-//        present(vc, animated: true)
-//    }
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        let selectedRestaurant = restaurants[indexPath.row]
+        let vc = SFSafariViewController(url: selectedRestaurant.url)
+      
+        present(vc, animated: true)
+    }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "restaurantCell", for: indexPath)
