@@ -7,6 +7,7 @@
 
 import UIKit
 import CoreLocation
+import SafariServices
 
 class RestaurantTableViewController: UITableViewController {
     
@@ -41,6 +42,14 @@ class RestaurantTableViewController: UITableViewController {
         
         return restaurants.count
     }
+    
+//    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+//    
+//        let selectedRestaurant = 
+//        guard let vc = SFSafariViewController(url: URL(string: "") ) else { return }
+//        
+//        present(vc, animated: true)
+//    }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "restaurantCell", for: indexPath)
