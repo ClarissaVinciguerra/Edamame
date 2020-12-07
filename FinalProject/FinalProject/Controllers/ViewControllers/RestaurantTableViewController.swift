@@ -9,14 +9,23 @@ import UIKit
 import CoreLocation
 import SafariServices
 
-class RestaurantTableViewController: UITableViewController {
+class RestaurantTableViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     //MARK: - Properties
     var restaurants: [Restaurant] = []
     
+    //MARK: - Outlets
+    @IBOutlet weak var tableView: UITableView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        fetchRestaurants()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        tableView.dataSource = self
+        tableView.delegate = self
     }
     
     //MARK: - Helper Functions
@@ -38,20 +47,20 @@ class RestaurantTableViewController: UITableViewController {
     }
     
     // MARK: - Table view data source
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
         return restaurants.count
     }
     
-//    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-//    
-//        let selectedRestaurant = 
-//        guard let vc = SFSafariViewController(url: URL(string: "") ) else { return }
-//        
-//        present(vc, animated: true)
-//    }
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        let selectedRestaurant = restaurants[indexPath.row]
+        let vc = SFSafariViewController(url: selectedRestaurant.url)
+      
+        present(vc, animated: true)
+    }
     
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "restaurantCell", for: indexPath)
         
         let restaurant = restaurants[indexPath.row]

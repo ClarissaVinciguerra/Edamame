@@ -32,7 +32,6 @@
 		706A811B2567184E00A07C9C /* RandoCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 706A811A2567184E00A07C9C /* RandoCollectionViewCell.swift */; };
 		706A811E2567188700A07C9C /* EditPhotoCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 706A811D2567188600A07C9C /* EditPhotoCollectionViewCell.swift */; };
 		706A8121256718AD00A07C9C /* ViewPhotoCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 706A8120256718AD00A07C9C /* ViewPhotoCollectionViewCell.swift */; };
-		706A81402567332000A07C9C /* RestaurantTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 706A813F2567332000A07C9C /* RestaurantTableViewCell.swift */; };
 		706A81892568676800A07C9C /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 706A81882568676800A07C9C /* GoogleService-Info.plist */; };
 		706A81C9256C100D00A07C9C /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 706A81C8256C100D00A07C9C /* SignUpViewController.swift */; };
 		70EB018D256EFDD30031ED9F /* AgeCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70EB018C256EFDD30031ED9F /* AgeCalculator.swift */; };
@@ -85,7 +84,6 @@
 		706A811A2567184E00A07C9C /* RandoCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RandoCollectionViewCell.swift; sourceTree = "<group>"; };
 		706A811D2567188600A07C9C /* EditPhotoCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditPhotoCollectionViewCell.swift; sourceTree = "<group>"; };
 		706A8120256718AD00A07C9C /* ViewPhotoCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewPhotoCollectionViewCell.swift; sourceTree = "<group>"; };
-		706A813F2567332000A07C9C /* RestaurantTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestaurantTableViewCell.swift; sourceTree = "<group>"; };
 		706A81882568676800A07C9C /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		706A81C8256C100D00A07C9C /* SignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
 		70EB018C256EFDD30031ED9F /* AgeCalculator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgeCalculator.swift; sourceTree = "<group>"; };
@@ -259,7 +257,6 @@
 				706A811A2567184E00A07C9C /* RandoCollectionViewCell.swift */,
 				706A811D2567188600A07C9C /* EditPhotoCollectionViewCell.swift */,
 				706A8120256718AD00A07C9C /* ViewPhotoCollectionViewCell.swift */,
-				706A813F2567332000A07C9C /* RestaurantTableViewCell.swift */,
 				A60933E5256C2DA700A1C767 /* ConversationTableViewCell.swift */,
 				A6093447256C578400A1C767 /* NewConversationTableViewCell.swift */,
 			);
@@ -488,7 +485,6 @@
 				706A81122567164B00A07C9C /* Conversation.swift in Sources */,
 				706A80B02566F61200A07C9C /* User.swift in Sources */,
 				A6093448256C578400A1C767 /* NewConversationTableViewCell.swift in Sources */,
-				706A81402567332000A07C9C /* RestaurantTableViewCell.swift in Sources */,
 				C33E2841256EC5390092442F /* RestaurantController.swift in Sources */,
 				C33E283E256EC45B0092442F /* Restaurant.swift in Sources */,
 				706A81152567167200A07C9C /* StorageError.swift in Sources */,
@@ -661,6 +657,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = FinalProject/Resources/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -680,6 +677,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = FinalProject/Resources/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
