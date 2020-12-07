@@ -10,6 +10,8 @@ import CoreLocation
 
 class RestaurantController {
     
+    static let shared = RestaurantController()
+    
     static let baseURL = URL(string: "https://api.yelp.com/v3/businesses/search")!
     
     static func fetchRestaurants(location: CLLocation, completion: @escaping (Result <[Restaurant], NetworkError>) -> Void) {
