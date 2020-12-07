@@ -15,7 +15,6 @@ class UserController {
     static let shared = UserController()
     let database = Firestore.firestore()
     var currentUser: User?
-    var matchedUser: User? // this was used for location func - probably better to have as a local property in the VC
     let userCollection = "users"
     var randos: [User] = []
     var sentRequests: [User] = []
@@ -521,14 +520,14 @@ class UserController {
     }
    
     // MARK: - DELETE
-    func deleteUserInfoWith(_ uuid: String, completion: @escaping ((Bool) -> Void)) {
+    func deleteUserInfoWith(_ uuid: String, completion: @escaping (Result<Void, UserError>) -> Void) {
         database.collection(userCollection).document(uuid).delete() { err in
             if let err = err {
                 print("Error removing document: \(err)")
-                completion(false)
+                completion (.failure(.couldNotRemove))
             } else {
                 print("User successfully deleted.")
-                completion(true)
+                completion(.success(()))
             }
         }
     }
