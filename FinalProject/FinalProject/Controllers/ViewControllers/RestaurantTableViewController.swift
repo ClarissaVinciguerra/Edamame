@@ -9,7 +9,7 @@ import UIKit
 import CoreLocation
 import SafariServices
 
-class RestaurantTableViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class RestaurantTableViewController: UIViewController {
     
     //MARK: - Properties
     var restaurants: [Restaurant] = []
@@ -45,8 +45,11 @@ class RestaurantTableViewController: UIViewController, UITableViewDelegate, UITa
             }
         }
     }
+}
+
+//MARK: - Extensions
+extension RestaurantTableViewController: UITableViewDelegate, UITableViewDataSource {
     
-    // MARK: - Table view data source
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
         return restaurants.count
