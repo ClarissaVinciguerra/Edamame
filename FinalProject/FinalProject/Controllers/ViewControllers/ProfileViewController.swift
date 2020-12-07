@@ -93,7 +93,7 @@ class ProfileViewController: UIViewController {
     
     // MARK: - Actions
     @IBAction func addAcceptRevokeButtonTapped(_ sender: Any) {
-        checkFriendStatus()
+        updateFriendStatus()
     }
     
     @IBAction func declineButtonTapped(_ sender: Any) {
@@ -105,19 +105,22 @@ class ProfileViewController: UIViewController {
     }
     
     @IBAction func reportButtonTapped(_ sender: Any) {
-        
+        reportUser()
     }
 
     // MARK: - Class Methods
-    func checkFriendStatus() {
+    func updateFriendStatus() {
         guard let otherUser = otherUser, let currentUser = UserController.shared.currentUser else { return }
+       // what triggers this? accpeted a friendReq? Denies a friendReq?
+        if let index = currentUser.sentRequests.firstIndex(of: otherUser.uuid) {
         
-        if currentUser.sentRequests.contains(otherUser.uuid) {
             removeSentRequestOf(currentUser, andOtherUser: otherUser)
+            currentUser.sentRequests.remove(at: index)
+            let index = otherUser.pendingRequests
             
-            updateViews()
-            
+            // what does this do
         } else if currentUser.pendingRequests.contains(otherUser.uuid) {
+            
             removeSentRequestOf(otherUser, andOtherUser: currentUser)
             
             currentUser.friends.append(otherUser.uuid)
@@ -126,17 +129,15 @@ class ProfileViewController: UIViewController {
             update(currentUser)
             update(otherUser)
             
-            updateViews()
-            
         } else {
             currentUser.sentRequests.append(otherUser.uuid)
             otherUser.pendingRequests.append(currentUser.uuid)
             
             update(currentUser)
             update(otherUser)
-            
-            updateViews()
+               
         }
+        updateViews()
     }
     
     private func update(_ user: User) {
@@ -159,6 +160,7 @@ class ProfileViewController: UIViewController {
             case .success(_):
                 DispatchQueue.main.async {
                     print("Sent request successfully revoked🏅 🔥 Go check Firebase! 🔥")
+                    
                 }
             case .failure(let error):
                 print("Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")
@@ -176,7 +178,7 @@ class ProfileViewController: UIViewController {
     
     func blockUser() {
         guard let otherUser = otherUser, let currentUser = UserController.shared.currentUser else { return }
-        // change name to uuid
+        
         currentUser.blockedArray.append(otherUser.uuid)
         UserController.shared.updateUserBy(currentUser) { (result) in
             switch result {
@@ -188,6 +190,18 @@ class ProfileViewController: UIViewController {
                 print("Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")
             }
         }
+    }
+    
+    func reportUser() {
+        guard let otherUser = otherUser else { return }
+        
+        otherUser.reportCount += 1
+        
+        if otherUser.reportCount >= 3 {
+            otherUser.reportedThrice = true
+        }
+            update(otherUser)
+            blockUser()
     }
     
     // MARK: - UpdateViews
@@ -206,6 +220,7 @@ class ProfileViewController: UIViewController {
             switch result {
             case .success(let user):
                 DispatchQueue.main.async { [self] in
+                    
                     UserController.shared.currentUser = user
                     
                     // this ends up getting called before the friend request is revoked on the other queue

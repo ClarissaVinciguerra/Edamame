@@ -23,6 +23,7 @@ class RandoCollectionViewController: UICollectionViewController {
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
         
         retrieveCurrentLocation()
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -44,19 +45,19 @@ class RandoCollectionViewController: UICollectionViewController {
     
     @objc func loadData() {
         guard let currentUser = UserController.shared.currentUser else { return }
-            
-            UserController.shared.fetchFilteredRandos(currentUser: currentUser) { (result) in
-                switch result {
-                case .success(let randos):
-                    DispatchQueue.main.async {
-                        UserController.shared.randos = randos
-                        self.updateViews()
-                    }
-                case .failure(let error):
-                    print("Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")
-                    
+        
+        UserController.shared.fetchFilteredRandos(currentUser: currentUser) { (result) in
+            switch result {
+            case .success(let randos):
+                DispatchQueue.main.async {
+                    UserController.shared.randos = randos
+                    self.updateViews()
                 }
+            case .failure(let error):
+                print("Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")
+                
             }
+        }
     }
     
     func updateViews() {
