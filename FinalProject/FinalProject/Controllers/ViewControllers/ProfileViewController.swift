@@ -75,18 +75,18 @@ class ProfileViewController: UIViewController {
     
     func configureCollectionViewLayout() -> UICollectionViewLayout {
         
-        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalHeight(0.98))
+        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalHeight(1))
         
         let layoutItem = NSCollectionLayoutItem(layoutSize: itemSize)
-        layoutItem.contentInsets = NSDirectionalEdgeInsets(top: 1, leading: 5, bottom: 0, trailing: 5)
         
         let layoutGroupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.95), heightDimension: .fractionalHeight(1))
         
         let layoutGroup = NSCollectionLayoutGroup.horizontal(layoutSize: layoutGroupSize, subitems: [layoutItem])
         
         let layoutSection = NSCollectionLayoutSection(group: layoutGroup)
-        layoutSection.orthogonalScrollingBehavior = .groupPagingCentered
-        layoutSection.contentInsets = .init(top: 5, leading: 0, bottom: 0, trailing: 0)
+        layoutSection.orthogonalScrollingBehavior = .groupPaging
+        layoutSection.contentInsets = .init(top: 5, leading: 5, bottom: 5, trailing: 5)
+        layoutSection.interGroupSpacing = 5
         
         return UICollectionViewCompositionalLayout(section: layoutSection)
     }
