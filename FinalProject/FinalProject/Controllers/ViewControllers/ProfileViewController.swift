@@ -18,7 +18,6 @@ class ProfileViewController: UIViewController {
     @IBOutlet weak var addAcceptRevokeButton: UIButton!
     @IBOutlet weak var declineButton: UIButton!
     @IBOutlet weak var blockButton: UIButton!
-    @IBOutlet weak var reportButton: UIButton!
     @IBOutlet weak var collectionView: UICollectionView!
     
     // MARK: - Properties
@@ -47,7 +46,7 @@ class ProfileViewController: UIViewController {
         collectionView.dataSource = self
         collectionView.delegate = self
         collectionView.collectionViewLayout = configureCollectionViewLayout()
-        collectionView.backgroundColor = .edamameGreen
+        collectionView.backgroundColor = .whiteSmoke
         
         nameAndAgeLabel.textColor = .softBlack
         distanceLabel.textColor = .softBlack
@@ -56,20 +55,18 @@ class ProfileViewController: UIViewController {
         
         addAcceptRevokeButton.backgroundColor = .edamameGreen
         addAcceptRevokeButton.tintColor = .whiteSmoke
-        addAcceptRevokeButton.clipsToBounds = true
+        addAcceptRevokeButton.addCornerRadius()
+        addAcceptRevokeButton.addAccentBorder()
         
         declineButton.backgroundColor = .edamameGreen
         declineButton.tintColor = .whiteSmoke
-        declineButton.clipsToBounds = true
+        declineButton.addCornerRadius()
+        declineButton.addAccentBorder()
         
-        blockButton.backgroundColor = .edamameGreen
-        blockButton.tintColor = .whiteSmoke
-        blockButton.clipsToBounds = true
-        
-        reportButton.backgroundColor = .whiteSmoke
-        reportButton.addAccentBorder()
-        reportButton.tintColor = .edamameGreen
-        reportButton.clipsToBounds = true
+        blockButton.backgroundColor = .whiteSmoke
+        blockButton.tintColor = .darkerGreen
+        blockButton.addCornerRadius()
+        blockButton.addAccentBorder()
     }
     
     func configureCollectionViewLayout() -> UICollectionViewLayout {
@@ -104,7 +101,9 @@ class ProfileViewController: UIViewController {
     }
     
     @IBAction func reportButtonTapped(_ sender: Any) {
+        
         reportUser()
+        
     }
 
     // MARK: - Class Methods
@@ -245,9 +244,9 @@ class ProfileViewController: UIViewController {
             
         } else if currentUser.pendingRequests.contains(otherUser.uuid) {
             
-            addAcceptRevokeButton.setTitle("Approve Request", for: .normal)
+            addAcceptRevokeButton.setTitle("Accept", for: .normal)
             declineButton.alpha = 1
-            declineButton.setTitle("Decline Request", for: .normal)
+            declineButton.setTitle("Decline", for: .normal)
             
         } else {
             

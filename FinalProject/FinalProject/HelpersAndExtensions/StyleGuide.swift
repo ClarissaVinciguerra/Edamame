@@ -16,8 +16,7 @@ struct FontNames {
 }
 
 extension UIColor {
-    static let darkerGreen = UIColor(named: "darkerGreen")!
-    static let grayscale = UIColor(named: "grayscale")!
+    static let darkerGreen = UIColor(named: "darkGreen")!
     static let edamameGreen = UIColor(named: "lightGreen")!
     static let softBlack = UIColor(named: "softBlack")!
     static let lightYellowAccent = UIColor(named: "lightYellow")!

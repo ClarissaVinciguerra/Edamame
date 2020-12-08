@@ -150,28 +150,28 @@
                                 </cells>
                             </collectionView>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="1uQ-Xd-5DU">
-                                <rect key="frame" x="8" y="524" width="412" height="59.333333333333371"/>
+                                <rect key="frame" x="8" y="524" width="412" height="55"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="BI7-2c-dyv">
-                                        <rect key="frame" x="0.0" y="0.0" width="412" height="28"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="412" height="26.666666666666668"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Name and Age Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XxT-9J-kKh">
-                                                <rect key="frame" x="0.0" y="0.0" width="263.33333333333331" height="28"/>
-                                                <fontDescription key="fontDescription" name="SourceSansPro-Bold" family="Source Sans Pro" pointSize="24"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="293" height="26.666666666666668"/>
+                                                <fontDescription key="fontDescription" name="SourceSansPro-Bold" family="Source Sans Pro" pointSize="21"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Distance Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QWN-2f-NsI">
-                                                <rect key="frame" x="279.33333333333331" y="0.0" width="132.66666666666669" height="28"/>
-                                                <fontDescription key="fontDescription" name="SourceSansPro-Regular" family="Source Sans Pro" pointSize="20"/>
+                                                <rect key="frame" x="309" y="0.0" width="103" height="26.666666666666668"/>
+                                                <fontDescription key="fontDescription" name="SourceSansPro-Regular" family="Source Sans Pro" pointSize="17"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                         </subviews>
                                     </stackView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Type of Vegan" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DG7-PT-3r9">
-                                        <rect key="frame" x="0.0" y="36" width="125.66666666666667" height="23.333333333333329"/>
-                                        <fontDescription key="fontDescription" name="SourceSansPro-Regular" family="Source Sans Pro" pointSize="20"/>
+                                        <rect key="frame" x="0.0" y="34.666666666666629" width="92.666666666666671" height="20.333333333333329"/>
+                                        <fontDescription key="fontDescription" name="SourceSansPro-Regular" family="Source Sans Pro" pointSize="16"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
@@ -181,31 +181,31 @@
                                 </constraints>
                             </stackView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Bio" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="x22-hy-ijK">
-                                <rect key="frame" x="8" y="599.33333333333337" width="412" height="23.333333333333371"/>
-                                <fontDescription key="fontDescription" name="SourceSansPro-Regular" family="Source Sans Pro" pointSize="20"/>
+                                <rect key="frame" x="8" y="595" width="412" height="20.333333333333371"/>
+                                <fontDescription key="fontDescription" name="SourceSansPro-Regular" family="Source Sans Pro" pointSize="16"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <stackView opaque="NO" contentMode="scaleToFill" spacing="56" translatesAutoresizingMaskIntoConstraints="NO" id="i4Q-eL-7YM">
-                                <rect key="frame" x="28" y="803" width="372" height="32"/>
+                            <stackView opaque="NO" contentMode="scaleToFill" spacing="24" translatesAutoresizingMaskIntoConstraints="NO" id="i4Q-eL-7YM">
+                                <rect key="frame" x="72" y="795" width="284" height="40"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="uQQ-0L-K2h">
-                                        <rect key="frame" x="0.0" y="0.0" width="196" height="32"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="196" height="40"/>
                                         <subviews>
-                                            <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="249" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="B5n-sH-lhE">
-                                                <rect key="frame" x="0.0" y="0.0" width="94" height="32"/>
+                                            <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="249" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="B5n-sH-lhE">
+                                                <rect key="frame" x="0.0" y="0.0" width="94" height="40"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="94" id="HfQ-gV-Eq7"/>
                                                 </constraints>
-                                                <fontDescription key="fontDescription" name="SourceSansPro-Regular" family="Source Sans Pro" pointSize="17"/>
+                                                <fontDescription key="fontDescription" name="SourceSansPro-Regular" family="Source Sans Pro" pointSize="14"/>
                                                 <state key="normal" title="Add, acc, rev"/>
                                                 <connections>
                                                     <action selector="addAcceptRevokeButtonTapped:" destination="DTI-oU-dNp" eventType="touchUpInside" id="SSW-kc-u1d"/>
                                                 </connections>
                                             </button>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bN9-HO-54v">
-                                                <rect key="frame" x="102" y="0.0" width="94" height="32"/>
-                                                <fontDescription key="fontDescription" name="SourceSansPro-Regular" family="Source Sans Pro" pointSize="17"/>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="bN9-HO-54v">
+                                                <rect key="frame" x="102" y="0.0" width="94" height="40"/>
+                                                <fontDescription key="fontDescription" name="SourceSansPro-Regular" family="Source Sans Pro" pointSize="14"/>
                                                 <state key="normal" title="Decline"/>
                                                 <connections>
                                                     <action selector="declineButtonTapped:" destination="DTI-oU-dNp" eventType="touchUpInside" id="3JW-WE-lVB"/>
@@ -217,33 +217,25 @@
                                         </constraints>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="W4d-Nr-brs">
-                                        <rect key="frame" x="252" y="0.0" width="120" height="32"/>
+                                        <rect key="frame" x="220" y="0.0" width="64" height="40"/>
                                         <subviews>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sye-md-uDW">
-                                                <rect key="frame" x="0.0" y="0.0" width="56" height="32"/>
-                                                <fontDescription key="fontDescription" name="SourceSansPro-Regular" family="Source Sans Pro" pointSize="17"/>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="characterWrap" translatesAutoresizingMaskIntoConstraints="NO" id="sye-md-uDW">
+                                                <rect key="frame" x="0.0" y="0.0" width="64" height="40"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="64" id="xeA-DN-9Q5"/>
+                                                </constraints>
+                                                <fontDescription key="fontDescription" name="SourceSansPro-Regular" family="Source Sans Pro" pointSize="14"/>
                                                 <state key="normal" title="Block"/>
                                                 <connections>
                                                     <action selector="blockButtonTapped:" destination="DTI-oU-dNp" eventType="touchUpInside" id="7Gg-6C-h21"/>
                                                 </connections>
                                             </button>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jXD-DV-2fU">
-                                                <rect key="frame" x="64" y="0.0" width="56" height="32"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="width" constant="56" id="h9a-W8-iuP"/>
-                                                </constraints>
-                                                <fontDescription key="fontDescription" name="SourceSansPro-Regular" family="Source Sans Pro" pointSize="17"/>
-                                                <state key="normal" title="Report"/>
-                                                <connections>
-                                                    <action selector="reportButtonTapped:" destination="DTI-oU-dNp" eventType="touchUpInside" id="Ui8-aF-7Ee"/>
-                                                </connections>
-                                            </button>
                                         </subviews>
-                                        <constraints>
-                                            <constraint firstItem="sye-md-uDW" firstAttribute="width" secondItem="jXD-DV-2fU" secondAttribute="width" id="cru-CR-gq3"/>
-                                        </constraints>
                                     </stackView>
                                 </subviews>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="40" id="qXB-dd-hKQ"/>
+                                </constraints>
                             </stackView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="Db2-hX-w85"/>
@@ -262,7 +254,13 @@
                             <constraint firstItem="x22-hy-ijK" firstAttribute="leading" secondItem="Db2-hX-w85" secondAttribute="leading" constant="8" id="js3-f0-UUe"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="vvV-KY-TTU"/>
+                    <navigationItem key="navigationItem" id="vvV-KY-TTU">
+                        <barButtonItem key="rightBarButtonItem" title="Report" id="0pc-tM-yLX">
+                            <connections>
+                                <action selector="reportButtonTapped:" destination="DTI-oU-dNp" id="dKd-RQ-yMG"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="addAcceptRevokeButton" destination="B5n-sH-lhE" id="KIL-b8-ILl"/>
                         <outlet property="bioLabel" destination="x22-hy-ijK" id="94P-wA-47B"/>
@@ -271,7 +269,6 @@
                         <outlet property="declineButton" destination="bN9-HO-54v" id="xC0-E0-n82"/>
                         <outlet property="distanceLabel" destination="QWN-2f-NsI" id="u0h-Kg-t0F"/>
                         <outlet property="nameAndAgeLabel" destination="XxT-9J-kKh" id="v8D-qh-bd5"/>
-                        <outlet property="reportButton" destination="jXD-DV-2fU" id="cjB-DW-6vu"/>
                         <outlet property="typeOfVeganLabel" destination="DG7-PT-3r9" id="gPu-Wv-i4r"/>
                     </connections>
                 </viewController>
