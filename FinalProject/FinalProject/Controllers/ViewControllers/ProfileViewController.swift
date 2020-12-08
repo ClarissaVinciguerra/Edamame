@@ -225,7 +225,6 @@ class ProfileViewController: UIViewController {
     func updateViews() {
         guard let otherUser = otherUser, let currentUser = UserController.shared.currentUser, let age = otherUser.dateOfBirth.calcAge() else { return }
         
-        
         let currentUserLocation = CLLocation(latitude: currentUser.latitude, longitude: currentUser.longitude)
         let otherUserLocation = CLLocation(latitude: otherUser.latitude, longitude: otherUser.longitude)
         
