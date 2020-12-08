@@ -397,16 +397,16 @@ class UserController {
             let documentReference = self.database.collection(self.userCollection).document(user.uuid)
             
             documentReference.updateData([
-                                            UserStrings.nameKey : "\(user.name)",
-                                            UserStrings.latitudeKey : user.latitude,
-                                            UserStrings.longitudeKey : user.longitude,
-                                            UserStrings.imageUUIDsKey : user.imageUUIDs,
-                                            UserStrings.friendsKey : user.friends,
-                                            UserStrings.pendingRequestsKey : user.pendingRequests,
-                                            UserStrings.sentRequestsKey : user.sentRequests,
-                                            UserStrings.blockedArrayKey : user.blockedArray,
+                UserStrings.nameKey : "\(user.name)",
+                UserStrings.latitudeKey : user.latitude,
+                UserStrings.longitudeKey : user.longitude,
+                UserStrings.imageUUIDsKey : user.imageUUIDs,
+                UserStrings.friendsKey : user.friends,
+                UserStrings.pendingRequestsKey : user.pendingRequests,
+                UserStrings.sentRequestsKey : user.sentRequests,
+                UserStrings.blockedArrayKey : user.blockedArray,
                 UserStrings.reportCountKey : user.reportCount,
-                UserStrings.reportCountKey : user.reportedThrice
+                UserStrings.reportedThrice : user.reportedThrice
             ]) { (error) in
                 if let error = error {
                     print("Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")
