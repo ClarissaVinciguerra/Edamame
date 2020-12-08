@@ -111,17 +111,11 @@ class ProfileViewController: UIViewController {
     // MARK: - Class Methods
     func updateFriendStatus() {
         guard let otherUser = otherUser, let currentUser = UserController.shared.currentUser else { return }
-       // what triggers this? accpeted a friendReq? Denies a friendReq?
-        if let index = currentUser.sentRequests.firstIndex(of: otherUser.uuid) {
-        
-            removeSentRequestOf(currentUser, andOtherUser: otherUser)
-            currentUser.sentRequests.remove(at: index)
-            let index = otherUser.pendingRequests
-            
-            // what does this do
-        } else if currentUser.pendingRequests.contains(otherUser.uuid) {
-            
+
+        if let index = currentUser.pendingRequests.firstIndex(of: otherUser.uuid) {
+            // This removes a pending request from a current user and sent request from other users' array and adds them both to one anothers' friends lists
             removeSentRequestOf(otherUser, andOtherUser: currentUser)
+            currentUser.pendingRequests.remove(at: index)
             
             currentUser.friends.append(otherUser.uuid)
             otherUser.friends.append(currentUser.uuid)
@@ -130,6 +124,7 @@ class ProfileViewController: UIViewController {
             update(otherUser)
             
         } else {
+            // This initiates a first request and appends users to respective arrays
             currentUser.sentRequests.append(otherUser.uuid)
             otherUser.pendingRequests.append(currentUser.uuid)
             
@@ -216,41 +211,29 @@ class ProfileViewController: UIViewController {
         declineButton.alpha = 0
         addAcceptRevokeButton.alpha = 1
         
-        UserController.shared.fetchUserByUUID(currentUser.uuid) { (result) in
-            switch result {
-            case .success(let user):
-                DispatchQueue.main.async { [self] in
-                    
-                    UserController.shared.currentUser = user
-                    
-                    // this ends up getting called before the friend request is revoked on the other queue
-                    if currentUser.sentRequests.contains(otherUser.uuid) {
-                        
-                        self.addAcceptRevokeButton.setTitle("Revoke Sent Request", for: .normal)
-                        
-                    } else if currentUser.pendingRequests.contains(otherUser.uuid) {
-                        
-                        self.addAcceptRevokeButton.setTitle("Approve Request", for: .normal)
-                        self.declineButton.alpha = 1
-                        self.declineButton.setTitle("Decline Request", for: .normal)
-                        
-                    } else {
-                        
-                        self.addAcceptRevokeButton.setTitle("Request Friend", for: .normal)
-                    }
-                    
-                    if currentUser.blockedArray.contains(otherUser.uuid) {
-                        self.addAcceptRevokeButton.alpha = 0
-                        self.blockButton.alpha = 1
-                        self.blockButton.setTitle("Unblock", for: .normal)
-                    } else {
-                        self.blockButton.setTitle("Block", for: .normal)
-                    }
-                }
-            case .failure(let error):
-                print("Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")
-            }
+        if currentUser.sentRequests.contains(otherUser.uuid) {
+            
+            addAcceptRevokeButton.setTitle("Revoke Sent Request", for: .normal)
+            
+        } else if currentUser.pendingRequests.contains(otherUser.uuid) {
+            
+            addAcceptRevokeButton.setTitle("Approve Request", for: .normal)
+            declineButton.alpha = 1
+            declineButton.setTitle("Decline Request", for: .normal)
+            
+        } else {
+            
+            addAcceptRevokeButton.setTitle("Request Friend", for: .normal)
         }
+        
+        if currentUser.blockedArray.contains(otherUser.uuid) {
+            addAcceptRevokeButton.alpha = 0
+            blockButton.alpha = 1
+            blockButton.setTitle("Unblock", for: .normal)
+        } else {
+            blockButton.setTitle("Block", for: .normal)
+        }
+        
     }
 }
 

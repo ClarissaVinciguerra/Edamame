@@ -45,9 +45,8 @@ final class StorageController {
     }
     
     public func deleteImage(at index: Int, completion: @escaping (Result<Void, Error>) -> Void) {
-        // keep data in sync everywhere there is data - AVOID THE BUGS EWWWW BUGGSSSS.
         
-        // 1. currentUser.imageURLs - must be removed locally from this array CHECK!!!!!
+        // 1. currentUser.imageURLs - must be removed locally from this array
         guard let imageUUID = UserController.shared.currentUser?.imageUUIDs.remove(at: index) else { return completion(.failure(StorageErrors.imageNotFound)) }
         
         // 2. The URL also exists in firestore (images array in firestore), see line 75

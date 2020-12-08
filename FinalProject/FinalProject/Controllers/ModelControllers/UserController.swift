@@ -66,7 +66,9 @@ class UserController {
                 UserStrings.friendsKey : newUser.friends,
                 UserStrings.pendingRequestsKey : newUser.pendingRequests,
                 UserStrings.sentRequestsKey : newUser.sentRequests,
-                UserStrings.blockedArrayKey : newUser.blockedArray
+                UserStrings.blockedArrayKey : newUser.blockedArray,
+                UserStrings.reportCountKey : newUser.reportCount,
+                UserStrings.reportedThrice : newUser.reportedThrice
                 
             ]) { error in
                 if let error = error {
@@ -402,7 +404,10 @@ class UserController {
                                             UserStrings.friendsKey : user.friends,
                                             UserStrings.pendingRequestsKey : user.pendingRequests,
                                             UserStrings.sentRequestsKey : user.sentRequests,
-                                            UserStrings.blockedArrayKey : user.blockedArray        ]) { (error) in
+                                            UserStrings.blockedArrayKey : user.blockedArray,
+                UserStrings.reportCountKey : user.reportCount,
+                UserStrings.reportCountKey : user.reportedThrice
+            ]) { (error) in
                 if let error = error {
                     print("Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")
                     return completion(.failure(.firebaseError(error)))
