@@ -19,6 +19,7 @@ class EditProfileViewController: UIViewController {
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var cameraBarButton: UIBarButtonItem!
     @IBOutlet weak var infoButton: UIButton!
+    @IBOutlet weak var settingsButton: UIButton!
     
     //MARK: - Properties
     var viewsLaidOut = false
@@ -61,7 +62,7 @@ class EditProfileViewController: UIViewController {
     @IBAction func infoButtonTapped(_ sender: Any) {
         presentInfoAlert()
     }
-    
+ 
     // MARK: - Class Methods
     private func validateAuth() {
         if FirebaseAuth.Auth.auth().currentUser == nil {
@@ -183,13 +184,14 @@ class EditProfileViewController: UIViewController {
         collectionView.backgroundColor = .whiteSmoke
         collectionView.collectionViewLayout = configureCollectionViewLayout()
         
-        navigationItem.leftBarButtonItem = editButtonItem
-        
         saveChangesButton.backgroundColor = .lightYellowAccent
         saveChangesButton.addCornerRadius()
         saveChangesButton.tintColor = .spaceBlack
+        settingsButton.tintColor = .whiteSmoke
         
         view.backgroundColor = .edamameGreen
+        
+        navigationItem.leftBarButtonItem = editButtonItem
     }
     
     func disableCameraBarButton() {
