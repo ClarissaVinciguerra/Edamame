@@ -146,7 +146,7 @@ class RandoCollectionViewController: UICollectionViewController {
         let rando = UserController.shared.randos[indexPath.row]
         
         cell.user = rando
-        cell.photo = rando.images[0]
+        cell.photo = rando.images.first
         cell.nameLabel.text = rando.name
         cell.ageLabel.text = rando.dateOfBirth.calcAge()
         

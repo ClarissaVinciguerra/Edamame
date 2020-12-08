@@ -110,16 +110,15 @@ class ProfileViewController: UIViewController {
     func updateFriendStatus() {
         guard let otherUser = otherUser, let currentUser = UserController.shared.currentUser else { return }
 
-        if let index = currentUser.pendingRequests.firstIndex(of: otherUser.uuid) {
+        if currentUser.pendingRequests.contains(otherUser.uuid) {
             // remove pending status and place in friends array
-            removeSentRequestOf(otherUser, andOtherUser: currentUser)
-            currentUser.pendingRequests.remove(at: index)
+            removeSentRequestOf(otherUser, andPendingRequestOf: currentUser)
             
             currentUser.friends.append(otherUser.uuid)
             otherUser.friends.append(currentUser.uuid)
             
             update(currentUser)
-            update(otherUser)
+            updateOtherUser(with: otherUser)
             
         } else if let index = currentUser.friends.firstIndex(of: otherUser.uuid) {
             // remove from friends arrays and put other user in blocked array
@@ -132,14 +131,27 @@ class ProfileViewController: UIViewController {
             currentUser.sentRequests.append(otherUser.uuid)
             otherUser.pendingRequests.append(currentUser.uuid)
             
-            update(currentUser)
             update(otherUser)
+            update(currentUser)
+            updateViews()
         }
-        updateViews()
     }
     
     private func update(_ user: User) {
         UserController.shared.updateUserBy(user) { (result) in
+            switch result {
+            case .success(let user):
+                DispatchQueue.main.async {
+                    UserController.shared.currentUser = user
+                }
+            case .failure(let error):
+                print("Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")
+            }
+        }
+    }
+    
+    private func updateOtherUser(with otherUser: User) {
+        UserController.shared.updateUserBy(otherUser) { (result) in
             switch result {
             case .success(_):
                 DispatchQueue.main.async {
@@ -151,13 +163,13 @@ class ProfileViewController: UIViewController {
         }
     }
     
-    private func removeSentRequestOf(_ user: User, andOtherUser: User) {
+    private func removeSentRequestOf(_ otherUser: User, andPendingRequestOf user: User) {
         
-        UserController.shared.removeFromSentRequestsOf(user, andOtherUser: andOtherUser) { (result) in
+        UserController.shared.removeFromSentRequestsOf(otherUser, andPendingRequestOf: user) { (result) in
             switch result {
             case .success(_):
                 DispatchQueue.main.async {
-                    print("Sent request successfully revoked🏅 🔥 Go check Firebase! 🔥")
+                    self.updateViews()
                 }
             case .failure(let error):
                 print("Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")
@@ -183,8 +195,14 @@ class ProfileViewController: UIViewController {
     func declineFriendRequest() {
         guard let otherUser = otherUser, let currentUser = UserController.shared.currentUser else { return }
         
+        if let index = currentUser.pendingRequests.firstIndex(of: otherUser.uuid) {
+            removeSentRequestOf(otherUser, andPendingRequestOf: currentUser)
+        }
+        
         blockUser()
-        removeSentRequestOf(otherUser, andOtherUser: currentUser)
+        
+        // add alert that says "user blocked!" here
+        
         navigationController?.popViewController(animated: true)
     }
     
@@ -232,9 +250,10 @@ class ProfileViewController: UIViewController {
         nameAndAgeLabel.text = otherUser.name + " " + age
         bioLabel.text = otherUser.bio
         typeOfVeganLabel.text = otherUser.type
-
+        
         declineButton.alpha = 0
         addAcceptRevokeButton.alpha = 1
+        blockButton.setTitle("Block", for: .normal)
         
         if currentUser.sentRequests.contains(otherUser.uuid) {
             
@@ -247,19 +266,16 @@ class ProfileViewController: UIViewController {
             declineButton.alpha = 1
             declineButton.setTitle("Decline", for: .normal)
             
+        } else if currentUser.friends.contains(otherUser.uuid) {
+            
+            addAcceptRevokeButton.isEnabled = false
+            addAcceptRevokeButton.setTitle("Friends!", for: .disabled)
+            
         } else {
             
             addAcceptRevokeButton.setTitle("Request Friend", for: .normal)
+            
         }
-        
-        if currentUser.blockedArray.contains(otherUser.uuid) {
-            addAcceptRevokeButton.alpha = 0
-            blockButton.alpha = 1
-            blockButton.setTitle("Unblock", for: .normal)
-        } else {
-            blockButton.setTitle("Block", for: .normal)
-        }
-        
     }
 }
 
