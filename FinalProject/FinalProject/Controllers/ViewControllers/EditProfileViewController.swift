@@ -128,7 +128,7 @@ class EditProfileViewController: UIViewController {
               let birthdayKey = UserDefaults.standard.value(forKey: SignUpStrings.birthday) as? Date,
               let type = typeOfVeganTextField.text,
               let bio = bioTextView.text,
-              !bio.isEmpty else { return }
+              !bio.isEmpty else { return presentBioAlert() }
         
         let uid = "\(uidKey)"
         let name = "\(nameKey)"
@@ -162,6 +162,16 @@ class EditProfileViewController: UIViewController {
     
     private func presentInfoAlert() {
         let alertController = UIAlertController(title: "The type of plant based diet you identify most with 🌱", message: "Common types include but are not limited to: dietary vegan, cheegan, vegetarian, ovo-vegetarian, 98% vegan, vegan, etc.", preferredStyle: .alert)
+        
+        let okayAction = UIAlertAction(title: "Okay", style: .default)
+        
+        alertController.addAction(okayAction)
+        
+        present(alertController, animated: true, completion: nil)
+    }
+    
+    private func presentBioAlert() {
+        let alertController = UIAlertController(title: "Fill out the Bio", message: "Let others know a little bit about you...", preferredStyle: .alert)
         
         let okayAction = UIAlertAction(title: "Okay", style: .default)
         

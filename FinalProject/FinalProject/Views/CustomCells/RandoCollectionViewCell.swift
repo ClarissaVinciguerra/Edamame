@@ -43,7 +43,7 @@ class RandoCollectionViewCell: UICollectionViewCell {
         let colorBottom = UIColor.black.cgColor
         
         gradientLayer.colors = [colorTop, colorBottom]
-        gradientLayer.locations = [0.0, 1.0]
+        gradientLayer.locations = [0.0, 0.35]
         gradientLayer.cornerRadius = 5.0
         gradientLayer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
         gradientLayer.frame = self.backgroundPlaceHolder.bounds
