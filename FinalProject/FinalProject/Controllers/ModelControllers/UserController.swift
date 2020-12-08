@@ -39,7 +39,7 @@ class UserController {
 
             guard let imageData = image.jpegData(compressionQuality: 0.5) else { return completion(.failure(.errorConvertingImage))}
 
-            StorageController.shared.uploadImage(with: imageData, fileName: fileName) { (result) in
+            StorageController.shared.uploadImage(with: imageData, fileName: fileName, userID: newUser.uuid) { (result) in
                 switch result {
                 case .success(let fileName):
                     print("Image \(fileName) successfully uploaded!")
@@ -89,7 +89,7 @@ class UserController {
         
         guard let imageData = image.jpegData(compressionQuality: 0.5) else { return completion(.failure(.errorConvertingImage))}
         
-        StorageController.shared.uploadImage(with: imageData, fileName: UUID().uuidString) { (result) in
+        StorageController.shared.uploadImage(with: imageData, fileName: UUID().uuidString, userID: user.uuid) { (result) in
             switch result {
             case .success(let fileName):
                 
@@ -132,7 +132,7 @@ class UserController {
                     
                     dispatchGroup.enter()
                     
-                    StorageController.shared.downloadURL(for: imageUUID) { (result) in
+                    StorageController.shared.downloadURL(for: imageUUID, with: fetchedUser.uuid) { (result) in
                         switch result {
                         case .success(let url):
                             self.convertURLToImage(urlString: "\(url)") { (image) in
@@ -169,13 +169,12 @@ class UserController {
                 self.currentUser = user
                 
                 let dispatchGroup = DispatchGroup()
-               // var images: [UIImage] = []
                 
                 for imageUUID in user.imageUUIDs {
                     
                     dispatchGroup.enter()
                     
-                    StorageController.shared.downloadURL(for: imageUUID) { (result) in
+                    StorageController.shared.downloadURL(for: imageUUID, with: user.uuid) { (result) in
                         switch result {
                         case .success(let url):
                             self.convertURLToImage(urlString: "\(url)") { (image) in
@@ -286,7 +285,7 @@ class UserController {
                                 dispatchGroup.enter()
                                 
                                 
-                                StorageController.shared.downloadURL(for: imageUUID) { (result) in
+                                StorageController.shared.downloadURL(for: imageUUID, with: rando.uuid) { (result) in
                                     switch result {
                                     case .success(let url):
                                         self.convertURLToImage(urlString: "\(url)") { (image) in
@@ -339,7 +338,7 @@ class UserController {
                     for imageUUID in user.imageUUIDs {
                         imageDispatchGroup.enter()
                         
-                        StorageController.shared.downloadURL(for: imageUUID) { (result) in
+                        StorageController.shared.downloadURL(for: imageUUID, with: user.uuid) { (result) in
                             switch result {
                             case .success(let url):
                                 self.convertURLToImage(urlString: "\(url)") { (image) in
@@ -380,7 +379,7 @@ class UserController {
             
             guard let imageData = image.jpegData(compressionQuality: 0.5) else { return completion(.failure(.errorConvertingImage))}
             
-            StorageController.shared.uploadImage(with: imageData, fileName: fileName) { (result) in
+            StorageController.shared.uploadImage(with: imageData, fileName: fileName, userID: user.uuid) { (result) in
                 switch result {
                 case .success(let fileName):
                     print("Image \(fileName) successfully uploaded!")
@@ -412,7 +411,6 @@ class UserController {
                     print("Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")
                     return completion(.failure(.firebaseError(error)))
                 } else {
-                    self.currentUser = user
                     return completion(.success(user))
                 }
             }
@@ -421,10 +419,10 @@ class UserController {
     
     // MARK: - REMOVE
    
-    func removeFromSentRequestsOf (_ user: User, andOtherUser: User, completion: @escaping (Result<Bool, UserError>) -> Void) {
+    func removeFromSentRequestsOf (_ otherUser: User, andPendingRequestOf currentUser: User, completion: @escaping (Result<Bool, UserError>) -> Void) {
         
-        let pendingRequestsDocRef = database.collection(userCollection).document(andOtherUser.uuid)
-        let sentRequestsDocRef = database.collection(userCollection).document(user.uuid)
+        let pendingRequestsDocRef = database.collection(userCollection).document(currentUser.uuid)
+        let sentRequestsDocRef = database.collection(userCollection).document(otherUser.uuid)
         
         database.runTransaction({ (transaction, errorPointer) -> Any? in
             let pendingRequestDocument: DocumentSnapshot
@@ -442,13 +440,17 @@ class UserController {
                 return nil
             }
             
-            guard let pendingRequestIndex = pendingRequestsArray.firstIndex(of: user.uuid), let sentRequestIndex = sentRequestsArray.firstIndex(of: andOtherUser.uuid) else { return completion(.failure(.couldNotUnwrap)) }
+            guard let pendingRequestIndex = pendingRequestsArray.firstIndex(of: otherUser.uuid), let sentRequestIndex = sentRequestsArray.firstIndex(of: currentUser.uuid) else { return completion(.failure(.couldNotUnwrap)) }
            
                 pendingRequestsArray.remove(at: pendingRequestIndex)
                 sentRequestsArray.remove(at: sentRequestIndex)
             transaction.updateData([UserStrings.pendingRequestsKey : pendingRequestsArray], forDocument: pendingRequestsDocRef)
             transaction.updateData([UserStrings.sentRequestsKey: sentRequestsArray], forDocument: sentRequestsDocRef)
                
+            if let index = currentUser.pendingRequests.firstIndex(of: otherUser.uuid) {
+                currentUser.pendingRequests.remove(at: index)
+            }
+            
             return completion(.success(true))
         
         }) { (object, error) in

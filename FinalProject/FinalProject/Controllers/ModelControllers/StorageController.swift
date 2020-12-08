@@ -20,8 +20,8 @@ final class StorageController {
     
     // MARK: - CRUD Functions
     /// Uploads picture to firebase storage and returns completion with url string to download.
-    public func uploadImage(with data: Data, fileName: String, completion: @escaping UploadPictureCompletion) {
-        storage.child("images/\(fileName)").putData(data, metadata: nil, completion: { metadata, error in
+    public func uploadImage(with data: Data, fileName: String, userID: String, completion: @escaping UploadPictureCompletion) {
+        storage.child("\(userID)/\(fileName)").putData(data, metadata: nil, completion: { metadata, error in
             guard error == nil else {
                 print("Failed to upload data to firebase for picture.")
                 completion(.failure(StorageErrors.failedToUpload))
@@ -32,8 +32,8 @@ final class StorageController {
         })
     }
     
-    public func downloadURL(for path: String, completion: @escaping (Result<URL, Error>) -> Void) {
-        let reference = storage.child("images/\(path)")
+    public func downloadURL(for path: String, with userID: String, completion: @escaping (Result<URL, Error>) -> Void) {
+        let reference = storage.child("\(userID)/\(path)")
         
         reference.downloadURL { (url, error) in
             guard let url = url, error == nil else {
@@ -44,7 +44,7 @@ final class StorageController {
         }
     }
     
-    public func deleteImage(at index: Int, completion: @escaping (Result<Void, Error>) -> Void) {
+    public func deleteImage(at index: Int, with userID: String, completion: @escaping (Result<Void, Error>) -> Void) {
         
         // 1. currentUser.imageURLs - must be removed locally from this array
         guard let imageUUID = UserController.shared.currentUser?.imageUUIDs.remove(at: index) else { return completion(.failure(StorageErrors.imageNotFound)) }
@@ -54,7 +54,7 @@ final class StorageController {
             switch result {
             case .success():
                 // 3. the image in the storage itself
-                self.storage.child("images/\(imageUUID)").delete { (error) in
+                self.storage.child("\(userID)/\(imageUUID)").delete { (error) in
                     if let error = error {
                         return completion(.failure(error))
                     }
@@ -67,8 +67,8 @@ final class StorageController {
         
     }
     
-    public func deleteImageFromStorage(with imageUUID: String, completion: @escaping (Result<Void, Error>) -> Void) {
-        self.storage.child("images/\(imageUUID)").delete { (error) in
+    public func deleteImageFromStorage(with imageUUID: String, userID: String, completion: @escaping (Result<Void, Error>) -> Void) {
+        self.storage.child("\(userID)/\(imageUUID)").delete { (error) in
             if let error = error {
                 return completion(.failure(error))
             }
