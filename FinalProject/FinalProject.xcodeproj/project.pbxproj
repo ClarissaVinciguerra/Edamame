@@ -50,6 +50,7 @@
 		C33E283E256EC45B0092442F /* Restaurant.swift in Sources */ = {isa = PBXBuildFile; fileRef = C33E283D256EC45B0092442F /* Restaurant.swift */; };
 		C33E2841256EC5390092442F /* RestaurantController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C33E2840256EC5390092442F /* RestaurantController.swift */; };
 		C33E289D256ED9780092442F /* RestaurantTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C33E289C256ED9780092442F /* RestaurantTableViewController.swift */; };
+		C36610DE25800D2D0048531B /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C36610DD25800D2D0048531B /* SettingsViewController.swift */; };
 		C37190B025794D8C006D1A01 /* EdamameLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C37190AF25794D8C006D1A01 /* EdamameLabel.swift */; };
 		C37191122579512A006D1A01 /* EdamameButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C37191112579512A006D1A01 /* EdamameButton.swift */; };
 		C371911525795226006D1A01 /* EdamameTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = C371911425795226006D1A01 /* EdamameTextField.swift */; };
@@ -108,6 +109,7 @@
 		C33E283D256EC45B0092442F /* Restaurant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Restaurant.swift; sourceTree = "<group>"; };
 		C33E2840256EC5390092442F /* RestaurantController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestaurantController.swift; sourceTree = "<group>"; };
 		C33E289C256ED9780092442F /* RestaurantTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestaurantTableViewController.swift; sourceTree = "<group>"; };
+		C36610DD25800D2D0048531B /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		C37190AF25794D8C006D1A01 /* EdamameLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EdamameLabel.swift; sourceTree = "<group>"; };
 		C37191112579512A006D1A01 /* EdamameButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EdamameButton.swift; sourceTree = "<group>"; };
 		C371911425795226006D1A01 /* EdamameTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EdamameTextField.swift; sourceTree = "<group>"; };
@@ -207,14 +209,15 @@
 		706A80AB2566DE5A00A07C9C /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				A686044C256DA410008819CB /* LoginAndRegisterViewControllers */,
 				A60933D7256C2C5B00A1C767 /* MessagesViewControllers */,
 				706A80BB2566F70500A07C9C /* FriendsTableViewController.swift */,
 				706A80C22566F85A00A07C9C /* PendingTableViewController.swift */,
 				706A80C52566F89700A07C9C /* EditProfileViewController.swift */,
 				706A80B82566F6E000A07C9C /* RandoCollectionViewController.swift */,
 				706A80CC2566F91200A07C9C /* ProfileViewController.swift */,
-				A686044C256DA410008819CB /* LoginAndRegisterViewControllers */,
 				C33E289C256ED9780092442F /* RestaurantTableViewController.swift */,
+				C36610DD25800D2D0048531B /* SettingsViewController.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -487,6 +490,7 @@
 				70B4D53A257FF4E300CEE55A /* UIViewController+Extras.swift in Sources */,
 				A60933E6256C2DA700A1C767 /* ConversationTableViewCell.swift in Sources */,
 				706A81122567164B00A07C9C /* Conversation.swift in Sources */,
+				C36610DE25800D2D0048531B /* SettingsViewController.swift in Sources */,
 				706A80B02566F61200A07C9C /* User.swift in Sources */,
 				A6093448256C578400A1C767 /* NewConversationTableViewCell.swift in Sources */,
 				C33E2841256EC5390092442F /* RestaurantController.swift in Sources */,
