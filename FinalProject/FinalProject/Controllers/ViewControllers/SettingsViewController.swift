@@ -21,8 +21,10 @@ class SettingsViewController: UIViewController {
     
     //MARK: - Actions
     @IBAction func logOutButtonTapped(_ sender: Any) {
+        
     }
     @IBAction func deleteButtonTapped(_ sender: Any) {
+        
     }
     
     
