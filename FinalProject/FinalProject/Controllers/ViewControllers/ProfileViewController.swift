@@ -29,7 +29,6 @@ class ProfileViewController: UIViewController {
     // MARK: - Lifecyle Functions
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         updateViews()
     }
     
@@ -113,7 +112,7 @@ class ProfileViewController: UIViewController {
         guard let otherUser = otherUser, let currentUser = UserController.shared.currentUser else { return }
 
         if let index = currentUser.pendingRequests.firstIndex(of: otherUser.uuid) {
-            // This removes a pending request from a current user and sent request from other users' array and adds them both to one anothers' friends lists
+            // remove pending status and place in friends array
             removeSentRequestOf(otherUser, andOtherUser: currentUser)
             currentUser.pendingRequests.remove(at: index)
             
@@ -123,14 +122,19 @@ class ProfileViewController: UIViewController {
             update(currentUser)
             update(otherUser)
             
+        } else if let index = currentUser.friends.firstIndex(of: otherUser.uuid) {
+            // remove from friends arrays and put other user in blocked array
+            currentUser.friends.remove(at: index)
+        
+            removeFriend(from: otherUser, and: currentUser)
+            
         } else {
-            // This initiates a first request and appends users to respective arrays
+            // Initiate a first request and appends users to respective arrays
             currentUser.sentRequests.append(otherUser.uuid)
             otherUser.pendingRequests.append(currentUser.uuid)
             
             update(currentUser)
             update(otherUser)
-               
         }
         updateViews()
     }
@@ -155,7 +159,21 @@ class ProfileViewController: UIViewController {
             case .success(_):
                 DispatchQueue.main.async {
                     print("Sent request successfully revoked🏅 🔥 Go check Firebase! 🔥")
-                    
+                }
+            case .failure(let error):
+                print("Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")
+            }
+        }
+    }
+    
+    private func removeFriend(from otherUser: User, and currentUser: User) {
+        UserController.shared.removeFriend(otherUserUUID: otherUser.uuid, currentUserUUID: currentUser.uuid) { (result) in
+            switch result {
+            case .success(_):
+                DispatchQueue.main.async {
+                    // present alert to user that friend has been removed
+                    // delete messages
+                    // send back to randoVC
                 }
             case .failure(let error):
                 print("Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")
@@ -174,12 +192,17 @@ class ProfileViewController: UIViewController {
     func blockUser() {
         guard let otherUser = otherUser, let currentUser = UserController.shared.currentUser else { return }
         
+        if currentUser.friends.contains(otherUser.uuid) {
+            removeFriend(from: currentUser, and: otherUser)
+        }
+        
         currentUser.blockedArray.append(otherUser.uuid)
         UserController.shared.updateUserBy(currentUser) { (result) in
             switch result {
             case .success(_):
                 DispatchQueue.main.async {
                     print("OtherUser UUID has been successfully appended to currentUsers blocked array.")
+                    // send back to RandoVC
                 }
             case .failure(let error):
                 print("Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")
@@ -201,19 +224,24 @@ class ProfileViewController: UIViewController {
     
     // MARK: - UpdateViews
     func updateViews() {
-        guard let otherUser = otherUser, let currentUser = UserController.shared.currentUser else { return }
+        guard let otherUser = otherUser, let currentUser = UserController.shared.currentUser, let age = otherUser.dateOfBirth.calcAge() else { return }
+        
         
         let currentUserLocation = CLLocation(latitude: currentUser.latitude, longitude: currentUser.longitude)
         let otherUserLocation = CLLocation(latitude: otherUser.latitude, longitude: otherUser.longitude)
         
         distanceLabel.text = "\(round(currentUserLocation.distance(from: otherUserLocation) * 0.000621371)) mi"
-        nameAndAgeLabel.text = otherUser.name
+        nameAndAgeLabel.text = otherUser.name + " " + age
+        bioLabel.text = otherUser.bio
+        typeOfVeganLabel.text = otherUser.type
+
         declineButton.alpha = 0
         addAcceptRevokeButton.alpha = 1
         
         if currentUser.sentRequests.contains(otherUser.uuid) {
             
-            addAcceptRevokeButton.setTitle("Revoke Sent Request", for: .normal)
+            addAcceptRevokeButton.setTitle("Request Sent", for: .normal)
+            addAcceptRevokeButton.isEnabled = false
             
         } else if currentUser.pendingRequests.contains(otherUser.uuid) {
             

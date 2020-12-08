@@ -54,8 +54,10 @@ class PendingTableViewController: UITableViewController {
 
     // MARK: - Navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "toProfileVC" {
-            
+        if segue.identifier == "toPendingProfileVC" {
+            guard let index = tableView.indexPathForSelectedRow, let destination = segue.destination as? ProfileViewController else { return }
+            let user = UserController.shared.pendingRequests[index.row]
+            destination.otherUser = user
         }
     }
     
