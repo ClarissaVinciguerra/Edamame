@@ -184,12 +184,24 @@ class EditProfileViewController: UIViewController {
         collectionView.backgroundColor = .whiteSmoke
         collectionView.collectionViewLayout = configureCollectionViewLayout()
         
-        saveChangesButton.backgroundColor = .lightYellowAccent
+        saveChangesButton.backgroundColor = .edamameGreen
         saveChangesButton.addCornerRadius()
-        saveChangesButton.tintColor = .spaceBlack
-        settingsButton.tintColor = .whiteSmoke
+        saveChangesButton.tintColor = .whiteSmoke
         
-        view.backgroundColor = .edamameGreen
+        typeOfVeganTextField.addAccentBorder(width: 0.5, color: .whiteSmoke)
+        typeOfVeganTextField.addCornerRadius(radius: 6)
+        typeOfVeganTextField.backgroundColor = .whiteSmoke
+        bioTextLabel.textColor = .spaceBlack
+        
+        settingsButton.tintColor = .spaceBlack
+        infoButton.tintColor = .darkerGreen
+        
+        bioTextView.textColor = .spaceBlack
+        bioTextView.backgroundColor = .whiteSmoke
+        bioTextView.addCornerRadius(radius: 6)
+        //bioTextView.addAccentBorder(width: 0.5, color: .edamameGreen)
+        
+        view.backgroundColor = .white
         
         navigationItem.leftBarButtonItem = editButtonItem
     }
