@@ -397,6 +397,8 @@ class UserController {
             
             documentReference.updateData([
                 UserStrings.nameKey : "\(user.name)",
+                UserStrings.bioKey : user.bio,
+                UserStrings.typeKey : user.type,
                 UserStrings.latitudeKey : user.latitude,
                 UserStrings.longitudeKey : user.longitude,
                 UserStrings.imageUUIDsKey : user.imageUUIDs,
