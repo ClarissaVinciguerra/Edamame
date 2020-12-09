@@ -58,7 +58,7 @@ class EditProfileViewController: UIViewController, UITextViewDelegate {
     }
     
     func textViewDidBeginEditing(_ textView: UITextView) {
-        updateViews()
+        saveChangesButton.setTitle("Save Changes", for: .normal)
     }
     
     
@@ -198,7 +198,7 @@ class EditProfileViewController: UIViewController, UITextViewDelegate {
     func updateViews() {
         if let currentUser = UserController.shared.currentUser {
             
-            typeOfVeganTextField.text = currentUser.type
+            typeOfVeganTextField.placeholder = currentUser.type
             bioTextView.text = currentUser.bio
             saveChangesButton.setTitle("Save Changes", for: .normal)
             
@@ -343,8 +343,17 @@ extension EditProfileViewController: EditPhotoCollectionViewDelegate {
         if let indexPath = collectionView.indexPath(for: cell) {
            
             if let currentUser = UserController.shared.currentUser {
-                currentUser.images.remove(at: indexPath.row)
+                
+                if indexPath.row >= currentUser.images.count - 1 {
+                    
+                    let unsavedIndex = indexPath.row - currentUser.images.count
+                    currentUser.unsavedImages.remove(at: unsavedIndex)
+                    
+                } else {
+                    currentUser.images.remove(at: indexPath.row)
+                }
             }
+            
             profileImages.remove(at: indexPath.row)
             collectionView.deleteItems(at: [indexPath])
         }
@@ -356,10 +365,12 @@ extension EditProfileViewController: UIImagePickerControllerDelegate, UINavigati
     
     func openCamera() {
         if UIImagePickerController.isSourceTypeAvailable(.camera) {
+            
             let imagePicker = UIImagePickerController()
             imagePicker.sourceType = .camera
             imagePicker.allowsEditing = true
             self.present(imagePicker, animated: true)
+            
         } else {
             let alertVC = UIAlertController(title: "Camera Not Accessible", message: "You will need to make sure your camera is accessible to use this feature.", preferredStyle: .alert)
             let okAction = UIAlertAction(title: "Okay", style: .cancel, handler: nil)
