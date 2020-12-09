@@ -22,7 +22,6 @@ class ProfileViewController: UIViewController {
     
     // MARK: - Properties
     var viewsLaidOut = false
-    var profileImages: [UIImage] = []
     var otherUser: User?
     
     // MARK: - Lifecyle Functions
@@ -41,7 +40,6 @@ class ProfileViewController: UIViewController {
     
     func setupViews() {
         collectionView.showsHorizontalScrollIndicator = false
-        collectionView.isPagingEnabled = true
         collectionView.isScrollEnabled = false
         collectionView.dataSource = self
         collectionView.delegate = self
@@ -101,15 +99,13 @@ class ProfileViewController: UIViewController {
     }
     
     @IBAction func reportButtonTapped(_ sender: Any) {
-        
         reportUser()
-        
     }
-
+    
     // MARK: - Class Methods
     func updateFriendStatus() {
         guard let otherUser = otherUser, let currentUser = UserController.shared.currentUser else { return }
-
+        
         if currentUser.pendingRequests.contains(otherUser.uuid) {
             // remove pending status and place in friends array
             removeSentRequestOf(otherUser, andPendingRequestOf: currentUser)
@@ -123,7 +119,7 @@ class ProfileViewController: UIViewController {
         } else if let index = currentUser.friends.firstIndex(of: otherUser.uuid) {
             // remove from friends arrays and put other user in blocked array
             currentUser.friends.remove(at: index)
-        
+            
             removeFriend(from: otherUser, and: currentUser)
             
         } else {
@@ -235,8 +231,8 @@ class ProfileViewController: UIViewController {
         if otherUser.reportCount >= 3 {
             otherUser.reportedThrice = true
         }
-            update(otherUser)
-            blockUser()
+        update(otherUser)
+        blockUser()
     }
     
     // MARK: - UpdateViews
@@ -284,14 +280,14 @@ extension ProfileViewController: UICollectionViewDataSource, UICollectionViewDel
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         
-        return UserController.shared.currentUser?.images.count ?? 0
+        return otherUser?.images.count ?? 0
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "profileViewCell", for: indexPath) as? ViewPhotoCollectionViewCell else { return UICollectionViewCell() }
         
-        cell.photo = UserController.shared.currentUser?.images[indexPath.row]
+        cell.photo = otherUser?.images[indexPath.row]
         
         return cell
     }
