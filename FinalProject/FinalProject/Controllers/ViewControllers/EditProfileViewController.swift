@@ -32,7 +32,6 @@ class EditProfileViewController: UIViewController, UITextViewDelegate {
         updateViews()
     }
     
-    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         disableCameraBarButton()
@@ -52,7 +51,6 @@ class EditProfileViewController: UIViewController, UITextViewDelegate {
     }
     
     // MARK: - Actions
-    
     @IBAction private func textFieldDidChange(_ sender: Any) {
         updateViews()
     }
@@ -60,7 +58,6 @@ class EditProfileViewController: UIViewController, UITextViewDelegate {
     func textViewDidBeginEditing(_ textView: UITextView) {
         saveChangesButton.setTitle("Save Changes", for: .normal)
     }
-    
     
     @IBAction func addPhotoButtonTapped(_ sender: Any) {
         selectPhotoAlert()
@@ -74,7 +71,7 @@ class EditProfileViewController: UIViewController, UITextViewDelegate {
     @IBAction func infoButtonTapped(_ sender: Any) {
         presentInfoAlert()
     }
- 
+    
     // MARK: - Class Methods
     private func validateAuth() {
         if FirebaseAuth.Auth.auth().currentUser == nil {
@@ -157,7 +154,7 @@ class EditProfileViewController: UIViewController, UITextViewDelegate {
                     }
                 case .failure(let error):
                     print("Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")
-                    // if it doesnt work alert user here
+                // if it doesnt work alert user here
                 }
             }
         } else {
@@ -297,7 +294,7 @@ class EditProfileViewController: UIViewController, UITextViewDelegate {
                 }
             case .failure(let error):
                 print("Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")
-                // present alert to user that iamge didnt save
+            // present alert to user that iamge didnt save
             }
         }
     }
@@ -341,7 +338,7 @@ extension EditProfileViewController: EditPhotoCollectionViewDelegate {
     
     func delete(cell: EditPhotoCollectionViewCell) {
         if let indexPath = collectionView.indexPath(for: cell) {
-           
+            
             if let currentUser = UserController.shared.currentUser {
                 
                 if indexPath.row >= currentUser.images.count - 1 {
