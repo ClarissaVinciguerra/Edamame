@@ -199,7 +199,6 @@ class EditProfileViewController: UIViewController {
         bioTextView.textColor = .spaceBlack
         bioTextView.backgroundColor = .whiteSmoke
         bioTextView.addCornerRadius(radius: 6)
-        //bioTextView.addAccentBorder(width: 0.5, color: .edamameGreen)
         
         view.backgroundColor = .white
         
