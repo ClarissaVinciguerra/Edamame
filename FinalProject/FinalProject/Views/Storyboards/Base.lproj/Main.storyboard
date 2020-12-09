@@ -157,19 +157,19 @@
                                 </cells>
                             </collectionView>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="1uQ-Xd-5DU">
-                                <rect key="frame" x="8" y="524" width="412" height="55"/>
+                                <rect key="frame" x="8" y="524" width="412" height="51.333333333333371"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="BI7-2c-dyv">
-                                        <rect key="frame" x="0.0" y="0.0" width="412" height="26.666666666666668"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="412" height="24.666666666666668"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Name and Age Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XxT-9J-kKh">
-                                                <rect key="frame" x="0.0" y="0.0" width="293" height="26.666666666666668"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="283" height="24.666666666666668"/>
                                                 <fontDescription key="fontDescription" name="SourceSansPro-Bold" family="Source Sans Pro" pointSize="21"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Distance Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QWN-2f-NsI">
-                                                <rect key="frame" x="309" y="0.0" width="103" height="26.666666666666668"/>
+                                                <rect key="frame" x="299" y="0.0" width="113" height="24.666666666666668"/>
                                                 <fontDescription key="fontDescription" name="SourceSansPro-Regular" family="Source Sans Pro" pointSize="17"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
@@ -177,7 +177,7 @@
                                         </subviews>
                                     </stackView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Type of Vegan" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DG7-PT-3r9">
-                                        <rect key="frame" x="0.0" y="34.666666666666629" width="92.666666666666671" height="20.333333333333329"/>
+                                        <rect key="frame" x="0.0" y="32.666666666666629" width="100.66666666666667" height="18.666666666666671"/>
                                         <fontDescription key="fontDescription" name="SourceSansPro-Regular" family="Source Sans Pro" pointSize="16"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
@@ -188,7 +188,7 @@
                                 </constraints>
                             </stackView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Bio" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="x22-hy-ijK">
-                                <rect key="frame" x="8" y="595" width="412" height="20.333333333333371"/>
+                                <rect key="frame" x="8" y="591.33333333333337" width="412" height="18.666666666666629"/>
                                 <fontDescription key="fontDescription" name="SourceSansPro-Regular" family="Source Sans Pro" pointSize="16"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
