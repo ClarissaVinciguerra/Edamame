@@ -8,7 +8,7 @@
 import UIKit
 import FirebaseAuth
 
-class EditProfileViewController: UIViewController {
+class EditProfileViewController: UIViewController, UITextViewDelegate {
     
     // MARK: - Outlets
     @IBOutlet weak var nameLabel: UILabel!
@@ -28,12 +28,14 @@ class EditProfileViewController: UIViewController {
     // MARK: - Lifecycle Functions
     override func viewDidLoad() {
         super.viewDidLoad()
+        bioTextView.delegate = self
+        updateViews()
     }
+    
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         disableCameraBarButton()
-        updateViews()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -50,6 +52,16 @@ class EditProfileViewController: UIViewController {
     }
     
     // MARK: - Actions
+    
+    @IBAction private func textFieldDidChange(_ sender: Any) {
+        updateViews()
+    }
+    
+    func textViewDidBeginEditing(_ textView: UITextView) {
+        updateViews()
+    }
+    
+    
     @IBAction func addPhotoButtonTapped(_ sender: Any) {
         selectPhotoAlert()
         disableCameraBarButton()
@@ -90,6 +102,7 @@ class EditProfileViewController: UIViewController {
                 }
             case .failure(_):
                 print("User does not yet exist in database")
+                self.updateViews()
             }
         }
     }
@@ -112,7 +125,7 @@ class EditProfileViewController: UIViewController {
             UserController.shared.updateUserBy(currentUser) { (result) in
                 switch result {
                 case .success(_):
-                   print("User successfully updated.")
+                    self.saveChangesButton.setTitle("Saved", for: .normal)
                 case .failure(let error):
                     print("Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")
                 }
@@ -138,7 +151,9 @@ class EditProfileViewController: UIViewController {
                 switch result {
                 case .success(_):
                     DispatchQueue.main.async {
-                        // change text on button to "Profile Saved!"
+                        self.saveChangesButton.isEnabled = false
+                        self.saveChangesButton.setTitle("Saved", for: .normal)
+                        
                     }
                 case .failure(let error):
                     print("Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")
@@ -181,10 +196,17 @@ class EditProfileViewController: UIViewController {
     }
     
     func updateViews() {
-        guard let currentUser = UserController.shared.currentUser else { return }
-    
-        typeOfVeganTextField.text = currentUser.type
-        bioTextView.text = currentUser.bio
+        if let currentUser = UserController.shared.currentUser {
+            
+            typeOfVeganTextField.text = currentUser.type
+            bioTextView.text = currentUser.bio
+            saveChangesButton.setTitle("Save Changes", for: .normal)
+            
+        } else {
+            
+            saveChangesButton.setTitle("Create Profile", for: .normal)
+            
+        }
     }
     
     func setupViews() {
@@ -213,6 +235,7 @@ class EditProfileViewController: UIViewController {
         view.backgroundColor = .white
         
         navigationItem.leftBarButtonItem = editButtonItem
+        
     }
     
     func disableCameraBarButton() {

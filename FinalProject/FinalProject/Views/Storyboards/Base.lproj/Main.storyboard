@@ -517,6 +517,9 @@
                                         </constraints>
                                         <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                        <connections>
+                                            <action selector="textFieldDidChange:" destination="42U-x4-SU3" eventType="editingChanged" id="PkU-E8-6Lj"/>
+                                        </connections>
                                     </textField>
                                 </subviews>
                                 <constraints>
