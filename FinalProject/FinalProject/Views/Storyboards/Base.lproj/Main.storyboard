@@ -114,7 +114,7 @@
         <!--Profile View Controller-->
         <scene sceneID="hG5-b3-Vzy">
             <objects>
-                <viewController id="DTI-oU-dNp" customClass="ProfileViewController" customModule="FinalProject" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="profileVC" id="DTI-oU-dNp" customClass="ProfileViewController" customModule="FinalProject" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="hKZ-Mw-aRr">
                         <rect key="frame" x="0.0" y="0.0" width="428" height="926"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -493,7 +493,7 @@
                                 <rect key="frame" x="12" y="389.33333333333331" width="408" height="68"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleAspectFill" distribution="fillProportionally" translatesAutoresizingMaskIntoConstraints="NO" id="CoQ-bD-y8b">
-                                        <rect key="frame" x="0.0" y="0.0" width="228" height="32"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="225.66666666666666" height="32"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="What's your type? " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="01I-xL-9lz">
                                                 <rect key="frame" x="0.0" y="0.0" width="204" height="32"/>
@@ -502,7 +502,7 @@
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FAs-7q-O7b">
-                                                <rect key="frame" x="204" y="0.0" width="24" height="32"/>
+                                                <rect key="frame" x="204" y="0.0" width="21.666666666666657" height="32"/>
                                                 <state key="normal" image="info.circle" catalog="system"/>
                                                 <connections>
                                                     <action selector="infoButtonTapped:" destination="42U-x4-SU3" eventType="touchUpInside" id="P3m-HI-us4"/>
@@ -528,16 +528,16 @@
                                 </constraints>
                             </stackView>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="rMH-yQ-2zR">
-                                <rect key="frame" x="12" y="469.33333333333326" width="404" height="350"/>
+                                <rect key="frame" x="12" y="469.33333333333326" width="404" height="348"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="About you:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LSh-BY-Kmq">
-                                        <rect key="frame" x="0.0" y="0.0" width="99.666666666666671" height="27.666666666666668"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="107.33333333333333" height="25.666666666666668"/>
                                         <fontDescription key="fontDescription" name="SourceSansPro-Regular" family="Source Sans Pro" pointSize="22"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="hy1-eF-ErC">
-                                        <rect key="frame" x="0.0" y="31.666666666666686" width="404" height="318.33333333333331"/>
+                                        <rect key="frame" x="0.0" y="29.666666666666686" width="404" height="318.33333333333331"/>
                                         <color key="textColor" systemColor="labelColor"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
@@ -548,7 +548,7 @@
                                 </constraints>
                             </stackView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XYg-Vk-axB">
-                                <rect key="frame" x="94.666666666666671" y="855.33333333333337" width="238.66666666666663" height="0.66666666666662877"/>
+                                <rect key="frame" x="94.666666666666671" y="853.33333333333337" width="238.66666666666663" height="2.6666666666666288"/>
                                 <fontDescription key="fontDescription" name="SourceSansPro-Regular" family="Source Sans Pro" pointSize="20"/>
                                 <state key="normal" title="Save Changes"/>
                                 <connections>
@@ -556,7 +556,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="f1O-o1-Art">
-                                <rect key="frame" x="22" y="863.33333333333337" width="25.666666666666671" height="22"/>
+                                <rect key="frame" x="22" y="861.33333333333337" width="25.666666666666671" height="22"/>
                                 <state key="normal" image="gearshape.2" catalog="system"/>
                                 <connections>
                                     <segue destination="a5w-Mu-aS9" kind="show" id="RQ1-rb-Upi"/>
@@ -616,10 +616,10 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="22" translatesAutoresizingMaskIntoConstraints="NO" id="lhv-Yc-QNc">
-                                <rect key="frame" x="114" y="445" width="200" height="90"/>
+                                <rect key="frame" x="109.33333333333333" y="447" width="209.66666666666669" height="86"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Glf-Qm-tkd">
-                                        <rect key="frame" x="72" y="0.0" width="56" height="34"/>
+                                        <rect key="frame" x="72" y="0.0" width="65.666666666666686" height="32"/>
                                         <fontDescription key="fontDescription" name="SourceSansPro-Regular" family="Source Sans Pro" pointSize="17"/>
                                         <state key="normal" title="Log Out"/>
                                         <connections>
@@ -627,7 +627,7 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Uxt-Vu-2Yv">
-                                        <rect key="frame" x="46.333333333333336" y="56" width="107.33333333333331" height="34"/>
+                                        <rect key="frame" x="46.333333333333329" y="54" width="116.99999999999999" height="32"/>
                                         <fontDescription key="fontDescription" name="SourceSansPro-Regular" family="Source Sans Pro" pointSize="17"/>
                                         <state key="normal" title="Delete Account"/>
                                         <connections>
