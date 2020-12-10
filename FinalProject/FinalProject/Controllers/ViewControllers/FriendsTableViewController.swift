@@ -48,7 +48,7 @@ class FriendsTableViewController: UITableViewController {
         navigationController?.pushViewController(vc, animated: true)
     }
     
-    private func createNewConversation(otherUserName: String, otherUserUid: String) {
+    private func createNewConversation(otherUserName: String, otherUserUid: String, otherUser: User) {
         //let uid = MessageController.safeEmail(uid: result.uid)
         
         MessageController.shared.conversationExists(with: otherUserUid, completion: { [weak self] result in
@@ -90,6 +90,7 @@ class FriendsTableViewController: UITableViewController {
                 let vc = ChatViewController(with: otherUserUid, otherUserName: otherUserName, id: nil)
                 vc.isNewConversation = true
                 vc.title = otherUserName
+                vc.otherUser = otherUser
                 vc.navigationItem.largeTitleDisplayMode = .never
                 strongSelf.navigationController?.pushViewController(vc, animated: true)
             }
@@ -117,7 +118,8 @@ class FriendsTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         let otherUser = UserController.shared.friends[indexPath.row]
-        createNewConversation(otherUserName: otherUser.name, otherUserUid: otherUser.firebaseUID)
+        
+        createNewConversation(otherUserName: otherUser.name, otherUserUid: otherUser.firebaseUID, otherUser: otherUser)
     }
 
     // DO WE WANT TO REMOVE FRIENDSHIPS THIS WAY OR IS IT TOO RISKY?
