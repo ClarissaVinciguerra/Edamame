@@ -56,6 +56,11 @@ class SettingsViewController: UIViewController {
             if let error = error {
                 print(error.localizedDescription)
             } else {
+                let storyboard = UIStoryboard(name: "LogInSignUp", bundle: nil)
+                let vc = storyboard.instantiateViewController(withIdentifier: "LoginStoryboard")
+                vc.title = "Log In"
+                self.navigationController?.pushViewController(vc, animated: true)
+                
                 print("We successfully deleted a user!")
             }
         }
