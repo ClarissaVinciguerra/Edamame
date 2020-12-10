@@ -31,7 +31,7 @@ class RandoCollectionViewCell: UICollectionViewCell {
         imageView.clipsToBounds = true
         imageView.contentMode = .scaleAspectFill
         imageView.layer.cornerRadius = 5.0
-    
+        
         setGradientBackground()
     }
     

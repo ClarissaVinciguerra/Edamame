@@ -33,7 +33,7 @@ class EdamameLabelLight: EdamameLabel {
 }
 
 class EdamameLabelBold: EdamameLabel {
-   
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         

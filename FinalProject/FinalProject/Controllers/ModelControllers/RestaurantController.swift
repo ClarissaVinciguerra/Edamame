@@ -24,7 +24,7 @@ class RestaurantController {
         components?.queryItems = queryItems
         
         guard let url = components?.url
-
+        
         else { return completion(.failure(.invalidURL))}
         
         let headers = [

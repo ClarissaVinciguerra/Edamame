@@ -6,6 +6,8 @@
 //
 
 import UIKit
+import Firebase
+import FirebaseAuth
 
 class SettingsViewController: UIViewController {
     
@@ -35,7 +37,7 @@ class SettingsViewController: UIViewController {
         
     }
     @IBAction func deleteButtonTapped(_ sender: Any) {
-        
+        deleteMyAccount()
     }
     
     //MARK: - Methods
@@ -43,5 +45,19 @@ class SettingsViewController: UIViewController {
         deleteButton.tintColor = .red
     }
     
-
+    func deleteMyAccount() {
+        
+        guard let userID = UserController.shared.currentUser?.uuid
+        
+        else { return }
+        
+        let docRef = Firestore.firestore().collection("users").document(userID)
+        docRef.delete { (error) in
+            if let error = error {
+                print(error.localizedDescription)
+            } else {
+                print("We successfully deleted a user!")
+            }
+        }
+    }
 }

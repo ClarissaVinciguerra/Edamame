@@ -34,7 +34,6 @@ class SignUpViewController: UIViewController {
         super.viewDidLoad()
         
         setupViews()
-
     }
     
     // MARK: - Actions
@@ -87,9 +86,6 @@ class SignUpViewController: UIViewController {
             
             
             // Insert newUser into the realtime Database
-            
-            
-            
         }
         
         //When user is successfully create, take the user to the main storyboard.
@@ -105,7 +101,6 @@ class SignUpViewController: UIViewController {
         setupBirthdayDatePicker()
         setupSignUpButton()
     }
-    
     
     func alertUserSignUpError() {
         let signUpError = UIAlertController(title: "Error Signing Up", message: "Please enter all information to register.", preferredStyle: .alert)
@@ -153,5 +148,4 @@ class SignUpViewController: UIViewController {
         signUpButton.layer.cornerRadius = 12
         signUpButton.layer.masksToBounds = true
     }
-    
 }

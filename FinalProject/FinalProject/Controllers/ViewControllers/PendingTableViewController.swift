@@ -8,7 +8,7 @@
 import UIKit
 
 class PendingTableViewController: UITableViewController {
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -51,7 +51,7 @@ class PendingTableViewController: UITableViewController {
         
         return cell
     }
-
+    
     // MARK: - Navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "toPendingProfileVC" {
@@ -60,5 +60,4 @@ class PendingTableViewController: UITableViewController {
             destination.otherUser = user
         }
     }
-    
 }

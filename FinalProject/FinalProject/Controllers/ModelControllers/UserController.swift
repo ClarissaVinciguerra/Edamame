@@ -22,23 +22,22 @@ class UserController {
     var friends: [User] = []
     
     // MARK: - CREATE
-
     func createUser(name: String, bio: String, type: String, unsavedImages: [UIImage], dateOfBirth: Date, latitude: Double, longitude: Double, firebaseUID: String, completion: @escaping (Result<User, UserError>) -> Void) {
-
+        
         let newUser = User(name: name, dateOfBirth: dateOfBirth, bio: bio, type: type, latitude: latitude, longitude: longitude, firebaseUID: firebaseUID, unsavedImages: unsavedImages)
         
         let timeInterval = newUser.dateOfBirth.timeIntervalSince1970
         
         let dispatchGroup = DispatchGroup()
         var imageUUIDs: [String] = []
-
+        
         for image in unsavedImages {
-
+            
             dispatchGroup.enter()
             let fileName = UUID().uuidString + ".jpeg"
-
+            
             guard let imageData = image.jpegData(compressionQuality: 0.5) else { return completion(.failure(.errorConvertingImage))}
-
+            
             StorageController.shared.uploadImage(with: imageData, fileName: fileName, userID: newUser.uuid) { (result) in
                 switch result {
                 case .success(let fileName):
@@ -109,15 +108,12 @@ class UserController {
                 return completion(.failure(.firebaseError(error)))
             }
         }
-        
     }
     
-    
     // MARK: - READ
-    
     func fetchUserByField(with uuid: String, completion: @escaping (Result<User, UserError>) -> Void) {
         let docRef = database.collection(userCollection)
-
+        
         docRef.whereField(UserStrings.firebaseUIDKey, isEqualTo: uuid).getDocuments { (querySnapshot, error) in
             if let error = error {
                 print("There was an error fetching connections for this User. Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")
@@ -145,7 +141,6 @@ class UserController {
                             print("Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")
                             dispatchGroup.leave()
                         }
-                        
                     }
                 }
                 
@@ -155,7 +150,6 @@ class UserController {
                 }
             }
         }
-          
     }
     
     func fetchUserByUUID(_ uuid: String, completion: @escaping (Result<User, UserError>) -> Void) {
@@ -204,21 +198,21 @@ class UserController {
     }
     
     private func convertURLToImage(urlString: String, completion: @escaping (UIImage?) -> Void) {
-       guard let url = URL(string: urlString) else { return completion(nil) }
-       
-       URLSession.shared.dataTask(with: url) { (data, _, error) in
-           if let error = error {
-               print("Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")
-           }
-           guard let data = data else { return completion(nil) }
+        guard let url = URL(string: urlString) else { return completion(nil) }
         
+        URLSession.shared.dataTask(with: url) { (data, _, error) in
+            if let error = error {
+                print("Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")
+            }
+            guard let data = data else { return completion(nil) }
+            
             print(data)
-           
-           let image = UIImage(data: data)
-        completion(image)
-       }.resume()
+            
+            let image = UIImage(data: data)
+            completion(image)
+        }.resume()
     }
-
+    
     func checkThatUserExists(with uuid: String, completion: @escaping ((Bool) -> Void)) {
         let docRef = database.collection(userCollection)
         
@@ -230,7 +224,6 @@ class UserController {
                 return completion(false)
             }
         }
-
     }
     
     func fetchFilteredRandos(currentUser: User, completion: @escaping (Result<[User], UserError>) -> Void) {
@@ -420,7 +413,6 @@ class UserController {
     }
     
     // MARK: - REMOVE
-   
     func removeFromSentRequestsOf (_ otherUser: User, andPendingRequestOf currentUser: User, completion: @escaping (Result<Bool, UserError>) -> Void) {
         
         let pendingRequestsDocRef = database.collection(userCollection).document(currentUser.uuid)
@@ -436,36 +428,36 @@ class UserController {
                 errorPointer?.pointee = fetchError
                 return nil
             }
-
+            
             guard var pendingRequestsArray = pendingRequestDocument.data()?[UserStrings.pendingRequestsKey] as? [String], var sentRequestsArray = sentRequestDocument.data()?[UserStrings.sentRequestsKey] as? [String] else {
                 print("There was an error fetching pending request arrays while deleting a connection")
                 return nil
             }
             
             guard let pendingRequestIndex = pendingRequestsArray.firstIndex(of: otherUser.uuid), let sentRequestIndex = sentRequestsArray.firstIndex(of: currentUser.uuid) else { return completion(.failure(.couldNotUnwrap)) }
-           
-                pendingRequestsArray.remove(at: pendingRequestIndex)
-                sentRequestsArray.remove(at: sentRequestIndex)
+            
+            pendingRequestsArray.remove(at: pendingRequestIndex)
+            sentRequestsArray.remove(at: sentRequestIndex)
             transaction.updateData([UserStrings.pendingRequestsKey : pendingRequestsArray], forDocument: pendingRequestsDocRef)
             transaction.updateData([UserStrings.sentRequestsKey: sentRequestsArray], forDocument: sentRequestsDocRef)
-               
+            
             if let index = currentUser.pendingRequests.firstIndex(of: otherUser.uuid) {
                 currentUser.pendingRequests.remove(at: index)
             }
             
             return completion(.success(true))
-        
+            
         }) { (object, error) in
             if let error = error {
                 print("There was an error deleting this pending connection: Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")
             }
         }
     }
-
+    
     func removeFriend (otherUserUUID: String, currentUserUUID: String, completion: @escaping (Result<Bool, UserError>) -> Void) {
         let currentUserDocRef = database.collection(userCollection).document(currentUserUUID)
         let otherUserDocRef = database.collection(userCollection).document(otherUserUUID)
-
+        
         database.runTransaction({ (transaction, errorPointer) -> Any? in
             let currentUserDoc: DocumentSnapshot
             let otherUserDoc: DocumentSnapshot
@@ -476,64 +468,63 @@ class UserController {
                 errorPointer?.pointee = fetchError
                 return nil
             }
-
+            
             guard var currentUserFriends = currentUserDoc.data()?[UserStrings.friendsKey] as? [String], var otherUserFriendsArray = otherUserDoc.data()?[UserStrings.friendsKey] as? [String] else {
                 print("There was an error fetching pending request arrays while deleting a connection")
                 return nil
             }
             
             guard let currentUserFriendsIndex = currentUserFriends.firstIndex(of: otherUserUUID), let otherUserFriendsIndex = otherUserFriendsArray.firstIndex(of: currentUserUUID) else { return completion(.failure(.couldNotUnwrap)) }
-           
-                currentUserFriends.remove(at: currentUserFriendsIndex)
-                otherUserFriendsArray.remove(at: otherUserFriendsIndex)
+            
+            currentUserFriends.remove(at: currentUserFriendsIndex)
+            otherUserFriendsArray.remove(at: otherUserFriendsIndex)
             
             transaction.updateData([UserStrings.friendsKey : currentUserFriends], forDocument: currentUserDocRef)
             transaction.updateData([UserStrings.friendsKey: otherUserFriendsArray], forDocument: otherUserDocRef)
-               
+            
             return completion(.success(true))
-        
+            
         }) { (object, error) in
             if let error = error {
                 print("There was an error deleting this pending connection: Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")
             }
         }
     }
- 
+    
     func removeFromBlockedArrayOf (currentUser: User, blockedUserUUID: String, completion: @escaping (Result<User, UserError>) -> Void) {
         
         let unblockedDocRef = database.collection(userCollection).document(currentUser.uuid)
-
+        
         database.runTransaction({ (transaction, errorPointer) -> Any? in
             let unblockDocument: DocumentSnapshot
-    
+            
             do {
                 try unblockDocument = transaction.getDocument(unblockedDocRef)
             } catch let fetchError as NSError {
                 errorPointer?.pointee = fetchError
                 return nil
             }
-
+            
             guard var blockedArray = unblockDocument.data()?["blocked"] as? [String] else {
                 print("There was an error fetching the blocked array for the current user.")
                 return nil
             }
             
             guard let blockedIndex = blockedArray.firstIndex(of: blockedUserUUID) else { return completion(.failure(.couldNotUnwrap)) }
-           
-                blockedArray.remove(at: blockedIndex)
-                transaction.updateData(["blocked": blockedArray], forDocument: unblockedDocRef)
-               
+            
+            blockedArray.remove(at: blockedIndex)
+            transaction.updateData(["blocked": blockedArray], forDocument: unblockedDocRef)
+            
             return completion(.success(currentUser))
-        
+            
         }) { (object, error) in
             if let error = error {
                 print("There was an error deleting this UUID from the current user's blocked array: Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")
             }
         }
     }
-   
+    
     // MARK: - DELETE
-
     func deleteUserInfoWith(_ uuid: String, completion: @escaping (Result<Void, UserError>) -> Void) {
         database.collection(userCollection).document(uuid).delete() { err in
             if let err = err {
@@ -545,5 +536,4 @@ class UserController {
             }
         }
     }
-    
 }
