@@ -348,32 +348,34 @@ class UserController {
     // MARK: - UPDATE
     func updateUserBy(_ user: User, updatedImages: [Image] = [], completion: @escaping (Result<User, UserError>) -> Void) {
         
-        var updatedImageNames: [String] = []
-        
-        for image in updatedImages {
+        if !updatedImages.isEmpty {
             
-            if !image.name.isEmpty {
-                updatedImageNames.append(image.name)
-            }
+            var updatedImageNames: [String] = []
             
-        }
-        
-        for image in updatedImages {
-            
-            if image.name.isEmpty {
-                guard let imageData = image.image.jpegData(compressionQuality: 0.5) else { return completion(.failure(.errorConvertingImage))}
-                StorageController.shared.uploadImage(with: imageData, fileName: UUID().uuidString + ".jpeg", userID: user.uuid) { (result) in
-                    switch result {
-                    case .success(_):
-                        print("Image successfully uploaded!")
-                    case .failure(let error):
-                        print("\(error.localizedDescription)")
-                    }
+            for image in updatedImages {
+                
+                if !image.name.isEmpty {
+                    updatedImageNames.append(image.name)
                 }
                 
             }
-        }
-        
+            
+            for image in updatedImages {
+                
+                if image.name.isEmpty {
+                    guard let imageData = image.image.jpegData(compressionQuality: 0.5) else { return completion(.failure(.errorConvertingImage))}
+                    StorageController.shared.uploadImage(with: imageData, fileName: UUID().uuidString + ".jpeg", userID: user.uuid) { (result) in
+                        switch result {
+                        case .success(_):
+                            print("Image successfully uploaded!")
+                        case .failure(let error):
+                            print("\(error.localizedDescription)")
+                        }
+                    }
+                    
+                }
+            }
+            
             for existingImage in user.images {
                 
                 if !updatedImageNames.contains(existingImage.name) {
@@ -389,29 +391,31 @@ class UserController {
                 }
                 
             }
+            
+        }
         
-            
-            let documentReference = self.database.collection(self.userCollection).document(user.uuid)
-            
-            documentReference.updateData([
-                UserStrings.nameKey : "\(user.name)",
-                UserStrings.bioKey : user.bio,
-                UserStrings.typeKey : user.type,
-                UserStrings.latitudeKey : user.latitude,
-                UserStrings.longitudeKey : user.longitude,
-                UserStrings.friendsKey : user.friends,
-                UserStrings.pendingRequestsKey : user.pendingRequests,
-                UserStrings.sentRequestsKey : user.sentRequests,
-                UserStrings.blockedArrayKey : user.blockedArray,
-                UserStrings.reportCountKey : user.reportCount
-            ]) { (error) in
-                if let error = error {
-                    print("Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")
-                    return completion(.failure(.firebaseError(error)))
-                } else {
-                    return completion(.success(user))
-                }
+        
+        let documentReference = self.database.collection(self.userCollection).document(user.uuid)
+        
+        documentReference.updateData([
+            UserStrings.nameKey : "\(user.name)",
+            UserStrings.bioKey : user.bio,
+            UserStrings.typeKey : user.type,
+            UserStrings.latitudeKey : user.latitude,
+            UserStrings.longitudeKey : user.longitude,
+            UserStrings.friendsKey : user.friends,
+            UserStrings.pendingRequestsKey : user.pendingRequests,
+            UserStrings.sentRequestsKey : user.sentRequests,
+            UserStrings.blockedArrayKey : user.blockedArray,
+            UserStrings.reportCountKey : user.reportCount
+        ]) { (error) in
+            if let error = error {
+                print("Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")
+                return completion(.failure(.firebaseError(error)))
+            } else {
+                return completion(.success(user))
             }
+        }
         
     }
     
