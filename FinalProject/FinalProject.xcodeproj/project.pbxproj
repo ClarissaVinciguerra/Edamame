@@ -46,6 +46,7 @@
 		A6093408256C310000A1C767 /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6093407256C310000A1C767 /* ChatViewController.swift */; };
 		A6093448256C578400A1C767 /* NewConversationTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6093447256C578400A1C767 /* NewConversationTableViewCell.swift */; };
 		A66A5B8E25795FD8001046EB /* MessageAppUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = A66A5B8D25795FD8001046EB /* MessageAppUser.swift */; };
+		A6DF43EB258354EA00679324 /* Alerts.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6DF43EA258354EA00679324 /* Alerts.swift */; };
 		C33E283B256EC4390092442F /* NetworkError.swift in Sources */ = {isa = PBXBuildFile; fileRef = C33E283A256EC4390092442F /* NetworkError.swift */; };
 		C33E283E256EC45B0092442F /* Restaurant.swift in Sources */ = {isa = PBXBuildFile; fileRef = C33E283D256EC45B0092442F /* Restaurant.swift */; };
 		C33E2841256EC5390092442F /* RestaurantController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C33E2840256EC5390092442F /* RestaurantController.swift */; };
@@ -105,6 +106,7 @@
 		A6093407256C310000A1C767 /* ChatViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewController.swift; sourceTree = "<group>"; };
 		A6093447256C578400A1C767 /* NewConversationTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewConversationTableViewCell.swift; sourceTree = "<group>"; };
 		A66A5B8D25795FD8001046EB /* MessageAppUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageAppUser.swift; sourceTree = "<group>"; };
+		A6DF43EA258354EA00679324 /* Alerts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Alerts.swift; sourceTree = "<group>"; };
 		C33E283A256EC4390092442F /* NetworkError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkError.swift; sourceTree = "<group>"; };
 		C33E283D256EC45B0092442F /* Restaurant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Restaurant.swift; sourceTree = "<group>"; };
 		C33E2840256EC5390092442F /* RestaurantController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestaurantController.swift; sourceTree = "<group>"; };
@@ -244,6 +246,7 @@
 				70EB018C256EFDD30031ED9F /* AgeCalculator.swift */,
 				70EB018F256F01630031ED9F /* StyleGuide.swift */,
 				70B4D539257FF4E200CEE55A /* UIViewController+Extras.swift */,
+				A6DF43EA258354EA00679324 /* Alerts.swift */,
 			);
 			path = HelpersAndExtensions;
 			sourceTree = "<group>";
@@ -499,6 +502,7 @@
 				706A810C2567162D00A07C9C /* Message.swift in Sources */,
 				706A81C9256C100D00A07C9C /* SignUpViewController.swift in Sources */,
 				706A80C62566F89700A07C9C /* EditProfileViewController.swift in Sources */,
+				A6DF43EB258354EA00679324 /* Alerts.swift in Sources */,
 				706A811E2567188700A07C9C /* EditPhotoCollectionViewCell.swift in Sources */,
 				A60933E0256C2CEE00A1C767 /* NewConversationViewController.swift in Sources */,
 				706A81182567168500A07C9C /* DatabaseError.swift in Sources */,

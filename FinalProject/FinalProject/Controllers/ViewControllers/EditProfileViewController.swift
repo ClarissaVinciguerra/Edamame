@@ -173,36 +173,6 @@ class EditProfileViewController: UIViewController, UITextViewDelegate {
         }
     }
     
-    private func presentImageAlert() {
-        let alertController = UIAlertController(title: "Add some photos!", message: "Show off at least 2 pictures of yourself to save to your profile 📸", preferredStyle: .alert)
-        
-        let okayAction = UIAlertAction(title: "Okay", style: .default)
-        
-        alertController.addAction(okayAction)
-        
-        present(alertController, animated: true, completion: nil)
-    }
-    
-    private func presentInfoAlert() {
-        let alertController = UIAlertController(title: "The type of plant based diet you identify most with 🌱", message: "Common types include but are not limited to: dietary vegan, cheegan, vegetarian, ovo-vegetarian, 98% vegan, vegan, etc.", preferredStyle: .alert)
-        
-        let okayAction = UIAlertAction(title: "Okay", style: .default)
-        
-        alertController.addAction(okayAction)
-        
-        present(alertController, animated: true, completion: nil)
-    }
-    
-    private func presentBioAlert() {
-        let alertController = UIAlertController(title: "Fill out the Bio", message: "Let others know a little bit about you...", preferredStyle: .alert)
-        
-        let okayAction = UIAlertAction(title: "Okay", style: .default)
-        
-        alertController.addAction(okayAction)
-        
-        present(alertController, animated: true, completion: nil)
-    }
-    
     func updateViews() {
         if let currentUser = UserController.shared.currentUser {
             
