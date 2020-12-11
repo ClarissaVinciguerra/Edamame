@@ -51,8 +51,7 @@ class EditProfileViewController: UIViewController, UITextViewDelegate {
     
     // MARK: - Actions
     @IBAction private func textFieldDidChange(_ sender: Any) {
-        saveChangesButton.setTitle("Save Changes", for: .normal)
-        saveChangesButton.isEnabled = true
+        textViewChanged()
     }
     
     func textViewDidBeginEditing(_ textView: UITextView) {
@@ -221,26 +220,15 @@ class EditProfileViewController: UIViewController, UITextViewDelegate {
         }
     }
     
-    private func selectPhotoAlert() {
+    func textViewChanged () {
+        guard let currentUser = UserController.shared.currentUser else { return }
         
-        let alertVC = UIAlertController(title: "Add a Photo", message: nil, preferredStyle: .alert)
-        
-        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
-        
-        let cameraAction = UIAlertAction(title: "Camera", style: .default) { (_) in
-            self.openCamera()
-        }
-        
-        let photoLibraryAction = UIAlertAction(title: "Photo Library", style: .default) { (_) in
-            self.openPhotoLibrary()
-        }
-        
-        alertVC.addAction(cancelAction)
-        alertVC.addAction(cameraAction)
-        alertVC.addAction(photoLibraryAction)
-        
-        present(alertVC, animated: true)
+        typeOfVeganTextField.placeholder = ""
+        currentUser.type = ""
+        saveChangesButton.setTitle("Save Changes", for: .normal)
+        saveChangesButton.isEnabled = true
     }
+    
     
     func configureCollectionViewLayout() -> UICollectionViewLayout {
         

@@ -73,6 +73,27 @@ extension EditProfileViewController {
         
         present(alertController, animated: true, completion: nil)
     }
+    
+    func selectPhotoAlert() {
+        
+        let alertVC = UIAlertController(title: "Add a Photo", message: nil, preferredStyle: .alert)
+        
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
+        
+        let cameraAction = UIAlertAction(title: "Camera", style: .default) { (_) in
+            self.openCamera()
+        }
+        
+        let photoLibraryAction = UIAlertAction(title: "Photo Library", style: .default) { (_) in
+            self.openPhotoLibrary()
+        }
+        
+        alertVC.addAction(cancelAction)
+        alertVC.addAction(cameraAction)
+        alertVC.addAction(photoLibraryAction)
+        
+        present(alertVC, animated: true)
+    }
 }
 
 // MARK: - ProfileViewController

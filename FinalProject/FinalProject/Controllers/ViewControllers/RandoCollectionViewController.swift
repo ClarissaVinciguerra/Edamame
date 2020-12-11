@@ -132,7 +132,8 @@ class RandoCollectionViewController: UICollectionViewController {
         if let image = rando.images.first {
             cell.photo = image.image
         } else {
-            // add default image here - perhaps a logo?
+            cell.backgroundColor = .spaceBlack
+            cell.photo = nil
         }
         
         cell.nameLabel.text = rando.name
