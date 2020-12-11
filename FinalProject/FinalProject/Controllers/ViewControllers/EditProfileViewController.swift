@@ -11,7 +11,6 @@ import FirebaseAuth
 class EditProfileViewController: UIViewController, UITextViewDelegate {
     
     // MARK: - Outlets
-    @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var typeOfVeganTextField: UITextField!
     @IBOutlet weak var bioTextLabel: UILabel!
     @IBOutlet weak var bioTextView: UITextView!
@@ -23,7 +22,7 @@ class EditProfileViewController: UIViewController, UITextViewDelegate {
     
     //MARK: - Properties
     var viewsLaidOut = false
-    var profileImages: [UIImage] = []
+    var profileImages: [Image] = []
     
     // MARK: - Lifecycle Functions
     override func viewDidLoad() {
@@ -52,16 +51,19 @@ class EditProfileViewController: UIViewController, UITextViewDelegate {
     
     // MARK: - Actions
     @IBAction private func textFieldDidChange(_ sender: Any) {
-        updateViews()
+        saveChangesButton.setTitle("Save Changes", for: .normal)
+        saveChangesButton.isEnabled = true
     }
     
     func textViewDidBeginEditing(_ textView: UITextView) {
         saveChangesButton.setTitle("Save Changes", for: .normal)
+        saveChangesButton.isEnabled = true
     }
     
     @IBAction func addPhotoButtonTapped(_ sender: Any) {
         selectPhotoAlert()
         disableCameraBarButton()
+        updateViews()
     }
     
     @IBAction func saveChangesButtonTapped(_ sender: Any) {
@@ -86,8 +88,10 @@ class EditProfileViewController: UIViewController, UITextViewDelegate {
         }
     }
     
-    private func fetchUser(with uuid: String) {
-        UserController.shared.fetchUserByField(with: uuid) { (result) in
+    private func fetchUser(with firebaseUID: String) {
+        profileImages = []
+        
+        UserController.shared.fetchUserBy(firebaseUID) { (result) in
             switch result {
             case .success(let user):
                 DispatchQueue.main.async {
@@ -118,11 +122,12 @@ class EditProfileViewController: UIViewController, UITextViewDelegate {
         currentUser.bio = bio
         currentUser.type = type
         
-        if currentUser.images.count > 1 {
-            UserController.shared.updateUserBy(currentUser) { (result) in
+        if profileImages.count > 1 {
+            UserController.shared.updateUserBy(currentUser, updatedImages: profileImages) { (result) in
                 switch result {
                 case .success(_):
                     self.saveChangesButton.setTitle("Saved", for: .normal)
+                    self.saveChangesButton.isEnabled = false
                 case .failure(let error):
                     print("Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")
                 }
@@ -142,9 +147,15 @@ class EditProfileViewController: UIViewController, UITextViewDelegate {
         
         let uid = "\(uidKey)"
         let name = "\(nameKey)"
+        var images: [UIImage] = []
+        
+        for image in profileImages {
+            images.append(image.image)
+        }
+        
         
         if profileImages.count > 1 {
-            UserController.shared.createUser(name: name, bio: bio, type: type, unsavedImages: profileImages, dateOfBirth: birthdayKey, latitude: 0.0, longitude: 0.0, firebaseUID: uid) { (result) in
+            UserController.shared.createUser(name: name, bio: bio, type: type, unsavedImages: images, dateOfBirth: birthdayKey, latitude: 0.0, longitude: 0.0, uuid: uid) { (result) in
                 switch result {
                 case .success(_):
                     DispatchQueue.main.async {
@@ -198,6 +209,7 @@ class EditProfileViewController: UIViewController, UITextViewDelegate {
             typeOfVeganTextField.placeholder = currentUser.type
             bioTextView.text = currentUser.bio
             saveChangesButton.setTitle("Save Changes", for: .normal)
+            saveChangesButton.isEnabled = true
             
         } else {
             
@@ -242,6 +254,7 @@ class EditProfileViewController: UIViewController, UITextViewDelegate {
     }
     
     private func selectPhotoAlert() {
+        
         let alertVC = UIAlertController(title: "Add a Photo", message: nil, preferredStyle: .alert)
         
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
@@ -282,22 +295,24 @@ class EditProfileViewController: UIViewController, UITextViewDelegate {
         return UICollectionViewCompositionalLayout(section: section)
     }
     
-    private func appendImageToCloud(image: UIImage) {
-        guard let currentUser = UserController.shared.currentUser else { return }
-        UserController.shared.appendImage(image: image, user: currentUser) { (result) in
-            switch result {
-            case .success():
-                DispatchQueue.main.async {
-                    guard let currentUser = UserController.shared.currentUser else { return }
-                    currentUser.images.append(image)
-                    self.collectionView.reloadData()
-                }
-            case .failure(let error):
-                print("Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")
-            // present alert to user that iamge didnt save
-            }
-        }
-    }
+
+//    private func appendImageToCloud(image: UIImage) {
+//        guard let currentUser = UserController.shared.currentUser else { return }
+//        UserController.shared.appendImage(image: image, user: currentUser) { (result) in
+//            switch result {
+//            case .success():
+//                DispatchQueue.main.async {
+//                    guard let currentUser = UserController.shared.currentUser else { return }
+//                    currentUser.images.append(image)
+//                    self.collectionView.reloadData()
+//                }
+//            case .failure(let error):
+//                print("Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")
+//                // present alert to user that iamge didnt save
+//            }
+//        }
+//    }
+
 }
 
 //MARK: - Extensions
@@ -310,7 +325,8 @@ extension EditProfileViewController: UICollectionViewDataSource, UICollectionVie
         
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "editPhotoCell", for: indexPath) as? EditPhotoCollectionViewCell else { return UICollectionViewCell() }
         
-        cell.photo = self.profileImages[indexPath.row]
+        let image = profileImages[indexPath.row]
+        cell.photo = image.image
         cell.delegate = self
         
         return cell
@@ -337,22 +353,12 @@ extension EditProfileViewController: UICollectionViewDataSource, UICollectionVie
 extension EditProfileViewController: EditPhotoCollectionViewDelegate {
     
     func delete(cell: EditPhotoCollectionViewCell) {
+        
         if let indexPath = collectionView.indexPath(for: cell) {
-            
-            if let currentUser = UserController.shared.currentUser {
-                
-                if indexPath.row >= currentUser.images.count - 1 {
-                    
-                    let unsavedIndex = indexPath.row - currentUser.images.count
-                    currentUser.unsavedImages.remove(at: unsavedIndex)
-                    
-                } else {
-                    currentUser.images.remove(at: indexPath.row)
-                }
-            }
             
             profileImages.remove(at: indexPath.row)
             collectionView.deleteItems(at: [indexPath])
+            updateViews()
         }
     }
 }
@@ -396,15 +402,13 @@ extension EditProfileViewController: UIImagePickerControllerDelegate, UINavigati
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         if let selectedImage = info[.editedImage] as? UIImage {
             
-            profileImages.append(selectedImage)
+            let image = Image(name: "", image: selectedImage)
             
-            if let currentUser = UserController.shared.currentUser {
-                currentUser.unsavedImages.append(selectedImage)
-            }
-            
+            profileImages.append(image)
             picker.dismiss(animated: true)
             disableCameraBarButton()
             collectionView.reloadData()
+            
         }
     }
 }

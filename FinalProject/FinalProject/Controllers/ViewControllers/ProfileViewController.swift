@@ -99,6 +99,7 @@ class ProfileViewController: UIViewController {
         }
     }
     
+    // Called when friend status changes
     private func updateOtherUser(with otherUser: User) {
         UserController.shared.updateUserBy(otherUser) { (result) in
             switch result {
@@ -113,7 +114,6 @@ class ProfileViewController: UIViewController {
     }
     
     private func removeSentRequestOf(_ otherUser: User, andPendingRequestOf user: User) {
-        
         UserController.shared.removeFromSentRequestsOf(otherUser, andPendingRequestOf: user) { (result) in
             switch result {
             case .success(_):
@@ -144,13 +144,10 @@ class ProfileViewController: UIViewController {
     func declineFriendRequest() {
         guard let otherUser = otherUser, let currentUser = UserController.shared.currentUser else { return }
         
-        if let index = currentUser.pendingRequests.firstIndex(of: otherUser.uuid) {
-            removeSentRequestOf(otherUser, andPendingRequestOf: currentUser)
-        }
-        
+        removeSentRequestOf(otherUser, andPendingRequestOf: currentUser)
         blockUser()
         
-        // add alert that says "user blocked!" here
+        // add alert that says "user blocked!" here with an ok button
         
         navigationController?.popViewController(animated: true)
     }
@@ -168,7 +165,7 @@ class ProfileViewController: UIViewController {
             case .success(_):
                 DispatchQueue.main.async {
                     print("OtherUser UUID has been successfully appended to currentUsers blocked array.")
-                    // send back to RandoVC
+                    
                 }
             case .failure(let error):
                 print("Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")
@@ -181,9 +178,6 @@ class ProfileViewController: UIViewController {
         
         otherUser.reportCount += 1
         
-        if otherUser.reportCount >= 3 {
-            otherUser.reportedThrice = true
-        }
         update(otherUser)
         blockUser()
     }
@@ -288,8 +282,10 @@ extension ProfileViewController: UICollectionViewDataSource, UICollectionViewDel
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "profileViewCell", for: indexPath) as? ViewPhotoCollectionViewCell else { return UICollectionViewCell() }
-        
-        cell.photo = otherUser?.images[indexPath.row]
+        if let image = otherUser?.images[indexPath.row] {
+            
+            cell.photo = image.image
+        }
         
         return cell
     }
