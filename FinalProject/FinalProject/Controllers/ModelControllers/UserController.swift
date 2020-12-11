@@ -78,6 +78,7 @@ class UserController {
     }
   
     // MARK: - READ
+    /*
     func fetchUserByField(with uuid: String, completion: @escaping (Result<User, UserError>) -> Void) {
         let docRef = database.collection(userCollection)
         
@@ -168,8 +169,6 @@ class UserController {
                 
                 self.currentUser = user
                 
-                
-                
                 dispatchGroup.enter()
                 
                 StorageController.shared.downloadImages(with: user.uuid) { (result) in
@@ -213,10 +212,10 @@ class UserController {
     }
 */
     func checkThatUserExists(with uuid: String, completion: @escaping ((Bool) -> Void)) {
-        let docRef = database.collection(userCollection)
+        let docRef = database.collection(userCollection).document(uuid)
         
-        docRef.whereField(UserStrings.firebaseUIDKey, isEqualTo: uuid).getDocuments { (querySnapshot, error) in
-            if let document = querySnapshot!.documents.first {
+        docRef.getDocument { (document, error) in
+            if let document = document, document.exists {
                 return completion(true)
             } else {
                 print("Document does not exist")
