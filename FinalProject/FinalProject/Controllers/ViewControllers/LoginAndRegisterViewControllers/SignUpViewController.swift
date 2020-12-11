@@ -28,6 +28,7 @@ class SignUpViewController: UIViewController {
     
     // MARK: - Properties
     private let spinner = JGProgressHUD(style: .dark)
+    var SignUpAlertMessage = "Please enter all information to register."
     
     // MARK: - Lifecycle Functions
     override func viewDidLoad() {
@@ -43,16 +44,30 @@ class SignUpViewController: UIViewController {
         passwordTextField.resignFirstResponder()
         confirmPasswordTextField.resignFirstResponder()
         
+        
+        
         guard let name = nameTextField.text,
               let email = emailTextField.text,
-              passwordTextField.text == confirmPasswordTextField.text,
               let password = passwordTextField.text,
               !email.isEmpty,
-              !name.isEmpty,
-              password.count >= 6 else {
+              !name.isEmpty else {
             alertUserSignUpError()
             return
         }
+        
+        guard passwordTextField.text == confirmPasswordTextField.text else {
+            SignUpAlertMessage = SignUpAlertStrings.passwordMatchKey
+            alertUserSignUpError()
+            return
+        }
+        
+        guard password.count >= 6 else {
+            SignUpAlertMessage = SignUpAlertStrings.passwordCharacterCountKey
+            alertUserSignUpError()
+            return
+        }
+        
+        
         let birthday = birthdayDatePicker.date
         
         
@@ -89,7 +104,10 @@ class SignUpViewController: UIViewController {
         }
         
         //When user is successfully create, take the user to the main storyboard.
-        self.navigationController?.dismiss(animated: true, completion: nil)
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        guard let vc = storyboard.instantiateInitialViewController() else { return }
+        vc.modalPresentationStyle = .fullScreen
+        present(vc, animated: true)
     }
     
     // MARK: - Helper Methods
@@ -100,14 +118,6 @@ class SignUpViewController: UIViewController {
         setupConfirmPasswordTextField()
         setupBirthdayDatePicker()
         setupSignUpButton()
-    }
-    
-    func alertUserSignUpError() {
-        let signUpError = UIAlertController(title: "Error Signing Up", message: "Please enter all information to register.", preferredStyle: .alert)
-        let okAction = UIAlertAction(title: "Ok", style: .cancel, handler: nil)
-        
-        signUpError.addAction(okAction)
-        present(signUpError, animated: true)
     }
     
     // MARK: - Views
@@ -147,5 +157,6 @@ class SignUpViewController: UIViewController {
     func setupSignUpButton(){
         signUpButton.layer.cornerRadius = 12
         signUpButton.layer.masksToBounds = true
+        signUpButton.backgroundColor = .edamameGreen
     }
 }

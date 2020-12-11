@@ -34,7 +34,7 @@ final class StorageController {
     
     public func downloadURL(for path: String, with userID: String, completion: @escaping (Result<URL, Error>) -> Void) {
         let reference = storage.child("\(userID)/\(path)")
-        
+
         reference.downloadURL { (url, error) in
             guard let url = url, error == nil else {
                 completion(.failure(StorageErrors.failedToGetDownloadURL))
@@ -44,28 +44,75 @@ final class StorageController {
         }
     }
     
-    public func deleteImage(at index: Int, with userID: String, completion: @escaping (Result<Void, Error>) -> Void) {
+    public func downloadImages(with userID: String, completion: @escaping (Result<[Image], Error>) -> Void) {
+        let reference = storage.child("\(userID)")
+        let dg = DispatchGroup()
         
-        // 1. currentUser.imageURLs - must be removed locally from this array
-        guard let imageUUID = UserController.shared.currentUser?.imageUUIDs.remove(at: index) else { return completion(.failure(StorageErrors.imageNotFound)) }
-        
-        // 2. The URL also exists in firestore (images array in firestore), see line 75
-        removeImage(with: imageUUID) { (result) in
-            switch result {
-            case .success():
-                // 3. the image in the storage itself
-                self.storage.child("\(userID)/\(imageUUID)").delete { (error) in
-                    if let error = error {
-                        return completion(.failure(error))
+        reference.listAll { (response, error) in
+            
+            var images : [Image] = []
+            
+            if error != nil {
+                completion(.failure(StorageErrors.failedToGetDownloadURL))
+            }
+            
+            for image in response.items {
+                
+                dg.enter()
+                image.getData(maxSize: 1 * 1024 * 1024) { data, error in
+                   
+                    if error != nil {
+                        
+                        completion(.failure(StorageErrors.failedToGetDownloadURL))
+                        dg.leave()
+                        
+                    } else {
+                    
+                        if let data = data {
+                            
+                            if let parsedData = UIImage(data: data)  {
+                                
+                                images.append(Image(name: image.name, image: parsedData))
+                                dg.leave()
+                            } else {
+                                dg.leave()
+                                return completion(.failure(StorageErrors.failedToGetDownloadURL))
+                            }
+                        } else {
+                            dg.leave()
+                            return completion(.failure(StorageErrors.failedToGetDownloadURL))
+                        }
                     }
-                    completion(.success(()))
                 }
-            case .failure(let error):
-                print("Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")
+            }
+            dg.notify(queue: .main) {
+                completion(.success(images))
             }
         }
-        
     }
+    
+//    public func deleteImage(at index: Int, with userID: String, completion: @escaping (Result<Void, Error>) -> Void) {
+//
+//        // 1. currentUser.imageURLs - must be removed locally from this array
+//        guard let imageUUID = UserController.shared.currentUser?.imageUUIDs.remove(at: index) else { return completion(.failure(StorageErrors.imageNotFound)) }
+//
+//        // 2. The URL also exists in firestore (images array in firestore), see line 75
+//        removeImage(with: imageUUID) { (result) in
+//            switch result {
+//            case .success():
+//                // 3. the image in the storage itself
+//                self.storage.child("\(userID)/\(imageUUID)").delete { (error) in
+//                    if let error = error {
+//                        return completion(.failure(error))
+//                    }
+//                    completion(.success(()))
+//                }
+//            case .failure(let error):
+//                print("Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")
+//            }
+//        }
+//
+//    }
     
     public func deleteImageFromStorage(with imageUUID: String, userID: String, completion: @escaping (Result<Void, Error>) -> Void) {
         self.storage.child("\(userID)/\(imageUUID)").delete { (error) in
@@ -76,40 +123,40 @@ final class StorageController {
         }
     }
     
-    private func removeImage(with uuid: String, completion: @escaping(Result<Void, UserError>) -> Void) {
-        
-        guard let currentUser = UserController.shared.currentUser else { return completion(.failure(.noExistingUser)) }
-        
-        let database = UserController.shared.database
-        
-        let docRef = database.collection(UserController.shared.userCollection).document(currentUser.uuid)
-        
-        database.runTransaction({ (transaction, errorPointer) -> Any? in
-            let imageUUIDDocument: DocumentSnapshot
-            
-            do {
-                try imageUUIDDocument = transaction.getDocument(docRef)
-            } catch let fetchError as NSError {
-                errorPointer?.pointee = fetchError
-                return nil
-            }
-            
-            guard var imageUUIDs = imageUUIDDocument.data()?["imageUUIDs"] as? [String] else {
-                print("There was an error fetching the blocked array for the current user.")
-                return nil
-            }
-            
-            guard let imageUUIDIndex = imageUUIDs.firstIndex(of: uuid) else { return completion(.failure(.couldNotUnwrap)) }
-            
-            imageUUIDs.remove(at: imageUUIDIndex)
-            transaction.updateData(["imageUUIDs": imageUUIDs], forDocument: docRef)
-            
-            return completion(.success(()))
-            
-        }) { (object, error) in
-            if let error = error {
-                print("There was an error deleting this UUID from the current user's blocked array: Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")
-            }
-        }
-    }
+//    private func removeImage(with uuid: String, completion: @escaping(Result<Void, UserError>) -> Void) {
+//
+//        guard let currentUser = UserController.shared.currentUser else { return completion(.failure(.noExistingUser)) }
+//
+//        let database = UserController.shared.database
+//        
+//        let docRef = database.collection(UserController.shared.userCollection).document(currentUser.uuid)
+//
+//        database.runTransaction({ (transaction, errorPointer) -> Any? in
+//            let imageUUIDDocument: DocumentSnapshot
+//
+//            do {
+//                try imageUUIDDocument = transaction.getDocument(docRef)
+//            } catch let fetchError as NSError {
+//                errorPointer?.pointee = fetchError
+//                return nil
+//            }
+//
+//            guard var imageUUIDs = imageUUIDDocument.data()?["imageUUIDs"] as? [String] else {
+//                print("There was an error fetching the blocked array for the current user.")
+//                return nil
+//            }
+//
+//            guard let imageUUIDIndex = imageUUIDs.firstIndex(of: uuid) else { return completion(.failure(.couldNotUnwrap)) }
+//
+//            imageUUIDs.remove(at: imageUUIDIndex)
+//            transaction.updateData(["imageUUIDs": imageUUIDs], forDocument: docRef)
+//
+//            return completion(.success(()))
+//
+//        }) { (object, error) in
+//            if let error = error {
+//                print("There was an error deleting this UUID from the current user's blocked array: Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")
+//            }
+//        }
+//    }
 }

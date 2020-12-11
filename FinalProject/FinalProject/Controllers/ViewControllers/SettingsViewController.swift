@@ -35,7 +35,29 @@ class SettingsViewController: UIViewController {
     //MARK: - Actions
     @IBAction func logOutButtonTapped(_ sender: Any) {
         
+        let actionSheet = UIAlertController(title: "",
+                                      message: "Are you sure you want to log out?",
+                                      preferredStyle: .actionSheet)
+        actionSheet.addAction(UIAlertAction(title: "Log Out", style: .destructive, handler: { [weak self] _ in
+            guard let strongSelf = self else { return }
+            
+            do {
+                try FirebaseAuth.Auth.auth().signOut()
+                let storyboard = UIStoryboard(name: "LogInSignUp", bundle: nil)
+                guard let vc = storyboard.instantiateInitialViewController() else { return }
+                vc.modalPresentationStyle = .fullScreen
+                strongSelf.present(vc, animated: true)
+            } catch {
+                print("Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")
+            }
+        }))
+        actionSheet.addAction(UIAlertAction(title: "Cancel",
+                                            style: .cancel,
+                                            handler: nil))
+        
+        present(actionSheet, animated: true)
     }
+    
     @IBAction func deleteButtonTapped(_ sender: Any) {
         deleteMyAccount()
     }

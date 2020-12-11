@@ -85,14 +85,6 @@ class LogInViewController: UIViewController {
         setupLogInButton()
     }
     
-    func alertUserLoginError() {
-        let loginError = UIAlertController(title: "Error Logging In", message: "Please enter all information to log in.", preferredStyle: .alert)
-        let okAction = UIAlertAction(title: "Ok", style: .cancel, handler: nil)
-        
-        loginError.addAction(okAction)
-        present(loginError, animated: true)
-    }
-    
     // MARK: - Views
     func setupEmailTextField() {
         self.emailTextField.autocapitalizationType = .none
@@ -112,6 +104,7 @@ class LogInViewController: UIViewController {
     func setupLogInButton() {
         logInButton.layer.cornerRadius = 12
         logInButton.layer.masksToBounds = true
+        logInButton.backgroundColor = .edamameGreen
     }
 }
 
