@@ -94,8 +94,6 @@ class FriendsTableViewController: UITableViewController {
             }
         })
     }
-    
-    
 
     // MARK: - Table view data source
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -108,7 +106,12 @@ class FriendsTableViewController: UITableViewController {
         let friend = UserController.shared.friends[indexPath.row]
         
         cell.textLabel?.text = friend.name
-        cell.imageView?.image = friend.images[0]
+        
+        if let firstImage = friend.images.first {
+            cell.imageView?.image = firstImage.image
+        } else {
+            // create and insert default image here
+        }
         
         return cell
     }
@@ -116,7 +119,7 @@ class FriendsTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         let otherUser = UserController.shared.friends[indexPath.row]
-        createNewConversation(otherUserName: otherUser.name, otherUserUid: otherUser.firebaseUID)
+        createNewConversation(otherUserName: otherUser.name, otherUserUid: otherUser.uuid)
     }
 
     // DO WE WANT TO REMOVE FRIENDSHIPS THIS WAY OR IS IT TOO RISKY?

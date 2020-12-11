@@ -146,7 +146,13 @@ class RandoCollectionViewController: UICollectionViewController {
         let rando = UserController.shared.randos[indexPath.row]
         
         cell.user = rando
-        cell.photo = rando.images.first
+        
+        if let image = rando.images.first {
+            cell.photo = image.image
+        } else {
+            // add default image here - perhaps a logo?
+        }
+        
         cell.nameLabel.text = rando.name
         cell.ageLabel.text = rando.dateOfBirth.calcAge()
         
