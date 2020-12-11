@@ -101,14 +101,27 @@ class SignUpViewController: UIViewController {
             
             
             // Insert newUser into the realtime Database
+            self.navigationController?.dismiss(animated: true, completion: nil)
         }
         
+        
+        
         //When user is successfully create, take the user to the main storyboard.
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        guard let vc = storyboard.instantiateInitialViewController() else { return }
-        vc.modalPresentationStyle = .fullScreen
-        present(vc, animated: true)
+//        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+//        storyboard.instantiateInitialViewController()
+//        let vc = storyboard.instantiateViewController(withIdentifier: "editProfileVC")
+//        vc.modalPresentationStyle = .fullScreen
+//
+//        self.present(vc, animated: true, completion: nil)
     }
+    
+    
+//    let storyboard = UIStoryboard(name: "Main", bundle: nil)
+//    var vc = storyboard.instantiateViewController(withIdentifier: "profileVC") as! ProfileViewController
+//    vc.otherUser = otherUser
+//    //vc.updateViews()
+//
+//    self.present(vc, animated: true, completion: nil)
     
     // MARK: - Helper Methods
     func setupViews() {

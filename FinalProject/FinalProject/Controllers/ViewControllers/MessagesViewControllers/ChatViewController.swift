@@ -104,8 +104,10 @@ class ChatViewController: MessagesViewController {
         var vc = storyboard.instantiateViewController(withIdentifier: "profileVC") as! ProfileViewController
         vc.otherUser = otherUser
         //vc.updateViews()
-        
-        self.present(vc, animated: true, completion: nil)
+
+        navigationController?.pushViewController(vc, animated: true)
+        //self.present(vc, animated: true, completion: nil)
+
     }
     
     // MARK: - Views
