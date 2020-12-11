@@ -100,6 +100,39 @@ extension EditProfileViewController {
 
 extension ProfileViewController {
     
+    func userHasBeenBlockedAlert(otherUserName: String, alreadyFriends: Bool) {
+        let alertController = UIAlertController(title: "All set!", message: "You will no longer appear in this app on \(otherUserName)'s account.", preferredStyle: .alert)
+        
+        let okayAction = UIAlertAction(title: "Okay", style: .default) { (_) in
+          
+            if alreadyFriends {
+                self.navigationController?.dismiss(animated: true, completion: nil)
+            } else {
+                self.navigationController?.popViewController(animated: true)
+            }
+            
+        }
+        
+        alertController.addAction(okayAction)
+        
+        present(alertController, animated: true, completion: nil)
+    }
+    
+    func checkBeforeBlockingAlert(otherUserName: String) {
+        let alertController = UIAlertController(title: "Are you sure you want to block \(otherUserName)", message: "", preferredStyle: .alert)
+        
+        let cancelAction = UIAlertAction(title: "Cancel", style: .default)
+        
+        let blockAction = UIAlertAction(title: "Yes, I'm sure.", style: .destructive) { (_) in
+            self.blockUser()
+        }
+        
+        alertController.addAction(blockAction)
+        alertController.addAction(cancelAction)
+        
+        present(alertController, animated: true, completion: nil)
+    }
+    
 }
 
 // MARK: - RandoCollectionViewController
