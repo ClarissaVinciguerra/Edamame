@@ -121,7 +121,7 @@ class FriendsTableViewController: UITableViewController {
         tableView.deselectRow(at: indexPath, animated: true)
         let otherUser = UserController.shared.friends[indexPath.row]
 
-        createNewConversation(otherUserName: otherUser.name, otherUserUid: otherUser.uuid)
+        createNewConversation(otherUserName: otherUser.name, otherUserUid: otherUser.uuid, otherUser: otherUser)
 
     }
     
