@@ -104,7 +104,7 @@ class ChatViewController: MessagesViewController {
         var vc = storyboard.instantiateViewController(withIdentifier: "profileVC") as! ProfileViewController
         vc.otherUser = otherUser
         //vc.updateViews()
-
+        
         self.present(vc, animated: true, completion: nil)
     }
     

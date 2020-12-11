@@ -167,7 +167,7 @@ class UserController {
             if let document = document, document.exists {
                 guard let user = User(document: document) else { return completion(.failure(.couldNotUnwrap)) }
                 
-                self.currentUser = user
+//                self.currentUser = user
                 
                 dispatchGroup.enter()
                 
@@ -183,6 +183,7 @@ class UserController {
                 }
                 
                 dispatchGroup.notify(queue: .main) {
+                    self.currentUser = user
                     completion(.success(user))
                 }
                 
