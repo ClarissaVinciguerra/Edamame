@@ -105,11 +105,7 @@ extension ProfileViewController {
         
         let okayAction = UIAlertAction(title: "Okay", style: .default) { (_) in
           
-            if alreadyFriends {
-                self.navigationController?.dismiss(animated: true, completion: nil)
-            } else {
                 self.navigationController?.popViewController(animated: true)
-            }
             
         }
         
@@ -119,11 +115,11 @@ extension ProfileViewController {
     }
     
     func checkBeforeBlockingAlert(otherUserName: String) {
-        let alertController = UIAlertController(title: "Are you sure you want to block \(otherUserName)", message: "", preferredStyle: .alert)
+        let alertController = UIAlertController(title: "Are you sure you want to block \(otherUserName)?", message: "", preferredStyle: .alert)
         
         let cancelAction = UIAlertAction(title: "Cancel", style: .default)
         
-        let blockAction = UIAlertAction(title: "Yes, I'm sure.", style: .destructive) { (_) in
+        let blockAction = UIAlertAction(title: "Block", style: .destructive) { (_) in
             self.blockUser()
         }
         
