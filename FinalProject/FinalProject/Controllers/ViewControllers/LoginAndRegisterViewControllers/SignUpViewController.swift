@@ -35,7 +35,6 @@ class SignUpViewController: UIViewController {
         super.viewDidLoad()
         
         setupViews()
-
     }
     
     // MARK: - Actions
@@ -102,9 +101,6 @@ class SignUpViewController: UIViewController {
             
             
             // Insert newUser into the realtime Database
-            
-            
-            
         }
         
         //When user is successfully create, take the user to the main storyboard.
@@ -123,7 +119,6 @@ class SignUpViewController: UIViewController {
         setupBirthdayDatePicker()
         setupSignUpButton()
     }
-    
     
     // MARK: - Views
     func setupNameTextField(){
@@ -164,5 +159,4 @@ class SignUpViewController: UIViewController {
         signUpButton.layer.masksToBounds = true
         signUpButton.backgroundColor = .edamameGreen
     }
-    
 }

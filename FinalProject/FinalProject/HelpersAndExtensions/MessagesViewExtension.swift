@@ -15,7 +15,7 @@ extension UIView {
     }
     
     public var height: CGFloat {
-           return self.frame.size.height
+        return self.frame.size.height
     }
     
     public var top: CGFloat {
@@ -29,12 +29,10 @@ extension UIView {
     public var left: CGFloat {
         return self.frame.origin.x
     }
-      
+    
     public var right: CGFloat {
         return self.frame.size.width + self.frame.origin.x
     }
-    
-    
 }
 
 extension Notification.Name {

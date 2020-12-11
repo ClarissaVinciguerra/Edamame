@@ -50,8 +50,6 @@ class ConversationTableViewCell: UITableViewCell {
         userimageView.frame = CGRect(x: 10, y: 10, width: 100, height: 100)
         userNameLabel.frame = CGRect(x: userimageView.right + 10, y: 10, width: contentView.width - 20 - userimageView.width , height: (contentView.height-20)/2)
         userMessageLabel.frame = CGRect(x: userimageView.right + 10, y: userNameLabel.bottom + 10, width: contentView.width - 20 - userimageView.width , height: (contentView.height-20)/2)
-        
-        
     }
     
     // MARK: - CHANGE FUNCTION TO PROFILE PICTURE
@@ -59,16 +57,16 @@ class ConversationTableViewCell: UITableViewCell {
         self.userMessageLabel.text = model.latestMessage.text
         self.userNameLabel.text = model.name
         
-//        let path = "images/\(model.otherUserEmail)_profile_picture.png"
-//        StorageController.shared.downloadURL(for: path) { [weak self] (result) in
-//            switch result {
-//            case .success(let url):
-//                DispatchQueue.main.async {
-//                    self?.userimageView.sd_setImage(with: url, completed: nil)
-//                }
-//            case .failure(let error):
-//                print("Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")
-//            }
-//        }
+        //        let path = "images/\(model.otherUserEmail)_profile_picture.png"
+        //        StorageController.shared.downloadURL(for: path) { [weak self] (result) in
+        //            switch result {
+        //            case .success(let url):
+        //                DispatchQueue.main.async {
+        //                    self?.userimageView.sd_setImage(with: url, completed: nil)
+        //                }
+        //            case .failure(let error):
+        //                print("Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")
+        //            }
+        //        }
     }
 }

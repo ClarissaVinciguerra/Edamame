@@ -184,7 +184,6 @@ class EditProfileViewController: UIViewController, UITextViewDelegate {
         } else {
             
             saveChangesButton.setTitle("Create Profile", for: .normal)
-            
         }
     }
     
@@ -214,7 +213,6 @@ class EditProfileViewController: UIViewController, UITextViewDelegate {
         view.backgroundColor = .white
         
         navigationItem.leftBarButtonItem = editButtonItem
-        
     }
     
     func disableCameraBarButton() {

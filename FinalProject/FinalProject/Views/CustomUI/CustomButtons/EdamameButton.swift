@@ -28,4 +28,4 @@ class EdamameButton: UIButton {
         guard let size = self.titleLabel?.font.pointSize else { return }
         self.titleLabel?.font = UIFont(name: font, size: size)
     }
-}//END OF CLASS
+}

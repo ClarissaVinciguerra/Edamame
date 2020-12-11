@@ -36,8 +36,6 @@ class ChatViewController: MessagesViewController {
                       displayName: "Me")
     }
     
-    
-    
     init(with otherUserUid: String, otherUserName: String?, id: String?) {
         self.otherUserUid = otherUserUid
         self.otherUserName = otherUserName
@@ -50,12 +48,11 @@ class ChatViewController: MessagesViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
-    
     // MARK: - Lifecycle Functions
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
-
+        
         messagesCollectionView.messagesDataSource = self
         messagesCollectionView.messagesLayoutDelegate = self
         messagesCollectionView.messagesDisplayDelegate = self
@@ -107,10 +104,9 @@ class ChatViewController: MessagesViewController {
         var vc = storyboard.instantiateViewController(withIdentifier: "profileVC") as! ProfileViewController
         vc.otherUser = otherUser
         //vc.updateViews()
+
         self.present(vc, animated: true, completion: nil)
-    
     }
-    
     
     // MARK: - Views
     func setupViews(){
@@ -119,7 +115,6 @@ class ChatViewController: MessagesViewController {
                                                             target: self,
                                                             action: #selector(meetupSpotsTapped))
         createTitleButton()
-      
     }
     
     private func createTitleButton() {
@@ -131,10 +126,6 @@ class ChatViewController: MessagesViewController {
         titleButton.addTarget(self, action: #selector(titleButtonTapped), for:. touchUpInside)
         navigationItem.titleView = titleButton
     }
-    
-    
-   
-    
 }// End of Class
 
 // MARK: - Extensions

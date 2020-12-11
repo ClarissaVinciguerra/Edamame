@@ -16,7 +16,7 @@ struct LogInStrings {
 }
 
 class LogInViewController: UIViewController {
-
+    
     // MARK: - Outlets
     @IBOutlet weak var emailTextField: UITextField!
     @IBOutlet weak var passwordTextField: UITextField!
@@ -77,7 +77,6 @@ class LogInViewController: UIViewController {
             strongSelf.navigationController?.dismiss(animated: true, completion: nil)
         }
     }
-    
     
     // MARK: - Helper Methods
     func setupViews() {

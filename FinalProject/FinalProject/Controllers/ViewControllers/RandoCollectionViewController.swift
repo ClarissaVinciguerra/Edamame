@@ -23,7 +23,6 @@ class RandoCollectionViewController: UICollectionViewController {
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
         
         retrieveCurrentLocation()
-        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -57,7 +56,6 @@ class RandoCollectionViewController: UICollectionViewController {
                 }
             case .failure(let error):
                 print("Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")
-                
             }
         }
     }

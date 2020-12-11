@@ -8,7 +8,7 @@
 import UIKit
 
 class FriendsTableViewController: UITableViewController {
-
+    
     // MARK: - Properties
     
     // MARK: - Lifecycle Functions
@@ -124,7 +124,7 @@ class FriendsTableViewController: UITableViewController {
         createNewConversation(otherUserName: otherUser.name, otherUserUid: otherUser.uuid)
 
     }
-
+    
     // DO WE WANT TO REMOVE FRIENDSHIPS THIS WAY OR IS IT TOO RISKY?
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
@@ -132,12 +132,12 @@ class FriendsTableViewController: UITableViewController {
             tableView.deleteRows(at: [indexPath], with: .fade)
         }
     }
-
+    
     // MARK: - Navigation
-//    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-//        if segue.identifier == "toMessagesTVC" {
-//
-//        }
-//    }
+    //    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+    //        if segue.identifier == "toMessagesTVC" {
+    //
+    //        }
+    //    }
 }
 
