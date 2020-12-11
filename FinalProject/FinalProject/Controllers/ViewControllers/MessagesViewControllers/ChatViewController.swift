@@ -104,10 +104,10 @@ class ChatViewController: MessagesViewController {
     
     @objc private func titleButtonTapped() {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        var story = storyboard.instantiateViewController(withIdentifier: "profileVC") as! ProfileViewController
-        story.otherUser = otherUser
+        var vc = storyboard.instantiateViewController(withIdentifier: "profileVC") as! ProfileViewController
+        vc.otherUser = otherUser
         //vc.updateViews()
-        self.present(story, animated: true, completion: nil)
+        self.present(vc, animated: true, completion: nil)
     
     }
     

@@ -43,6 +43,8 @@ class RandoCollectionViewController: UICollectionViewController {
         collectionView.backgroundColor = .edamameGreen
     }
     
+    
+    
     @objc func loadData() {
         guard let currentUser = UserController.shared.currentUser else { return }
         
@@ -81,24 +83,6 @@ class RandoCollectionViewController: UICollectionViewController {
         }
         
         locationManager.startUpdatingLocation()
-    }
-    
-    func presentLocationPermissionsAlert() {
-        let alertController = UIAlertController(title: "Unable to access location", message: "This app cannot be used without permission to access your location.", preferredStyle: .alert)
-        
-        let settingsAction = UIAlertAction(title: "Settings", style: .default) { (_) -> Void in
-            guard let settingsUrl = URL(string: UIApplication.openSettingsURLString) else {
-                return
-            }
-            if UIApplication.shared.canOpenURL(settingsUrl) {
-                UIApplication.shared.open(settingsUrl, completionHandler: { (success) in
-                })
-            }
-        }
-        
-        alertController.addAction(settingsAction)
-        
-        present(alertController, animated: true, completion: nil)
     }
     
     func configureCollectionViewLayout() -> UICollectionViewLayout {
