@@ -7,6 +7,7 @@
 
 import UIKit
 import CoreLocation
+import FirebaseAuth
 
 class RandoCollectionViewController: UICollectionViewController {
     // MARK: - Properties
@@ -26,8 +27,13 @@ class RandoCollectionViewController: UICollectionViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        
         setupViews()
         loadData()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        validateAuth()
     }
     
     // MARK: - Class methods
@@ -43,6 +49,14 @@ class RandoCollectionViewController: UICollectionViewController {
     }
     
     
+    private func validateAuth() {
+        if FirebaseAuth.Auth.auth().currentUser == nil {
+            let storyboard = UIStoryboard(name: "LogInSignUp", bundle: nil)
+            guard let vc = storyboard.instantiateInitialViewController() else { return }
+            vc.modalPresentationStyle = .fullScreen
+            present(vc, animated: false)
+        }
+    }
     
     @objc func loadData() {
         guard let currentUser = UserController.shared.currentUser else { return }
