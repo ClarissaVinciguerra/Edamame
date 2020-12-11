@@ -34,11 +34,12 @@ class EditProfileViewController: UIViewController, UITextViewDelegate {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         disableCameraBarButton()
+        initiateFetchUser()
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        validateAuth()
+        //validateAuth()
     }
     
     override func viewDidLayoutSubviews() {
@@ -75,17 +76,23 @@ class EditProfileViewController: UIViewController, UITextViewDelegate {
     }
     
     // MARK: - Class Methods
-    private func validateAuth() {
-        if FirebaseAuth.Auth.auth().currentUser == nil {
-            let storyboard = UIStoryboard(name: "LogInSignUp", bundle: nil)
-            guard let vc = storyboard.instantiateInitialViewController() else { return }
-            vc.modalPresentationStyle = .fullScreen
-            present(vc, animated: false)
-        } else {
-            guard let uidKey = UserDefaults.standard.value(forKey: LogInStrings.firebaseUidKey) else { return }
-            let uidString = "\(uidKey)"
-            fetchUser(with: uidString)
-        }
+//    private func validateAuth() {
+//        if FirebaseAuth.Auth.auth().currentUser == nil {
+//            let storyboard = UIStoryboard(name: "LogInSignUp", bundle: nil)
+//            guard let vc = storyboard.instantiateInitialViewController() else { return }
+//            vc.modalPresentationStyle = .fullScreen
+//            present(vc, animated: false)
+//        } else {
+//            guard let uidKey = UserDefaults.standard.value(forKey: LogInStrings.firebaseUidKey) else { return }
+//            let uidString = "\(uidKey)"
+//            fetchUser(with: uidString)
+//        }
+//    }
+    
+    private func initiateFetchUser() {
+        guard let uidKey = UserDefaults.standard.value(forKey: LogInStrings.firebaseUidKey) else { return }
+        let uidString = "\(uidKey)"
+        fetchUser(with: uidString)
     }
     
     private func fetchUser(with firebaseUID: String) {
