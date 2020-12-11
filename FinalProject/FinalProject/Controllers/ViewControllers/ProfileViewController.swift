@@ -38,53 +38,6 @@ class ProfileViewController: UIViewController {
         }
     }
     
-    func setupViews() {
-        collectionView.showsHorizontalScrollIndicator = false
-        collectionView.isScrollEnabled = false
-        collectionView.dataSource = self
-        collectionView.delegate = self
-        collectionView.collectionViewLayout = configureCollectionViewLayout()
-        collectionView.backgroundColor = .whiteSmoke
-        
-        nameAndAgeLabel.textColor = .softBlack
-        distanceLabel.textColor = .softBlack
-        typeOfVeganLabel.textColor = .softBlack
-        bioLabel.textColor = .softBlack
-        
-        addAcceptRevokeButton.backgroundColor = .edamameGreen
-        addAcceptRevokeButton.tintColor = .whiteSmoke
-        addAcceptRevokeButton.addCornerRadius()
-        addAcceptRevokeButton.addAccentBorder()
-        
-        declineButton.backgroundColor = .edamameGreen
-        declineButton.tintColor = .whiteSmoke
-        declineButton.addCornerRadius()
-        declineButton.addAccentBorder()
-        
-        blockButton.backgroundColor = .whiteSmoke
-        blockButton.tintColor = .darkerGreen
-        blockButton.addCornerRadius()
-        blockButton.addAccentBorder()
-    }
-    
-    func configureCollectionViewLayout() -> UICollectionViewLayout {
-        
-        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalHeight(1))
-        
-        let layoutItem = NSCollectionLayoutItem(layoutSize: itemSize)
-        
-        let layoutGroupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.95), heightDimension: .fractionalHeight(1))
-        
-        let layoutGroup = NSCollectionLayoutGroup.horizontal(layoutSize: layoutGroupSize, subitems: [layoutItem])
-        
-        let layoutSection = NSCollectionLayoutSection(group: layoutGroup)
-        layoutSection.orthogonalScrollingBehavior = .groupPaging
-        layoutSection.contentInsets = .init(top: 5, leading: 5, bottom: 5, trailing: 5)
-        layoutSection.interGroupSpacing = 5
-        
-        return UICollectionViewCompositionalLayout(section: layoutSection)
-    }
-    
     // MARK: - Actions
     @IBAction func addAcceptRevokeButtonTapped(_ sender: Any) {
         updateFriendStatus()
@@ -266,6 +219,55 @@ class ProfileViewController: UIViewController {
             addAcceptRevokeButton.setTitle("Request Friend", for: .normal)
             
         }
+    }
+    
+    //MARK: - SetupViews
+    func setupViews() {
+        collectionView.showsHorizontalScrollIndicator = false
+        collectionView.isScrollEnabled = false
+        collectionView.dataSource = self
+        collectionView.delegate = self
+        collectionView.collectionViewLayout = configureCollectionViewLayout()
+        collectionView.backgroundColor = .whiteSmoke
+        
+        nameAndAgeLabel.textColor = .softBlack
+        distanceLabel.textColor = .softBlack
+        typeOfVeganLabel.textColor = .softBlack
+        bioLabel.textColor = .softBlack
+        
+        addAcceptRevokeButton.backgroundColor = .edamameGreen
+        addAcceptRevokeButton.tintColor = .whiteSmoke
+        addAcceptRevokeButton.addCornerRadius()
+        addAcceptRevokeButton.addAccentBorder()
+        
+        declineButton.backgroundColor = .edamameGreen
+        declineButton.tintColor = .whiteSmoke
+        declineButton.addCornerRadius()
+        declineButton.addAccentBorder()
+        
+        blockButton.backgroundColor = .whiteSmoke
+        blockButton.tintColor = .darkerGreen
+        blockButton.addCornerRadius()
+        blockButton.addAccentBorder()
+    }
+    
+    //MARK: - ConfigureCVLayout
+    func configureCollectionViewLayout() -> UICollectionViewLayout {
+        
+        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalHeight(1))
+        
+        let layoutItem = NSCollectionLayoutItem(layoutSize: itemSize)
+        
+        let layoutGroupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.95), heightDimension: .fractionalHeight(1))
+        
+        let layoutGroup = NSCollectionLayoutGroup.horizontal(layoutSize: layoutGroupSize, subitems: [layoutItem])
+        
+        let layoutSection = NSCollectionLayoutSection(group: layoutGroup)
+        layoutSection.orthogonalScrollingBehavior = .groupPaging
+        layoutSection.contentInsets = .init(top: 5, leading: 5, bottom: 5, trailing: 5)
+        layoutSection.interGroupSpacing = 5
+        
+        return UICollectionViewCompositionalLayout(section: layoutSection)
     }
 }
 

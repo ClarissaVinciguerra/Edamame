@@ -13,10 +13,21 @@ class SettingsViewController: UIViewController {
     @IBOutlet weak var logOutButton: UIButton!
     @IBOutlet weak var deleteButton: UIButton!
     
+    // MARK: - Properties
+    var viewsLaidOut = false
+    
     //MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
 
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        if viewsLaidOut == false {
+            setupViews()
+            viewsLaidOut = true
+        }
     }
     
     //MARK: - Actions
@@ -27,9 +38,10 @@ class SettingsViewController: UIViewController {
         
     }
     
-    
     //MARK: - Methods
-    
+    func setupViews() {
+        deleteButton.tintColor = .red
+    }
     
 
 }

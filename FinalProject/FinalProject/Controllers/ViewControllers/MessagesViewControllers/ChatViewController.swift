@@ -103,24 +103,14 @@ class ChatViewController: MessagesViewController {
     }
     
     @objc private func titleButtonTapped() {
-        let vc = ProfileViewController()
-        vc.title = "Profile"
-        //vc.otherUser =
-        present(vc, animated: true)
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        var story = storyboard.instantiateViewController(withIdentifier: "profileVC") as! ProfileViewController
+        story.otherUser = otherUser
+        //vc.updateViews()
+        self.present(story, animated: true, completion: nil)
+    
     }
     
-    
-    
-//    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-//        if segue.identifier == "toRandoProfileVC" {
-//            guard let indexPath = collectionView.indexPathsForSelectedItems?.first,
-//                  let cell = collectionView.cellForItem(at: indexPath) as? RandoCollectionViewCell
-//            else { return }
-//            let destinatinon = segue.destination as? ProfileViewController
-//            let profile = cell.user
-//            destinatinon?.otherUser = profile
-//        }
-//    }
     
     // MARK: - Views
     func setupViews(){

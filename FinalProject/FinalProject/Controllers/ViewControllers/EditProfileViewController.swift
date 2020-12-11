@@ -31,7 +31,6 @@ class EditProfileViewController: UIViewController, UITextViewDelegate {
         updateViews()
     }
     
-    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         disableCameraBarButton()
@@ -51,7 +50,6 @@ class EditProfileViewController: UIViewController, UITextViewDelegate {
     }
     
     // MARK: - Actions
-    
     @IBAction private func textFieldDidChange(_ sender: Any) {
         saveChangesButton.setTitle("Save Changes", for: .normal)
         saveChangesButton.isEnabled = true
@@ -61,7 +59,6 @@ class EditProfileViewController: UIViewController, UITextViewDelegate {
         saveChangesButton.setTitle("Save Changes", for: .normal)
         saveChangesButton.isEnabled = true
     }
-    
     
     @IBAction func addPhotoButtonTapped(_ sender: Any) {
         selectPhotoAlert()
@@ -76,7 +73,7 @@ class EditProfileViewController: UIViewController, UITextViewDelegate {
     @IBAction func infoButtonTapped(_ sender: Any) {
         presentInfoAlert()
     }
- 
+    
     // MARK: - Class Methods
     private func validateAuth() {
         if FirebaseAuth.Auth.auth().currentUser == nil {
@@ -168,7 +165,7 @@ class EditProfileViewController: UIViewController, UITextViewDelegate {
                     }
                 case .failure(let error):
                     print("Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")
-                    // if it doesnt work alert user here
+                // if it doesnt work alert user here
                 }
             }
         } else {
@@ -298,6 +295,7 @@ class EditProfileViewController: UIViewController, UITextViewDelegate {
         return UICollectionViewCompositionalLayout(section: section)
     }
     
+
 //    private func appendImageToCloud(image: UIImage) {
 //        guard let currentUser = UserController.shared.currentUser else { return }
 //        UserController.shared.appendImage(image: image, user: currentUser) { (result) in
@@ -314,6 +312,7 @@ class EditProfileViewController: UIViewController, UITextViewDelegate {
 //            }
 //        }
 //    }
+
 }
 
 //MARK: - Extensions
