@@ -67,9 +67,7 @@ class SignUpViewController: UIViewController {
             return
         }
         
-        
         let birthday = birthdayDatePicker.date
-        
         
         //spinner.show(in: view)
         

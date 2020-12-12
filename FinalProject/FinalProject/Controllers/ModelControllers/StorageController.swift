@@ -123,6 +123,16 @@ final class StorageController {
         }
     }
     
+    func deleteCurrentUserPhotos(with userID: String, completion: @escaping (Result<Void, StorageErrors>) -> Void) {
+        self.storage.child("\(userID)/").delete { (error) in
+            if let error = error {
+                print("Error removing user file from storage: \(error)")
+                return completion(.failure(.failedToDelete))
+            }
+            completion(.success(()))
+        }
+    }
+    
 //    private func removeImage(with uuid: String, completion: @escaping(Result<Void, UserError>) -> Void) {
 //
 //        guard let currentUser = UserController.shared.currentUser else { return completion(.failure(.noExistingUser)) }

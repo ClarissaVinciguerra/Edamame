@@ -8,7 +8,6 @@
 import UIKit
 
 // MARK: - LogInViewController
-
 extension LogInViewController {
     
     func alertUserLoginError() {
@@ -18,11 +17,9 @@ extension LogInViewController {
         loginError.addAction(okAction)
         present(loginError, animated: true)
     }
-    
 }
 
 // MARK: - SignUpViewController
-
 extension SignUpViewController {
     
     struct SignUpAlertStrings {
@@ -41,7 +38,6 @@ extension SignUpViewController {
 }
 
 // MARK: - EditProfileViewController
-
 extension EditProfileViewController {
     
     func presentImageAlert() {
@@ -76,13 +72,11 @@ extension EditProfileViewController {
 }
 
 // MARK: - ProfileViewController
-
 extension ProfileViewController {
     
 }
 
 // MARK: - RandoCollectionViewController
-
 extension RandoCollectionViewController {
     
     func presentLocationPermissionsAlert() {

@@ -45,7 +45,6 @@ class LogInViewController: UIViewController {
               !email.isEmpty,
               !password.isEmpty,
               password.count >= 6 else {
-            alertUserLoginError()
             return
         }
         

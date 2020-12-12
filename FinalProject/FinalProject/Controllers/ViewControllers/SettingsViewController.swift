@@ -21,7 +21,6 @@ class SettingsViewController: UIViewController {
     //MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-
     }
     
     override func viewDidLayoutSubviews() {
@@ -36,8 +35,8 @@ class SettingsViewController: UIViewController {
     @IBAction func logOutButtonTapped(_ sender: Any) {
         
         let actionSheet = UIAlertController(title: "",
-                                      message: "Are you sure you want to log out?",
-                                      preferredStyle: .actionSheet)
+                                            message: "Are you sure you want to log out?",
+                                            preferredStyle: .actionSheet)
         actionSheet.addAction(UIAlertAction(title: "Log Out", style: .destructive, handler: { [weak self] _ in
             guard let strongSelf = self else { return }
             
@@ -59,7 +58,7 @@ class SettingsViewController: UIViewController {
     }
     
     @IBAction func deleteButtonTapped(_ sender: Any) {
-        deleteMyAccount()
+        deleteUser()
     }
     
     //MARK: - Methods
@@ -67,25 +66,55 @@ class SettingsViewController: UIViewController {
         deleteButton.tintColor = .red
     }
     
-    func deleteMyAccount() {
-        
-        guard let userID = UserController.shared.currentUser?.uuid
-        
-        else { return }
-        
-        let docRef = Firestore.firestore().collection("users").document(userID)
-        docRef.delete { (error) in
-            if let error = error {
-                print(error.localizedDescription)
-            } else {
-                let storyboard = UIStoryboard(name: "LogInSignUp", bundle: nil)
-                let vc = storyboard.instantiateViewController(withIdentifier: "LoginStoryboard")
-                vc.title = "Log In"
-                self.navigationController?.navigationBar.backItem?.hidesBackButton = true
-                self.navigationController?.pushViewController(vc, animated: true)
-                
-                print("We successfully deleted a user!")
+    fileprivate func deleteUser() {
+        let actionSheet = UIAlertController(title: "",
+                                            message: "Are you sure you want to DELETE your account?",
+                                            preferredStyle: .actionSheet)
+        actionSheet.addAction(UIAlertAction(title: "Delete Account", style: .destructive, handler: { [weak self] _ in
+            guard let strongSelf = self else { return }
+            
+            UserController.shared.deleteCurrentUser { (result) in
+                switch result {
+                case .success():
+                    let storyboard = UIStoryboard(name: "LogInSignUp", bundle: nil)
+                    guard let vc = storyboard.instantiateInitialViewController() else { return }
+                    vc.modalPresentationStyle = .fullScreen
+                    strongSelf.present(vc, animated: true)
+                case .failure(let error):
+                    print("Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")
+                }
             }
-        }
+        }))
+        actionSheet.addAction(UIAlertAction(title: "Cancel",
+                                            style: .cancel,
+                                            handler: nil))
+        
+        present(actionSheet, animated: true)
     }
+    
+    //    func deleteMyData() {
+    //
+    //        guard let userID = UserController.shared.currentUser?.uuid
+    //
+    //        else { return }
+    //
+    //        let docRef = Firestore.firestore().collection("users").document(userID)
+    //        docRef.delete { (error) in
+    //            if let error = error {
+    //                print(error.localizedDescription)
+    //            } else {
+    //
+    //                let strongSelf = self
+    //
+    //                // maybe use pop off instead.(if login vc already exists)
+    //                let storyboard = UIStoryboard(name: "LogInSignUp", bundle: nil)
+    //                guard let vc = storyboard.instantiateInitialViewController() else { return }
+    //                vc.modalPresentationStyle = .fullScreen
+    //                strongSelf.present(vc, animated: true)
+    //
+    //                print("We successfully deleted a user!")
+    //            }
+    //        }
+    //    }
 }
+

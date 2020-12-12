@@ -23,13 +23,13 @@ class UserController {
     
     // MARK: - CREATE
     func createUser(name: String, bio: String, type: String, unsavedImages: [UIImage], dateOfBirth: Date, latitude: Double, longitude: Double, uuid: String, completion: @escaping (Result<User, UserError>) -> Void) {
-
+        
         let newUser = User(name: name, dateOfBirth: dateOfBirth, bio: bio, type: type, latitude: latitude, longitude: longitude, uuid: uuid)
         
         let timeInterval = newUser.dateOfBirth.timeIntervalSince1970
         
         let dispatchGroup = DispatchGroup()
-
+        
         for image in unsavedImages {
             
             dispatchGroup.enter()
@@ -76,86 +76,86 @@ class UserController {
             }
         }
     }
-  
+    
     // MARK: - READ
     /*
-    func fetchUserByField(with uuid: String, completion: @escaping (Result<User, UserError>) -> Void) {
-        let docRef = database.collection(userCollection)
-        
-        docRef.whereField(UserStrings.firebaseUIDKey, isEqualTo: uuid).getDocuments { (querySnapshot, error) in
-            if let error = error {
-                print("There was an error fetching connections for this User. Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")
-            } else {
-                guard let doc = querySnapshot!.documents.first, let fetchedUser = User(document: doc) else { return completion(.failure(.couldNotUnwrap)) }
-                
-                fetchedUser.images = []
-                
-                let dispatchGroup = DispatchGroup()
-                
-                for imageUUID in fetchedUser.imageUUIDs {
-                    
-                    dispatchGroup.enter()
-                    
-                    StorageController.shared.downloadURL(for: imageUUID, with: fetchedUser.uuid) { (result) in
-                        switch result {
-                        case .success(let url):
-                            self.convertURLToImage(urlString: "\(url)") { (image) in
-                                guard let image = image else { return completion(.failure(.couldNotUnwrap))}
-                                fetchedUser.images.append(image)
-                                dispatchGroup.leave()
-                            }
-                            
-                        case .failure(let error):
-                            print("Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")
-                            dispatchGroup.leave()
-                        }
-                    }
-                }
-                
-                dispatchGroup.notify(queue: .main) {
-                    self.currentUser = fetchedUser
-                    completion(.success(fetchedUser))
-                }
-            }
-        }
-    }
-    */
+     func fetchUserByField(with uuid: String, completion: @escaping (Result<User, UserError>) -> Void) {
+     let docRef = database.collection(userCollection)
+     
+     docRef.whereField(UserStrings.firebaseUIDKey, isEqualTo: uuid).getDocuments { (querySnapshot, error) in
+     if let error = error {
+     print("There was an error fetching connections for this User. Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")
+     } else {
+     guard let doc = querySnapshot!.documents.first, let fetchedUser = User(document: doc) else { return completion(.failure(.couldNotUnwrap)) }
+     
+     fetchedUser.images = []
+     
+     let dispatchGroup = DispatchGroup()
+     
+     for imageUUID in fetchedUser.imageUUIDs {
+     
+     dispatchGroup.enter()
+     
+     StorageController.shared.downloadURL(for: imageUUID, with: fetchedUser.uuid) { (result) in
+     switch result {
+     case .success(let url):
+     self.convertURLToImage(urlString: "\(url)") { (image) in
+     guard let image = image else { return completion(.failure(.couldNotUnwrap))}
+     fetchedUser.images.append(image)
+     dispatchGroup.leave()
+     }
+     
+     case .failure(let error):
+     print("Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")
+     dispatchGroup.leave()
+     }
+     }
+     }
+     
+     dispatchGroup.notify(queue: .main) {
+     self.currentUser = fetchedUser
+     completion(.success(fetchedUser))
+     }
+     }
+     }
+     }
+     */
     
     // MARK: - READ
     
-//    func fetchUserByField(with uuid: String, completion: @escaping (Result<User, UserError>) -> Void) {
-//        let docRef = database.collection(userCollection)
-//
-//        docRef.whereField(UserStrings.firebaseUIDKey, isEqualTo: uuid).getDocuments { (querySnapshot, error) in
-//            if let error = error {
-//                print("There was an error fetching connections for this User. Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")
-//            } else {
-//                guard let doc = querySnapshot!.documents.first,
-//                      let fetchedUser = User(document: doc) else { return completion(.failure(.couldNotUnwrap)) }
-//                
-//                let dispatchGroup = DispatchGroup()
-//                dispatchGroup.enter()
-//                
-//                StorageController.shared.downloadImages(with: fetchedUser.uuid) { (result) in
-//                    switch result {
-//                    case .success(let images):
-//                        fetchedUser.images = images
-//                        dispatchGroup.leave()
-//                        
-//                    case .failure(let error):
-//                        print("Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")
-//                        dispatchGroup.leave()
-//                    }
-//                }
-//                
-//               dispatchGroup.notify(queue: .main) {
-//                    self.currentUser = fetchedUser
-//                    completion(.success(fetchedUser))
-//               }
-//            }
-//        }
-//          
-//    }
+    //    func fetchUserByField(with uuid: String, completion: @escaping (Result<User, UserError>) -> Void) {
+    //        let docRef = database.collection(userCollection)
+    //
+    //        docRef.whereField(UserStrings.firebaseUIDKey, isEqualTo: uuid).getDocuments { (querySnapshot, error) in
+    //            if let error = error {
+    //                print("There was an error fetching connections for this User. Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")
+    //            } else {
+    //                guard let doc = querySnapshot!.documents.first,
+    //                      let fetchedUser = User(document: doc) else { return completion(.failure(.couldNotUnwrap)) }
+    //
+    //                let dispatchGroup = DispatchGroup()
+    //                dispatchGroup.enter()
+    //
+    //                StorageController.shared.downloadImages(with: fetchedUser.uuid) { (result) in
+    //                    switch result {
+    //                    case .success(let images):
+    //                        fetchedUser.images = images
+    //                        dispatchGroup.leave()
+    //
+    //                    case .failure(let error):
+    //                        print("Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")
+    //                        dispatchGroup.leave()
+    //                    }
+    //                }
+    //
+    //               dispatchGroup.notify(queue: .main) {
+    //                    self.currentUser = fetchedUser
+    //                    completion(.success(fetchedUser))
+    //               }
+    //            }
+    //        }
+    //
+    //    }
     
     func fetchUserBy(_ uuid: String, completion: @escaping (Result<User, UserError>) -> Void) {
         let userDocRef = database.collection(userCollection).document(uuid)
@@ -192,25 +192,25 @@ class UserController {
                 
             }
         }
-//        completion(.failure(.noExistingUser))
+        //        completion(.failure(.noExistingUser))
     }
     /*
-    private func convertURLToImage(urlString: String, completion: @escaping (UIImage?) -> Void) {
-        guard let url = URL(string: urlString) else { return completion(nil) }
-        
-        URLSession.shared.dataTask(with: url) { (data, _, error) in
-            if let error = error {
-                print("Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")
-            }
-            guard let data = data else { return completion(nil) }
-            
-            print(data)
-            
-            let image = UIImage(data: data)
-            completion(image)
-        }.resume()
-    }
-*/
+     private func convertURLToImage(urlString: String, completion: @escaping (UIImage?) -> Void) {
+     guard let url = URL(string: urlString) else { return completion(nil) }
+     
+     URLSession.shared.dataTask(with: url) { (data, _, error) in
+     if let error = error {
+     print("Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")
+     }
+     guard let data = data else { return completion(nil) }
+     
+     print(data)
+     
+     let image = UIImage(data: data)
+     completion(image)
+     }.resume()
+     }
+     */
     func checkThatUserExists(with uuid: String, completion: @escaping ((Bool) -> Void)) {
         let docRef = database.collection(userCollection).document(uuid)
         
@@ -270,19 +270,19 @@ class UserController {
                         if makeThisRandoAppear {
                             
                             let dispatchGroup = DispatchGroup()
-                               
-                                dispatchGroup.enter()
-                                
-                                StorageController.shared.downloadImages(with: rando.uuid) { (result) in
-                                    switch result {
-                                    case .success(let images):
-                                        rando.images = images
-                                        dispatchGroup.leave()
-                                    case .failure(let error):
-                                        print("Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")
-                                        dispatchGroup.leave()
-                                    }
+                            
+                            dispatchGroup.enter()
+                            
+                            StorageController.shared.downloadImages(with: rando.uuid) { (result) in
+                                switch result {
+                                case .success(let images):
+                                    rando.images = images
+                                    dispatchGroup.leave()
+                                case .failure(let error):
+                                    print("Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")
+                                    dispatchGroup.leave()
                                 }
+                            }
                             
                             dispatchGroup.notify(queue: .main) {
                                 randosToAppear.append(rando)
@@ -318,9 +318,9 @@ class UserController {
                     
                     guard let user = User(document: document) else { return }
                     
-
-                        imageDispatchGroup.enter()
-
+                    
+                    imageDispatchGroup.enter()
+                    
                     StorageController.shared.downloadImages(with: user.uuid) { (result) in
                         switch result {
                         case .success(let images):
@@ -374,45 +374,43 @@ class UserController {
             }
         }
         
-            for existingImage in user.images {
-                
-                if !updatedImageNames.contains(existingImage.name) {
-                    StorageController.shared.deleteImageFromStorage(with: existingImage.name, userID: user.uuid) { (result) in
-                        switch result {
-                        case .success():
-                            print("Image successfully deleted from storage!")
-                            
-                        case .failure(let error):
-                            print("Error deleting image from storage: \(error.localizedDescription)")
-                        }
+        for existingImage in user.images {
+            
+            if !updatedImageNames.contains(existingImage.name) {
+                StorageController.shared.deleteImageFromStorage(with: existingImage.name, userID: user.uuid) { (result) in
+                    switch result {
+                    case .success():
+                        print("Image successfully deleted from storage!")
+                        
+                    case .failure(let error):
+                        print("Error deleting image from storage: \(error.localizedDescription)")
                     }
                 }
-                
             }
+            
+        }
         
-            
-            let documentReference = self.database.collection(self.userCollection).document(user.uuid)
-            
-            documentReference.updateData([
-                UserStrings.nameKey : "\(user.name)",
-                UserStrings.bioKey : user.bio,
-                UserStrings.typeKey : user.type,
-                UserStrings.latitudeKey : user.latitude,
-                UserStrings.longitudeKey : user.longitude,
-                UserStrings.friendsKey : user.friends,
-                UserStrings.pendingRequestsKey : user.pendingRequests,
-                UserStrings.sentRequestsKey : user.sentRequests,
-                UserStrings.blockedArrayKey : user.blockedArray,
-                UserStrings.reportCountKey : user.reportCount
-            ]) { (error) in
-                if let error = error {
-                    print("Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")
-                    return completion(.failure(.firebaseError(error)))
-                } else {
-                    return completion(.success(user))
-                }
+        let documentReference = self.database.collection(self.userCollection).document(user.uuid)
+        
+        documentReference.updateData([
+            UserStrings.nameKey : "\(user.name)",
+            UserStrings.bioKey : user.bio,
+            UserStrings.typeKey : user.type,
+            UserStrings.latitudeKey : user.latitude,
+            UserStrings.longitudeKey : user.longitude,
+            UserStrings.friendsKey : user.friends,
+            UserStrings.pendingRequestsKey : user.pendingRequests,
+            UserStrings.sentRequestsKey : user.sentRequests,
+            UserStrings.blockedArrayKey : user.blockedArray,
+            UserStrings.reportCountKey : user.reportCount
+        ]) { (error) in
+            if let error = error {
+                print("Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")
+                return completion(.failure(.firebaseError(error)))
+            } else {
+                return completion(.success(user))
             }
-        
+        }
     }
     
     // MARK: - REMOVE
@@ -527,16 +525,44 @@ class UserController {
         }
     }
     
-    // MARK: - DELETE
-    func deleteUserInfoWith(_ uuid: String, completion: @escaping (Result<Void, UserError>) -> Void) {
-        database.collection(userCollection).document(uuid).delete() { err in
-            if let err = err {
-                print("Error removing document: \(err)")
-                completion (.failure(.couldNotRemove))
+    // MARK: - DELETE USER
+    func deleteCurrentUser(completion: @escaping (Result<Void, UserError>) -> Void) {
+        guard let userID = currentUser?.uuid
+        else { return completion(.failure(.noExistingUser)) }
+        
+        database.collection(userCollection).document(userID).delete() { error in
+            if let error = error {
+                print("Error removing document: \(error)")
+                completion(.failure(.couldNotRemove))
             } else {
-                print("User successfully deleted.")
-                completion(.success(()))
+                StorageController.shared.deleteCurrentUserPhotos(with: userID) { (result) in
+                    if let error = error {
+                        print("Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")
+                        completion(.failure(.couldNotRemove))
+                    } else {
+                        self.deleteCurrentUserFromAuth(with: userID) { (result) in
+                            if let error = error {
+                                print("Error removing user from authentication: \(error)")
+                            } else {
+                                completion(.success(()))
+                            }
+                        }
+                    }
+                }
             }
+        }
+    }
+    
+    func deleteCurrentUserFromAuth(with uuid: String, completion: @escaping (Result<Void, UserError>) -> Void) {
+        do {
+            try FirebaseAuth.Auth.auth().currentUser?.delete(completion: { (error) in
+                if let error = error {
+                    print("Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")
+                }
+            })
+            
+        } catch {
+            print("Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")
         }
     }
 }
