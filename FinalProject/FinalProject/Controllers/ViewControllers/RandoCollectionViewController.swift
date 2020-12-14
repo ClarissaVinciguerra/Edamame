@@ -108,7 +108,6 @@ class RandoCollectionViewController: UICollectionViewController {
         let status = CLLocationManager().authorizationStatus
         
         if (status == .denied || status == .restricted || !CLLocationManager.locationServicesEnabled()) {
-            presentLocationPermissionsAlert()
             return
         }
         

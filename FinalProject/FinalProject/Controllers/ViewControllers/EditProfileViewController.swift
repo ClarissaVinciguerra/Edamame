@@ -159,7 +159,6 @@ class EditProfileViewController: UIViewController, UITextViewDelegate {
             images.append(image.image)
         }
         
-        
         if profileImages.count > 1 {
             UserController.shared.createUser(name: name, bio: bio, type: type, unsavedImages: images, dateOfBirth: birthdayKey, latitude: 0.0, longitude: 0.0, uuid: uid) { (result) in
                 switch result {
