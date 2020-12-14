@@ -98,5 +98,35 @@ extension RandoCollectionViewController {
     }
 }
 
+//MARK: - SettingsViewController
+extension SettingsViewController {
+    
+     func deleteUserAlert() {
+        let actionSheet = UIAlertController(title: "",
+                                            message: "Are you sure you want to DELETE your account?",
+                                            preferredStyle: .actionSheet)
+        actionSheet.addAction(UIAlertAction(title: "Delete Account", style: .destructive, handler: { [weak self] _ in
+            guard let strongSelf = self else { return }
+            
+            UserController.shared.deleteCurrentUser { (result) in
+                switch result {
+                case .success():
+                    let storyboard = UIStoryboard(name: "LogInSignUp", bundle: nil)
+                    guard let vc = storyboard.instantiateInitialViewController() else { return }
+                    vc.modalPresentationStyle = .fullScreen
+                    strongSelf.present(vc, animated: true)
+                case .failure(let error):
+                    print("Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")
+                }
+            }
+        }))
+        actionSheet.addAction(UIAlertAction(title: "Cancel",
+                                            style: .cancel,
+                                            handler: nil))
+        
+        present(actionSheet, animated: true)
+    }
+}
+
 
 
