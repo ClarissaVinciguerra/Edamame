@@ -101,7 +101,7 @@ extension EditProfileViewController {
 extension ProfileViewController {
     
     func userHasBeenBlockedAlert(otherUserName: String, alreadyFriends: Bool) {
-        let alertController = UIAlertController(title: "All set!", message: "You will no longer appear in this app on \(otherUserName)'s account.", preferredStyle: .alert)
+        let alertController = UIAlertController(title: "", message: "You will no longer appear in this app on \(otherUserName)'s account.", preferredStyle: .alert)
         
         let okayAction = UIAlertAction(title: "Okay", style: .default) { (_) in
           
@@ -129,6 +129,21 @@ extension ProfileViewController {
         present(alertController, animated: true, completion: nil)
     }
     
+    
+    func presentReportUserAlert() {
+        let alertController = UIAlertController(title: "Are you sure you want to report this user?", message: "Users should be reported for WHAT ARE WE HAVING PEOPLE REPORT USERS FOR?", preferredStyle: .alert)
+        
+        let reportAction = UIAlertAction(title: "Report", style: .destructive) { (_) in
+            self.reportUser()
+        }
+        let cancelAction = UIAlertAction(title: "Cancel", style: .default)
+        
+        alertController.addAction(reportAction)
+        alertController.addAction(cancelAction)
+        
+        present(alertController, animated: true, completion: nil)
+    }
+    
 }
 
 // MARK: - RandoCollectionViewController
@@ -151,6 +166,26 @@ extension RandoCollectionViewController {
         alertController.addAction(settingsAction)
         
         present(alertController, animated: true, completion: nil)
+    }
+    
+    func presentAccountReportedAlert(_ currentUser: User) {
+        let alertController = UIAlertController(title: "This account is being deleted due to multiple reports", message: "", preferredStyle: .alert)
+        
+        let deleteUserAction = UIAlertAction(title: "Okay", style: .default) { (_) in
+            UserController.shared.deleteUserInfoWith(currentUser.uuid) { (result) in
+                switch result {
+                case .success():
+                    print("Account successfully deleted.")
+                case .failure(let error):
+                    print("Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")
+                }
+            }
+        }
+        
+        alertController.addAction(deleteUserAction)
+        
+        present(alertController, animated: true, completion: nil)
+        
     }
 }
 

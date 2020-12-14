@@ -93,7 +93,7 @@ class EditProfileViewController: UIViewController, UITextViewDelegate {
         let uidString = "\(uidKey)"
         fetchUser(with: uidString)
     }
-    
+    // CHECK IF THIS IS NECESSARY BEFORE SUBMISSION
     private func fetchUser(with firebaseUID: String) {
         profileImages = []
         
