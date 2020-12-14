@@ -167,7 +167,7 @@ class UserController {
             if let document = document, document.exists {
                 guard let user = User(document: document) else { return completion(.failure(.couldNotUnwrap)) }
                 
-                self.currentUser = user
+//                self.currentUser = user
                 
                 dispatchGroup.enter()
                 
@@ -183,6 +183,7 @@ class UserController {
                 }
                 
                 dispatchGroup.notify(queue: .main) {
+                    self.currentUser = user
                     completion(.success(user))
                 }
                 
@@ -225,7 +226,9 @@ class UserController {
     }
     
     func fetchFilteredRandos(currentUser: User, completion: @escaping (Result<[User], UserError>) -> Void) {
+        
         let userDocRef = database.collection(userCollection)
+        let dispatchGroup = DispatchGroup()
         
         userDocRef.getDocuments { (querySnapshot, error) in
             if let error = error {
@@ -236,63 +239,36 @@ class UserController {
             } else {
                 
                 var randosToAppear: [User] = []
-                var doNotAppearArray = currentUser.blockedArray
-                doNotAppearArray.append(contentsOf: currentUser.sentRequests)
-                doNotAppearArray.append(contentsOf: currentUser.friends)
-                doNotAppearArray.append(currentUser.uuid)
-                let outerDispatchGroup = DispatchGroup()
                 
                 for document in querySnapshot!.documents {
                     
-                    outerDispatchGroup.enter()
-                    
                     if let rando = User(document: document) {
+                        dispatchGroup.enter()
                         
-                        for uuid in rando.blockedArray {
-                            if currentUser.uuid == uuid {
-                                doNotAppearArray.append(rando.uuid)
-                            }
-                        }
-                        
-                        if rando.reportCount >= 3 {
-                            doNotAppearArray.append(rando.uuid)
-                        }
-                        
-                        var makeThisRandoAppear = true
-                        
-                        for uuid in doNotAppearArray {
-                            if rando.uuid == uuid {
-                                makeThisRandoAppear = false
-                                outerDispatchGroup.leave()
-                            }
-                        }
-                        
-                        if makeThisRandoAppear {
+
+                        if currentUser.sentRequests.contains(rando.uuid) || currentUser.friends.contains(rando.uuid) || currentUser.uuid == rando.uuid || currentUser.blockedArray.contains(rando.uuid) || rando.reportCount >= 3 {
+                           
+                            dispatchGroup.leave()
                             
-                            let dispatchGroup = DispatchGroup()
-                            
-                            dispatchGroup.enter()
-                            
+                        } else {
+                          
                             StorageController.shared.downloadImages(with: rando.uuid) { (result) in
                                 switch result {
                                 case .success(let images):
                                     rando.images = images
+                                    randosToAppear.append(rando)
                                     dispatchGroup.leave()
+                                    
                                 case .failure(let error):
                                     print("Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")
                                     dispatchGroup.leave()
                                 }
                             }
-                            
-                            dispatchGroup.notify(queue: .main) {
-                                randosToAppear.append(rando)
-                                outerDispatchGroup.leave()
-                            }
                         }
                     }
                 }
                 
-                outerDispatchGroup.notify(queue: .main) {
+                dispatchGroup.notify(queue: .main) {
                     completion(.success(randosToAppear))
                 }
             }
@@ -301,46 +277,41 @@ class UserController {
     
     func fetchUsersFrom (_ currentUserArray: [String], completion: @escaping (Result<[User], UserError>) -> Void) {
         
-        let outerDispatchGroup = DispatchGroup()
+        let dispatchGroup = DispatchGroup()
         var fetchedUsers: [User] = []
         
         for uuid in currentUserArray {
             
-            outerDispatchGroup.enter()
+            dispatchGroup.enter()
             
             let docRef = database.collection(userCollection).document(uuid)
             docRef.getDocument { (document, error) in
                 
-                
-                let imageDispatchGroup = DispatchGroup()
-                
                 if let document = document, document.exists {
                     
                     guard let user = User(document: document) else { return }
-                    
-                    
-                    imageDispatchGroup.enter()
-                    
+
                     StorageController.shared.downloadImages(with: user.uuid) { (result) in
                         switch result {
                         case .success(let images):
                             user.images = images
-                            imageDispatchGroup.leave()
+                            fetchedUsers.append(user)
+                            dispatchGroup.leave()
+                            
                         case .failure(let error):
                             print("Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")
-                            imageDispatchGroup.leave()
+                            fetchedUsers.append(user)
+                            dispatchGroup.leave()
+                            
                         }
-                    }
-                    imageDispatchGroup.notify(queue: .main) {
-                        fetchedUsers.append(user)
-                        outerDispatchGroup.leave()
                     }
                 } else if let error = error {
                     completion(.failure(.firebaseError(error)))
                 }
             }
         }
-        outerDispatchGroup.notify(queue: .main) {
+        
+        dispatchGroup.notify(queue: .main) {
             return completion(.success(fetchedUsers))
         }
     }
@@ -348,50 +319,51 @@ class UserController {
     // MARK: - UPDATE
     func updateUserBy(_ user: User, updatedImages: [Image] = [], completion: @escaping (Result<User, UserError>) -> Void) {
         
-        var updatedImageNames: [String] = []
-        
-        for image in updatedImages {
+        // protects against functions outside of the editProfileViewController from deleting images whilst updating for reasons such as adding a user to a blocked array or updating a friend status
+        if !updatedImages.isEmpty {
             
-            if !image.name.isEmpty {
+            var updatedImageNames: [String] = []
+            
+            for image in updatedImages {
+                // creates an array of existing images identified by name
                 updatedImageNames.append(image.name)
-            }
-            
-        }
-        
-        for image in updatedImages {
-            
-            if image.name.isEmpty {
-                guard let imageData = image.image.jpegData(compressionQuality: 0.5) else { return completion(.failure(.errorConvertingImage))}
-                StorageController.shared.uploadImage(with: imageData, fileName: UUID().uuidString + ".jpeg", userID: user.uuid) { (result) in
-                    switch result {
-                    case .success(_):
-                        print("Image successfully uploaded!")
-                    case .failure(let error):
-                        print("\(error.localizedDescription)")
-                    }
-                }
                 
             }
-        }
-        
-        for existingImage in user.images {
-            
-            if !updatedImageNames.contains(existingImage.name) {
-                StorageController.shared.deleteImageFromStorage(with: existingImage.name, userID: user.uuid) { (result) in
-                    switch result {
-                    case .success():
-                        print("Image successfully deleted from storage!")
-                        
-                    case .failure(let error):
-                        print("Error deleting image from storage: \(error.localizedDescription)")
+
+            for image in updatedImages {
+                // creates an array of exisitng images identified by name.
+                updatedImageNames.append(image.name)
+
+                // saves images that have not yet been assigned a name (new images) to storage
+                if image.name.isEmpty {
+                    guard let imageData = image.image.jpegData(compressionQuality: 0.5) else { return completion(.failure(.errorConvertingImage))}
+                    StorageController.shared.uploadImage(with: imageData, fileName: UUID().uuidString + ".jpeg", userID: user.uuid) { (result) in
+                        switch result {
+                        case .success(_):
+                            print("Image successfully uploaded!")
+                        case .failure(let error):
+                            print("\(error.localizedDescription)")
+                        }
                     }
                 }
             }
-            
+
+            for existingImage in user.images {
+                // deletes exisiting images in storage that are not found in the new array of images that the user wants to keep
+                if !updatedImageNames.contains(existingImage.name) {
+                    StorageController.shared.deleteImageFromStorage(with: existingImage.name, userID: user.uuid) { (result) in
+                        switch result {
+                        case .success():
+                            print("Image successfully deleted from storage!")
+
+                        case .failure(let error):
+                            print("Error deleting image from storage: \(error.localizedDescription)")
+                        }
+                    }
+                }
+            }  
         }
-        
-        let documentReference = self.database.collection(self.userCollection).document(user.uuid)
-        
+   
         documentReference.updateData([
             UserStrings.nameKey : "\(user.name)",
             UserStrings.bioKey : user.bio,

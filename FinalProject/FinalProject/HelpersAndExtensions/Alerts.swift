@@ -69,10 +69,75 @@ extension EditProfileViewController {
         
         present(alertController, animated: true, completion: nil)
     }
+    
+    func selectPhotoAlert() {
+        
+        let alertVC = UIAlertController(title: "Add a Photo", message: nil, preferredStyle: .alert)
+        
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
+        
+        let cameraAction = UIAlertAction(title: "Camera", style: .default) { (_) in
+            self.openCamera()
+        }
+        
+        let photoLibraryAction = UIAlertAction(title: "Photo Library", style: .default) { (_) in
+            self.openPhotoLibrary()
+        }
+        
+        alertVC.addAction(cancelAction)
+        alertVC.addAction(cameraAction)
+        alertVC.addAction(photoLibraryAction)
+        
+        present(alertVC, animated: true)
+    }
 }
 
 // MARK: - ProfileViewController
 extension ProfileViewController {
+    
+    func userHasBeenBlockedAlert(otherUserName: String, alreadyFriends: Bool) {
+        let alertController = UIAlertController(title: "", message: "You will no longer appear in this app on \(otherUserName)'s account.", preferredStyle: .alert)
+        
+        let okayAction = UIAlertAction(title: "Okay", style: .default) { (_) in
+          
+                self.navigationController?.popViewController(animated: true)
+            
+        }
+        
+        alertController.addAction(okayAction)
+        
+        present(alertController, animated: true, completion: nil)
+    }
+    
+    func checkBeforeBlockingAlert(otherUserName: String) {
+        let alertController = UIAlertController(title: "Are you sure you want to block \(otherUserName)?", message: "", preferredStyle: .alert)
+        
+        let cancelAction = UIAlertAction(title: "Cancel", style: .default)
+        
+        let blockAction = UIAlertAction(title: "Block", style: .destructive) { (_) in
+            self.blockUser()
+        }
+        
+        alertController.addAction(blockAction)
+        alertController.addAction(cancelAction)
+        
+        present(alertController, animated: true, completion: nil)
+    }
+    
+    
+    func presentReportUserAlert() {
+        let alertController = UIAlertController(title: "Are you sure you want to report this user?", message: "Users should be reported for WHAT ARE WE HAVING PEOPLE REPORT USERS FOR?", preferredStyle: .alert)
+        
+        let reportAction = UIAlertAction(title: "Report", style: .destructive) { (_) in
+            self.reportUser()
+        }
+        let cancelAction = UIAlertAction(title: "Cancel", style: .default)
+        
+        alertController.addAction(reportAction)
+        alertController.addAction(cancelAction)
+        
+        present(alertController, animated: true, completion: nil)
+    }
     
 }
 
@@ -95,6 +160,26 @@ extension RandoCollectionViewController {
         alertController.addAction(settingsAction)
         
         present(alertController, animated: true, completion: nil)
+    }
+    
+    func presentAccountReportedAlert(_ currentUser: User) {
+        let alertController = UIAlertController(title: "This account is being deleted due to multiple reports", message: "", preferredStyle: .alert)
+        
+        let deleteUserAction = UIAlertAction(title: "Okay", style: .default) { (_) in
+            UserController.shared.deleteUserInfoWith(currentUser.uuid) { (result) in
+                switch result {
+                case .success():
+                    print("Account successfully deleted.")
+                case .failure(let error):
+                    print("Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")
+                }
+            }
+        }
+        
+        alertController.addAction(deleteUserAction)
+        
+        present(alertController, animated: true, completion: nil)
+        
     }
 }
 

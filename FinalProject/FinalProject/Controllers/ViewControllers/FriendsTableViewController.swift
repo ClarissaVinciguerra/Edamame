@@ -10,6 +10,7 @@ import UIKit
 class FriendsTableViewController: UITableViewController {
     
     // MARK: - Properties
+    var refresher: UIRefreshControl = UIRefreshControl()
     
     // MARK: - Lifecycle Functions
     override func viewDidLoad() {
@@ -18,12 +19,20 @@ class FriendsTableViewController: UITableViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
-        updateViews()
+        setupViews()
+        loadData()
     }
     
     // MARK: - Class Metobarhods
-    func updateViews() {
+    func setupViews() {
         
+        refresher.attributedTitle = NSAttributedString(string: "Pull to refresh page")
+        refresher.addTarget(self, action: #selector(loadData), for: .valueChanged)
+        self.tableView.addSubview(refresher)
+        
+    }
+    
+    @objc func loadData() {
         guard let friends = UserController.shared.currentUser?.friends else { return }
         
         UserController.shared.fetchUsersFrom(friends) { (result) in

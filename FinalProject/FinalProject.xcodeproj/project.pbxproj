@@ -34,7 +34,6 @@
 		706A8121256718AD00A07C9C /* ViewPhotoCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 706A8120256718AD00A07C9C /* ViewPhotoCollectionViewCell.swift */; };
 		706A81892568676800A07C9C /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 706A81882568676800A07C9C /* GoogleService-Info.plist */; };
 		706A81C9256C100D00A07C9C /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 706A81C8256C100D00A07C9C /* SignUpViewController.swift */; };
-		70B4D53A257FF4E300CEE55A /* UIViewController+Extras.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70B4D539257FF4E200CEE55A /* UIViewController+Extras.swift */; };
 		70EB018D256EFDD30031ED9F /* AgeCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70EB018C256EFDD30031ED9F /* AgeCalculator.swift */; };
 		70EB0190256F01630031ED9F /* StyleGuide.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70EB018F256F01630031ED9F /* StyleGuide.swift */; };
 		70EB01A825720AD00031ED9F /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 70EB01A725720AD00031ED9F /* Colors.xcassets */; };
@@ -89,7 +88,6 @@
 		706A8120256718AD00A07C9C /* ViewPhotoCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewPhotoCollectionViewCell.swift; sourceTree = "<group>"; };
 		706A81882568676800A07C9C /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		706A81C8256C100D00A07C9C /* SignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
-		70B4D539257FF4E200CEE55A /* UIViewController+Extras.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Extras.swift"; sourceTree = "<group>"; };
 		70EB018C256EFDD30031ED9F /* AgeCalculator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgeCalculator.swift; sourceTree = "<group>"; };
 		70EB018F256F01630031ED9F /* StyleGuide.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StyleGuide.swift; sourceTree = "<group>"; };
 		70EB01A2257209950031ED9F /* SourceSansPro-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SourceSansPro-Bold.ttf"; sourceTree = "<group>"; };
@@ -245,7 +243,6 @@
 				C33E283A256EC4390092442F /* NetworkError.swift */,
 				70EB018C256EFDD30031ED9F /* AgeCalculator.swift */,
 				70EB018F256F01630031ED9F /* StyleGuide.swift */,
-				70B4D539257FF4E200CEE55A /* UIViewController+Extras.swift */,
 				A6DF43EA258354EA00679324 /* Alerts.swift */,
 			);
 			path = HelpersAndExtensions;
@@ -490,7 +487,6 @@
 				706A80C32566F85A00A07C9C /* PendingTableViewController.swift in Sources */,
 				706A80D32566F9A600A07C9C /* LogInViewController.swift in Sources */,
 				A60933D5256C2C0300A1C767 /* SearchResult.swift in Sources */,
-				70B4D53A257FF4E300CEE55A /* UIViewController+Extras.swift in Sources */,
 				A60933E6256C2DA700A1C767 /* ConversationTableViewCell.swift in Sources */,
 				706A81122567164B00A07C9C /* Conversation.swift in Sources */,
 				C36610DE25800D2D0048531B /* SettingsViewController.swift in Sources */,

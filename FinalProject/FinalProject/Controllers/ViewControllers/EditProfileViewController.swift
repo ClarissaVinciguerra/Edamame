@@ -34,11 +34,12 @@ class EditProfileViewController: UIViewController, UITextViewDelegate {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         disableCameraBarButton()
+        initiateFetchUser()
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        validateAuth()
+        //validateAuth()
     }
     
     override func viewDidLayoutSubviews() {
@@ -51,8 +52,7 @@ class EditProfileViewController: UIViewController, UITextViewDelegate {
     
     // MARK: - Actions
     @IBAction private func textFieldDidChange(_ sender: Any) {
-        saveChangesButton.setTitle("Save Changes", for: .normal)
-        saveChangesButton.isEnabled = true
+        textViewChanged()
     }
     
     func textViewDidBeginEditing(_ textView: UITextView) {
@@ -75,19 +75,25 @@ class EditProfileViewController: UIViewController, UITextViewDelegate {
     }
     
     // MARK: - Class Methods
-    private func validateAuth() {
-        if FirebaseAuth.Auth.auth().currentUser == nil {
-            let storyboard = UIStoryboard(name: "LogInSignUp", bundle: nil)
-            guard let vc = storyboard.instantiateInitialViewController() else { return }
-            vc.modalPresentationStyle = .fullScreen
-            present(vc, animated: false)
-        } else {
-            guard let uidKey = UserDefaults.standard.value(forKey: LogInStrings.firebaseUidKey) else { return }
-            let uidString = "\(uidKey)"
-            fetchUser(with: uidString)
-        }
-    }
+//    private func validateAuth() {
+//        if FirebaseAuth.Auth.auth().currentUser == nil {
+//            let storyboard = UIStoryboard(name: "LogInSignUp", bundle: nil)
+//            guard let vc = storyboard.instantiateInitialViewController() else { return }
+//            vc.modalPresentationStyle = .fullScreen
+//            present(vc, animated: false)
+//        } else {
+//            guard let uidKey = UserDefaults.standard.value(forKey: LogInStrings.firebaseUidKey) else { return }
+//            let uidString = "\(uidKey)"
+//            fetchUser(with: uidString)
+//        }
+//    }
     
+    private func initiateFetchUser() {
+        guard let uidKey = UserDefaults.standard.value(forKey: LogInStrings.firebaseUidKey) else { return }
+        let uidString = "\(uidKey)"
+        fetchUser(with: uidString)
+    }
+    // CHECK IF THIS IS NECESSARY BEFORE SUBMISSION
     private func fetchUser(with firebaseUID: String) {
         profileImages = []
         
@@ -220,26 +226,15 @@ class EditProfileViewController: UIViewController, UITextViewDelegate {
         }
     }
     
-    private func selectPhotoAlert() {
+    func textViewChanged () {
+        guard let currentUser = UserController.shared.currentUser else { return }
         
-        let alertVC = UIAlertController(title: "Add a Photo", message: nil, preferredStyle: .alert)
-        
-        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
-        
-        let cameraAction = UIAlertAction(title: "Camera", style: .default) { (_) in
-            self.openCamera()
-        }
-        
-        let photoLibraryAction = UIAlertAction(title: "Photo Library", style: .default) { (_) in
-            self.openPhotoLibrary()
-        }
-        
-        alertVC.addAction(cancelAction)
-        alertVC.addAction(cameraAction)
-        alertVC.addAction(photoLibraryAction)
-        
-        present(alertVC, animated: true)
+        typeOfVeganTextField.placeholder = ""
+        currentUser.type = ""
+        saveChangesButton.setTitle("Save Changes", for: .normal)
+        saveChangesButton.isEnabled = true
     }
+    
     
     func configureCollectionViewLayout() -> UICollectionViewLayout {
         

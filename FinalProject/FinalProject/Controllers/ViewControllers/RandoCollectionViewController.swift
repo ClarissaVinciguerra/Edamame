@@ -7,6 +7,7 @@
 
 import UIKit
 import CoreLocation
+import FirebaseAuth
 
 class RandoCollectionViewController: UICollectionViewController {
     // MARK: - Properties
@@ -26,8 +27,13 @@ class RandoCollectionViewController: UICollectionViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        
         setupViews()
         loadData()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        validateAuth()
     }
     
     // MARK: - Class methods
@@ -43,6 +49,37 @@ class RandoCollectionViewController: UICollectionViewController {
     }
     
     
+    private func validateAuth() {
+        if FirebaseAuth.Auth.auth().currentUser == nil {
+            let storyboard = UIStoryboard(name: "LogInSignUp", bundle: nil)
+            guard let vc = storyboard.instantiateInitialViewController() else { return }
+            vc.modalPresentationStyle = .fullScreen
+            present(vc, animated: false)
+        } else {
+            guard let uidKey = UserDefaults.standard.value(forKey: LogInStrings.firebaseUidKey) else { return }
+            let uidString = "\(uidKey)"
+            fetchUser(with: uidString)
+        }
+    }
+    
+    private func fetchUser(with firebaseUID: String) {
+        
+        UserController.shared.fetchUserBy(firebaseUID) { (result) in
+            switch result {
+            case .success(let user):
+                DispatchQueue.main.async {
+                    UserController.shared.currentUser = user
+                    if user.reportCount >= 3 {
+                        self.presentAccountReportedAlert(user)
+                    }
+                    self.loadData()
+                }
+            case .failure(_):
+                print("User does not yet exist in database")
+                self.updateViews()
+            }
+        }
+    }
     
     @objc func loadData() {
         guard let currentUser = UserController.shared.currentUser else { return }
@@ -131,7 +168,8 @@ class RandoCollectionViewController: UICollectionViewController {
         if let image = rando.images.first {
             cell.photo = image.image
         } else {
-            // add default image here - perhaps a logo?
+            cell.backgroundColor = .spaceBlack
+            cell.photo = nil
         }
         
         cell.nameLabel.text = rando.name
