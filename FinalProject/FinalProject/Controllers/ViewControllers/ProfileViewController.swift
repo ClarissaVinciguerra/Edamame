@@ -53,7 +53,7 @@ class ProfileViewController: UIViewController {
     }
     
     @IBAction func reportButtonTapped(_ sender: Any) {
-        reportUser()
+        presentReportUserAlert()
     }
     
     // MARK: - Class Methods
@@ -132,9 +132,7 @@ class ProfileViewController: UIViewController {
             switch result {
             case .success(_):
                 DispatchQueue.main.async {
-                    // present alert to user that friend has been removed
                     // delete messages
-                    // send back to randoVC
                 }
             case .failure(let error):
                 print("Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")
