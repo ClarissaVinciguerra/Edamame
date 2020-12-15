@@ -55,6 +55,29 @@ class RandoCollectionViewController: UICollectionViewController {
             guard let vc = storyboard.instantiateInitialViewController() else { return }
             vc.modalPresentationStyle = .fullScreen
             present(vc, animated: false)
+        } else {
+            guard let uidKey = UserDefaults.standard.value(forKey: LogInStrings.firebaseUidKey) else { return }
+            let uidString = "\(uidKey)"
+            fetchUser(with: uidString)
+        }
+    }
+    
+    private func fetchUser(with firebaseUID: String) {
+        
+        UserController.shared.fetchUserBy(firebaseUID) { (result) in
+            switch result {
+            case .success(let user):
+                DispatchQueue.main.async {
+                    UserController.shared.currentUser = user
+                    if user.reportCount >= 3 {
+                        self.presentAccountReportedAlert(user)
+                    }
+                    self.loadData()
+                }
+            case .failure(_):
+                print("User does not yet exist in database")
+                self.updateViews()
+            }
         }
     }
     
@@ -85,7 +108,6 @@ class RandoCollectionViewController: UICollectionViewController {
         let status = CLLocationManager().authorizationStatus
         
         if (status == .denied || status == .restricted || !CLLocationManager.locationServicesEnabled()) {
-            presentLocationPermissionsAlert()
             return
         }
         

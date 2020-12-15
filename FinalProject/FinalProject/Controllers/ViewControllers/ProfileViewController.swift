@@ -48,11 +48,12 @@ class ProfileViewController: UIViewController {
     }
     
     @IBAction func blockButtonTapped(_ sender: Any) {
-        blockUser()
+        guard let otherUser = otherUser else { return }
+        checkBeforeBlockingAlert(otherUserName: otherUser.name)
     }
     
     @IBAction func reportButtonTapped(_ sender: Any) {
-        reportUser()
+        presentReportUserAlert()
     }
     
     // MARK: - Class Methods
@@ -131,9 +132,7 @@ class ProfileViewController: UIViewController {
             switch result {
             case .success(_):
                 DispatchQueue.main.async {
-                    // present alert to user that friend has been removed
                     // delete messages
-                    // send back to randoVC
                 }
             case .failure(let error):
                 print("Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")
@@ -155,7 +154,10 @@ class ProfileViewController: UIViewController {
     func blockUser() {
         guard let otherUser = otherUser, let currentUser = UserController.shared.currentUser else { return }
         
+        var alreadyFriends = false
+        
         if currentUser.friends.contains(otherUser.uuid) {
+            alreadyFriends = true
             removeFriend(from: currentUser, and: otherUser)
         }
         
@@ -171,7 +173,7 @@ class ProfileViewController: UIViewController {
             case .success(_):
                 DispatchQueue.main.async {
                     print("OtherUser UUID has been successfully appended to currentUsers blocked array.")
-                    
+                    self.userHasBeenBlockedAlert(otherUserName: otherUser.name, alreadyFriends: alreadyFriends)
                 }
             case .failure(let error):
                 print("Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")

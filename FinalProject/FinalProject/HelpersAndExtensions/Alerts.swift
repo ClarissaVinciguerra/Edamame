@@ -8,7 +8,6 @@
 import UIKit
 
 // MARK: - LogInViewController
-
 extension LogInViewController {
     
     func alertUserLoginError() {
@@ -18,11 +17,9 @@ extension LogInViewController {
         loginError.addAction(okAction)
         present(loginError, animated: true)
     }
-    
 }
 
 // MARK: - SignUpViewController
-
 extension SignUpViewController {
     
     struct SignUpAlertStrings {
@@ -41,7 +38,6 @@ extension SignUpViewController {
 }
 
 // MARK: - EditProfileViewController
-
 extension EditProfileViewController {
     
     func presentImageAlert() {
@@ -97,13 +93,55 @@ extension EditProfileViewController {
 }
 
 // MARK: - ProfileViewController
-
 extension ProfileViewController {
+    
+    func userHasBeenBlockedAlert(otherUserName: String, alreadyFriends: Bool) {
+        let alertController = UIAlertController(title: "", message: "You will no longer appear in this app on \(otherUserName)'s account.", preferredStyle: .alert)
+        
+        let okayAction = UIAlertAction(title: "Okay", style: .default) { (_) in
+          
+                self.navigationController?.popViewController(animated: true)
+            
+        }
+        
+        alertController.addAction(okayAction)
+        
+        present(alertController, animated: true, completion: nil)
+    }
+    
+    func checkBeforeBlockingAlert(otherUserName: String) {
+        let alertController = UIAlertController(title: "Are you sure you want to block \(otherUserName)?", message: "", preferredStyle: .alert)
+        
+        let cancelAction = UIAlertAction(title: "Cancel", style: .default)
+        
+        let blockAction = UIAlertAction(title: "Block", style: .destructive) { (_) in
+            self.blockUser()
+        }
+        
+        alertController.addAction(blockAction)
+        alertController.addAction(cancelAction)
+        
+        present(alertController, animated: true, completion: nil)
+    }
+    
+    
+    func presentReportUserAlert() {
+        let alertController = UIAlertController(title: "Are you sure you want to report this user?", message: "Users should be reported for WHAT ARE WE HAVING PEOPLE REPORT USERS FOR?", preferredStyle: .alert)
+        
+        let reportAction = UIAlertAction(title: "Report", style: .destructive) { (_) in
+            self.reportUser()
+        }
+        let cancelAction = UIAlertAction(title: "Cancel", style: .default)
+        
+        alertController.addAction(reportAction)
+        alertController.addAction(cancelAction)
+        
+        present(alertController, animated: true, completion: nil)
+    }
     
 }
 
 // MARK: - RandoCollectionViewController
-
 extension RandoCollectionViewController {
     
     func presentLocationPermissionsAlert() {
@@ -122,6 +160,56 @@ extension RandoCollectionViewController {
         alertController.addAction(settingsAction)
         
         present(alertController, animated: true, completion: nil)
+    }
+    
+    func presentAccountReportedAlert(_ currentUser: User) {
+        let alertController = UIAlertController(title: "This account is being deleted due to multiple reports", message: "", preferredStyle: .alert)
+        
+        let deleteUserAction = UIAlertAction(title: "Okay", style: .default) { (_) in
+            UserController.shared.deleteCurrentUser { (result) in
+                switch result {
+                case .success():
+                    print("Account successfully deleted.")
+                case .failure(let error):
+                    print("Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")
+                }
+            }
+        }
+        
+        alertController.addAction(deleteUserAction)
+        
+        present(alertController, animated: true, completion: nil)
+        
+    }
+}
+
+//MARK: - SettingsViewController
+extension SettingsViewController {
+    
+     func deleteUserAlert() {
+        let actionSheet = UIAlertController(title: "",
+                                            message: "Are you sure you want to DELETE your account?",
+                                            preferredStyle: .actionSheet)
+        actionSheet.addAction(UIAlertAction(title: "Delete Account", style: .destructive, handler: { [weak self] _ in
+            guard let strongSelf = self else { return }
+            
+            UserController.shared.deleteCurrentUser { (result) in
+                switch result {
+                case .success():
+                    let storyboard = UIStoryboard(name: "LogInSignUp", bundle: nil)
+                    guard let vc = storyboard.instantiateInitialViewController() else { return }
+                    vc.modalPresentationStyle = .fullScreen
+                    strongSelf.present(vc, animated: true)
+                case .failure(let error):
+                    print("Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")
+                }
+            }
+        }))
+        actionSheet.addAction(UIAlertAction(title: "Cancel",
+                                            style: .cancel,
+                                            handler: nil))
+        
+        present(actionSheet, animated: true)
     }
 }
 

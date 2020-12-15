@@ -93,7 +93,7 @@ class EditProfileViewController: UIViewController, UITextViewDelegate {
         let uidString = "\(uidKey)"
         fetchUser(with: uidString)
     }
-    
+    // CHECK IF THIS IS NECESSARY BEFORE SUBMISSION
     private func fetchUser(with firebaseUID: String) {
         profileImages = []
         
@@ -158,7 +158,6 @@ class EditProfileViewController: UIViewController, UITextViewDelegate {
         for image in profileImages {
             images.append(image.image)
         }
-        
         
         if profileImages.count > 1 {
             UserController.shared.createUser(name: name, bio: bio, type: type, unsavedImages: images, dateOfBirth: birthdayKey, latitude: 0.0, longitude: 0.0, uuid: uid) { (result) in

@@ -2,10 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Allows the user to select profile pictures from &quot;Photos&quot;</string>
-	<key>NSCameraUsageDescription</key>
-	<string>Allows the user to take profile pictures using the camera. </string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleExecutable</key>
@@ -24,6 +20,19 @@
 	<string>1</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSCameraUsageDescription</key>
+	<string>Allows the user to take profile pictures using the camera. </string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Permission for this app to access your location is required for our services.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Allows the user to select profile pictures from "Photos"</string>
+	<key>UIAppFonts</key>
+	<array>
+		<string>SourceSansPro-ExtraLight.ttf</string>
+		<string>SourceSansPro-Bold.ttf</string>
+		<string>SourceSansPro-Light.ttf</string>
+		<string>SourceSansPro-Regular.ttf</string>
+	</array>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>
@@ -45,6 +54,10 @@
 	</dict>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>remote-notification</string>
+	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
@@ -63,15 +76,6 @@
 		<string>UIInterfaceOrientationPortraitUpsideDown</string>
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
-	</array>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Permission for this app to access your location is required for our services.</string>
-	<key>UIAppFonts</key>
-	<array>
-		<string>SourceSansPro-ExtraLight.ttf</string>
-		<string>SourceSansPro-Bold.ttf</string>
-		<string>SourceSansPro-Light.ttf</string>
-		<string>SourceSansPro-Regular.ttf</string>
 	</array>
 </dict>
 </plist>

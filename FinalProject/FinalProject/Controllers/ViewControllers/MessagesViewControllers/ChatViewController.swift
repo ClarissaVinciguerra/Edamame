@@ -107,6 +107,7 @@ class ChatViewController: MessagesViewController {
 
         navigationController?.pushViewController(vc, animated: true)
         //self.present(vc, animated: true, completion: nil)
+
     }
     
     // MARK: - Views
