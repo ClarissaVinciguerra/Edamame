@@ -8,6 +8,7 @@
 import Foundation
 import Firebase
 import FirebaseFirestoreSwift
+import CoreLocation
 
 class UserController {
     
@@ -229,6 +230,7 @@ class UserController {
         
         let userDocRef = database.collection(userCollection)
         let dispatchGroup = DispatchGroup()
+        let myLocation = CLLocation(latitude: currentUser.latitude, longitude: currentUser.longitude)
         
         userDocRef.getDocuments { (querySnapshot, error) in
             if let error = error {
@@ -243,10 +245,15 @@ class UserController {
                 for document in querySnapshot!.documents {
                     
                     if let rando = User(document: document) {
+                        
                         dispatchGroup.enter()
                         
-
-                        if currentUser.sentRequests.contains(rando.uuid) || currentUser.friends.contains(rando.uuid) || currentUser.uuid == rando.uuid || currentUser.blockedArray.contains(rando.uuid) || rando.reportCount >= 3 {
+                        if let rando = User(document: document) {
+                            
+                        let randoLocation = CLLocation(latitude: rando.latitude, longitude: rando.longitude)
+        
+                        // The last condition filters out users over 35 miles from the current users location
+                        if currentUser.sentRequests.contains(rando.uuid) || currentUser.friends.contains(rando.uuid) || currentUser.uuid == rando.uuid || currentUser.blockedArray.contains(rando.uuid) || rando.reportCount >= 3 || myLocation.distance(from: randoLocation) > 56327 {
                            
                             dispatchGroup.leave()
                             
