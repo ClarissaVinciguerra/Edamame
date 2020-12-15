@@ -151,7 +151,7 @@ class EditProfileViewController: UIViewController, UITextViewDelegate {
               let bio = bioTextView.text,
               !bio.isEmpty else { return presentBioAlert() }
         
-        let uid = "\(uidKey)"
+        let firebaseuid = "\(uidKey)"
         let name = "\(nameKey)"
         var images: [UIImage] = []
         
@@ -160,19 +160,7 @@ class EditProfileViewController: UIViewController, UITextViewDelegate {
         }
         
         if profileImages.count > 1 {
-            UserController.shared.createUser(name: name, bio: bio, type: type, unsavedImages: images, dateOfBirth: birthdayKey, latitude: 0.0, longitude: 0.0, uuid: uid) { (result) in
-                switch result {
-                case .success(_):
-                    DispatchQueue.main.async {
-                        self.saveChangesButton.isEnabled = false
-                        self.saveChangesButton.setTitle("Saved", for: .normal)
-                        
-                    }
-                case .failure(let error):
-                    print("Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")
-                // if it doesnt work alert user here
-                }
-            }
+            addCityAlertToCreateUser(name: name, bio: bio, type: type, unsavedImages: images, dateOfBirth: birthdayKey, latitude: 0.0, longitude: 0.0, uuid: firebaseuid)
         } else {
             presentImageAlert()
         }
@@ -208,7 +196,6 @@ class EditProfileViewController: UIViewController, UITextViewDelegate {
         typeOfVeganTextField.backgroundColor = .whiteSmoke
         bioTextLabel.textColor = .spaceBlack
         
-        settingsButton.tintColor = .spaceBlack
         infoButton.tintColor = .darkerGreen
         
         bioTextView.textColor = .spaceBlack

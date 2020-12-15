@@ -14,6 +14,8 @@ struct UserStrings {
     static let dateOfBirthKey = "dateOfBirth"
     static let bioKey = "bio"
     static let typeKey = "type"
+    static let cityKey = "city"
+    static let cityRefKey = "cityRef"
     static let latitudeKey = "latitude"
     static let longitudeKey = "longitude"
     static let uuidKey = "uuid"
@@ -35,6 +37,8 @@ class User {
     let dateOfBirth: Date
     var bio: String
     var type: String
+    var city: String
+    var cityRef: String
     var latitude: Double
     var longitude: Double
     var images: [Image]
@@ -45,11 +49,13 @@ class User {
     var blockedArray: [String]
     var reportCount: Int
     
-    init(name: String, dateOfBirth: Date, bio: String, type: String, latitude: Double, longitude: Double, uuid: String, images: [Image] = [], friends: [String] = [], pendingRequests: [String] = [], sentRequests: [String] = [], blockedArray: [String] = [], reportCount: Int = 0) {
+    init(name: String, dateOfBirth: Date, bio: String, type: String, city: String, cityRef: String, latitude: Double, longitude: Double, uuid: String, images: [Image] = [], friends: [String] = [], pendingRequests: [String] = [], sentRequests: [String] = [], blockedArray: [String] = [], reportCount: Int = 0) {
         self.name = name
         self.dateOfBirth = dateOfBirth
         self.bio = bio
         self.type = type
+        self.city = city
+        self.cityRef = cityRef
         self.latitude = latitude
         self.longitude = longitude
         self.uuid = uuid
@@ -66,6 +72,8 @@ class User {
               let timeInterval = document[UserStrings.dateOfBirthKey] as? Double,
               let bio = document[UserStrings.bioKey] as? String,
               let type = document[UserStrings.typeKey] as? String,
+              let city = document[UserStrings.cityKey] as? String,
+              let cityRef = document[UserStrings.cityRefKey] as? String,
               let latitude = document[UserStrings.latitudeKey] as? Double,
               let longitude = document[UserStrings.longitudeKey] as? Double,
               let friends = document[UserStrings.friendsKey] as? [String],
@@ -75,7 +83,7 @@ class User {
               let reportCount = document[UserStrings.reportCountKey] as? Int else { return nil }
         let dateOfBirth = Date(timeIntervalSince1970: timeInterval)
         
-        self.init(name: name, dateOfBirth: dateOfBirth, bio: bio, type: type, latitude: latitude, longitude: longitude, uuid: document.documentID, images: [], friends: friends, pendingRequests: pendingRequests, sentRequests: sentRequests, blockedArray: blockedArray, reportCount: reportCount)
+        self.init(name: name, dateOfBirth: dateOfBirth, bio: bio, type: type, city: city, cityRef: cityRef, latitude: latitude, longitude: longitude, uuid: document.documentID, images: [], friends: friends, pendingRequests: pendingRequests, sentRequests: sentRequests, blockedArray: blockedArray, reportCount: reportCount)
     }
 }
 

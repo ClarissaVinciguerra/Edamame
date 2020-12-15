@@ -23,9 +23,9 @@ class UserController {
     var friends: [User] = []
     
     // MARK: - CREATE
-    func createUser(name: String, bio: String, type: String, unsavedImages: [UIImage], dateOfBirth: Date, latitude: Double, longitude: Double, uuid: String, completion: @escaping (Result<User, UserError>) -> Void) {
+    func createUser(name: String, bio: String, type: String, city: String, cityRef: String, unsavedImages: [UIImage], dateOfBirth: Date, latitude: Double, longitude: Double, uuid: String, completion: @escaping (Result<User, UserError>) -> Void) {
         
-        let newUser = User(name: name, dateOfBirth: dateOfBirth, bio: bio, type: type, latitude: latitude, longitude: longitude, uuid: uuid)
+        let newUser = User(name: name, dateOfBirth: dateOfBirth, bio: bio, type: type, city: city, cityRef: cityRef, latitude: latitude, longitude: longitude, uuid: uuid)
         
         let timeInterval = newUser.dateOfBirth.timeIntervalSince1970
         
@@ -56,6 +56,8 @@ class UserController {
                 UserStrings.nameKey : "\(newUser.name)",
                 UserStrings.bioKey : "\(bio)",
                 UserStrings.typeKey : "\(type)",
+                UserStrings.cityKey : "\(city)",
+                UserStrings.cityRefKey : "\(cityRef)",
                 UserStrings.dateOfBirthKey : timeInterval,
                 UserStrings.latitudeKey : newUser.latitude,
                 UserStrings.longitudeKey : newUser.longitude,
@@ -122,42 +124,6 @@ class UserController {
      }
      */
     
-    // MARK: - READ
-    
-    //    func fetchUserByField(with uuid: String, completion: @escaping (Result<User, UserError>) -> Void) {
-    //        let docRef = database.collection(userCollection)
-    //
-    //        docRef.whereField(UserStrings.firebaseUIDKey, isEqualTo: uuid).getDocuments { (querySnapshot, error) in
-    //            if let error = error {
-    //                print("There was an error fetching connections for this User. Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")
-    //            } else {
-    //                guard let doc = querySnapshot!.documents.first,
-    //                      let fetchedUser = User(document: doc) else { return completion(.failure(.couldNotUnwrap)) }
-    //
-    //                let dispatchGroup = DispatchGroup()
-    //                dispatchGroup.enter()
-    //
-    //                StorageController.shared.downloadImages(with: fetchedUser.uuid) { (result) in
-    //                    switch result {
-    //                    case .success(let images):
-    //                        fetchedUser.images = images
-    //                        dispatchGroup.leave()
-    //
-    //                    case .failure(let error):
-    //                        print("Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")
-    //                        dispatchGroup.leave()
-    //                    }
-    //                }
-    //
-    //               dispatchGroup.notify(queue: .main) {
-    //                    self.currentUser = fetchedUser
-    //                    completion(.success(fetchedUser))
-    //               }
-    //            }
-    //        }
-    //
-    //    }
-    
     func fetchUserBy(_ uuid: String, completion: @escaping (Result<User, UserError>) -> Void) {
         let userDocRef = database.collection(userCollection).document(uuid)
         
@@ -167,8 +133,6 @@ class UserController {
             
             if let document = document, document.exists {
                 guard let user = User(document: document) else { return completion(.failure(.couldNotUnwrap)) }
-                
-//                self.currentUser = user
                 
                 dispatchGroup.enter()
                 
@@ -232,7 +196,7 @@ class UserController {
         let dispatchGroup = DispatchGroup()
         let myLocation = CLLocation(latitude: currentUser.latitude, longitude: currentUser.longitude)
         
-        userDocRef.getDocuments { (querySnapshot, error) in
+        userDocRef.whereField(UserStrings.cityRefKey, isEqualTo: currentUser.cityRef).getDocuments { (querySnapshot, error) in
             if let error = error {
                 
                 print("Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")
@@ -252,6 +216,7 @@ class UserController {
                             
                             let randoLocation = CLLocation(latitude: rando.latitude, longitude: rando.longitude)
                             
+                            // should we still filter for location?
                             if currentUser.sentRequests.contains(rando.uuid) || currentUser.friends.contains(rando.uuid) || currentUser.uuid == rando.uuid || currentUser.blockedArray.contains(rando.uuid) || rando.reportCount >= 3 || myLocation.distance(from: randoLocation) > 56327 {
                                 
                                 dispatchGroup.leave()
@@ -372,6 +337,8 @@ class UserController {
             UserStrings.nameKey : "\(user.name)",
             UserStrings.bioKey : user.bio,
             UserStrings.typeKey : user.type,
+            UserStrings.cityKey : user.city,
+            UserStrings.cityRefKey : user.cityRef,
             UserStrings.latitudeKey : user.latitude,
             UserStrings.longitudeKey : user.longitude,
             UserStrings.friendsKey : user.friends,
