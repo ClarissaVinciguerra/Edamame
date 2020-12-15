@@ -161,6 +161,12 @@ class ProfileViewController: UIViewController {
             removeFriend(from: currentUser, and: otherUser)
         }
         
+        MessageController.shared.deleteConversation(otherUserUid: otherUser.uuid) { [weak self] (success) in
+            if success {
+                print("Deleted Conversation")
+            }
+        }
+        
         currentUser.blockedArray.append(otherUser.uuid)
         UserController.shared.updateUserBy(currentUser) { (result) in
             switch result {

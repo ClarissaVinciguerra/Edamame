@@ -38,7 +38,6 @@
 		70EB0190256F01630031ED9F /* StyleGuide.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70EB018F256F01630031ED9F /* StyleGuide.swift */; };
 		70EB01A825720AD00031ED9F /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 70EB01A725720AD00031ED9F /* Colors.xcassets */; };
 		A60933D5256C2C0300A1C767 /* SearchResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = A60933D4256C2C0300A1C767 /* SearchResult.swift */; };
-		A60933D9256C2C9D00A1C767 /* ConversationsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A60933D8256C2C9D00A1C767 /* ConversationsViewController.swift */; };
 		A60933E0256C2CEE00A1C767 /* NewConversationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A60933DF256C2CEE00A1C767 /* NewConversationViewController.swift */; };
 		A60933E3256C2D6E00A1C767 /* MessagesViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = A60933E2256C2D6E00A1C767 /* MessagesViewExtension.swift */; };
 		A60933E6256C2DA700A1C767 /* ConversationTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A60933E5256C2DA700A1C767 /* ConversationTableViewCell.swift */; };
@@ -97,7 +96,6 @@
 		70EB01A725720AD00031ED9F /* Colors.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Colors.xcassets; sourceTree = "<group>"; };
 		7CC0CC95EDF86B3CA7DE289E /* Pods-FinalProject.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FinalProject.debug.xcconfig"; path = "Target Support Files/Pods-FinalProject/Pods-FinalProject.debug.xcconfig"; sourceTree = "<group>"; };
 		A60933D4256C2C0300A1C767 /* SearchResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResult.swift; sourceTree = "<group>"; };
-		A60933D8256C2C9D00A1C767 /* ConversationsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationsViewController.swift; sourceTree = "<group>"; };
 		A60933DF256C2CEE00A1C767 /* NewConversationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewConversationViewController.swift; sourceTree = "<group>"; };
 		A60933E2256C2D6E00A1C767 /* MessagesViewExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagesViewExtension.swift; sourceTree = "<group>"; };
 		A60933E5256C2DA700A1C767 /* ConversationTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationTableViewCell.swift; sourceTree = "<group>"; };
@@ -283,7 +281,6 @@
 		A60933D7256C2C5B00A1C767 /* MessagesViewControllers */ = {
 			isa = PBXGroup;
 			children = (
-				A60933D8256C2C9D00A1C767 /* ConversationsViewController.swift */,
 				A60933DF256C2CEE00A1C767 /* NewConversationViewController.swift */,
 				A6093407256C310000A1C767 /* ChatViewController.swift */,
 			);
@@ -508,7 +505,6 @@
 				706A811B2567184E00A07C9C /* RandoCollectionViewCell.swift in Sources */,
 				A6093408256C310000A1C767 /* ChatViewController.swift in Sources */,
 				C371911525795226006D1A01 /* EdamameTextField.swift in Sources */,
-				A60933D9256C2C9D00A1C767 /* ConversationsViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

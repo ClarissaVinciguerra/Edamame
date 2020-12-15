@@ -82,7 +82,19 @@ final class MessageController {
         })
     }
     
-    //MARK: -UPDATE THIS FUNCTION
+    public func deleteUser(with uid: String, completion: @escaping (Bool) -> Void) {
+        database.child(uid).removeValue(completionBlock: { error, _ in
+            guard error == nil else {
+                print("Failed to delete messageUser.")
+                completion(false)
+                return
+            }
+            
+        })
+        completion(true)
+    }
+    
+    //MARK:
     public func getAllUsers(completion: @escaping(Result<[[String : String]], Error>) -> Void) {
         database.child("users").observeSingleEvent(of: .value) { (snapshot) in
             guard let value = snapshot.value as? [[String : String]] else {
@@ -543,13 +555,11 @@ extension MessageController {
         }
     }
     
-    public func deleteConversation(conversationID: String, completion: @escaping(Bool) -> Void) {
+    public func deleteConversation(otherUserUid: String, completion: @escaping(Bool) -> Void) {
         guard let uid = UserDefaults.standard.value(forKey: LogInStrings.firebaseUidKey) as? String else {
             return
         }
-        //let safeEmail = MessageController.safeEmail(emailAddress: email)
-        
-        print("Deleting conversation with id: \(conversationID)")
+        print("Deleting conversation with id: \(otherUserUid)")
         //Get all conversations for current user
         //delete conversation in collection with target id
         //reset those conversations for the user in database
@@ -558,7 +568,7 @@ extension MessageController {
             if var conversations = snapshot.value as? [[String: Any]] {
                 var positionToRemove = 0
                 for conversation in conversations {
-                    if let id = conversation["id"] as? String, id == conversationID {
+                    if let id = conversation["other_user_uid"] as? String, id == otherUserUid {
                         print("found conversation to delete")
                         break
                     }
@@ -610,6 +620,6 @@ extension MessageController {
             completion(.failure(DatabaseError.failedToFetch))
             return
         }
-        // MessageController
     }
 }
+
