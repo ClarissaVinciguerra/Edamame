@@ -166,7 +166,7 @@ extension RandoCollectionViewController {
         let alertController = UIAlertController(title: "This account is being deleted due to multiple reports", message: "", preferredStyle: .alert)
         
         let deleteUserAction = UIAlertAction(title: "Okay", style: .default) { (_) in
-            UserController.shared.deleteUserInfoWith(currentUser.uuid) { (result) in
+            UserController.shared.deleteCurrentUser { (result) in
                 switch result {
                 case .success():
                     print("Account successfully deleted.")

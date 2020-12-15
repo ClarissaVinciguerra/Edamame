@@ -323,12 +323,6 @@ class UserController {
         if !updatedImages.isEmpty {
             
             var updatedImageNames: [String] = []
-            
-            for image in updatedImages {
-                // creates an array of existing images identified by name
-                updatedImageNames.append(image.name)
-                
-            }
 
             for image in updatedImages {
                 // creates an array of exisitng images identified by name.
@@ -363,7 +357,9 @@ class UserController {
                 }
             }  
         }
+        guard let currentUser = currentUser else { return completion (.failure(.couldNotUnwrap))}
    
+        let documentReference = database.collection(userCollection).document(currentUser.uuid)
         documentReference.updateData([
             UserStrings.nameKey : "\(user.name)",
             UserStrings.bioKey : user.bio,
@@ -499,25 +495,42 @@ class UserController {
     
     // MARK: - DELETE USER
     func deleteCurrentUser(completion: @escaping (Result<Void, UserError>) -> Void) {
-        guard let userID = currentUser?.uuid
-        else { return completion(.failure(.noExistingUser)) }
         
-        database.collection(userCollection).document(userID).delete() { error in
-            if let error = error {
-                print("Error removing document: \(error)")
-                completion(.failure(.couldNotRemove))
-            } else {
-                StorageController.shared.deleteCurrentUserPhotos(with: userID) { (result) in
-                    if let error = error {
-                        print("Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")
-                        completion(.failure(.couldNotRemove))
-                    } else {
-                        self.deleteCurrentUserFromAuth(with: userID) { (result) in
-                            if let error = error {
-                                print("Error removing user from authentication: \(error)")
-                            } else {
-                                completion(.success(()))
-                            }
+        guard let currentUser = currentUser else { return completion(.failure(.noExistingUser)) }
+        let dispatchGroup = DispatchGroup()
+        
+        // deletes images through filepaths in firebase storage
+        for image in currentUser.images {
+            dispatchGroup.enter()
+            
+            StorageController.shared.deleteImageFromStorage(with: image.name, userID: currentUser.uuid) { (result) in
+                switch result {
+                case .success():
+                    dispatchGroup.leave()
+                case .failure(let error):
+                    print("Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")
+                    dispatchGroup.leave()
+                }
+            }
+        }
+        
+        dispatchGroup.notify(queue: .main) {
+            
+            // deletes user document from firebase cloud
+            self.database.collection(self.userCollection).document(currentUser.uuid).delete() { error in
+                if let error = error {
+                    print("Error removing document: \(error)")
+                    completion(.failure(.couldNotRemove))
+                } else {
+                    
+                    // deletes user from firebase Auth
+                    self.deleteCurrentUserFromAuth(with: currentUser.uuid) { (result) in
+                        switch result {
+                        case .success():
+                            completion(.success(()))
+                        case .failure(let error):
+                            print("Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")
+                            completion(.failure(.couldNotRemove))
                         }
                     }
                 }
@@ -525,16 +538,31 @@ class UserController {
         }
     }
     
+//    func deleteCurrentUserFromAuth(with uuid: String, completion: @escaping (Result<Void, UserError>) -> Void) {
+//        do {
+//            try FirebaseAuth.Auth.auth().currentUser?.delete(completion: { (error) in
+//                if let error = error {
+//                    print("Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")
+//                }
+//            })
+//
+//        } catch {
+//            print("Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")
+//        }
+//    }
+    
     func deleteCurrentUserFromAuth(with uuid: String, completion: @escaping (Result<Void, UserError>) -> Void) {
-        do {
-            try FirebaseAuth.Auth.auth().currentUser?.delete(completion: { (error) in
-                if let error = error {
-                    print("Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")
-                }
-            })
-            
-        } catch {
-            print("Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")
+        
+        let user = Auth.auth().currentUser
+        
+        user?.delete { error in
+            if let error = error {
+                print("Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")
+                completion(.failure(.couldNotRemove))
+            } else {
+                completion(.success(()))
+            }
         }
     }
+    
 }
