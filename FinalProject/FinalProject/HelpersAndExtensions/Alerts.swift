@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import FirebaseAuth
 
 // MARK: - LogInViewController
 extension LogInViewController {
@@ -90,6 +91,51 @@ extension EditProfileViewController {
         
         present(alertVC, animated: true)
     }
+    
+    func addCityAlertToCreateUser(name: String, bio: String, type: String, unsavedImages: [UIImage], dateOfBirth: Date, latitude: Double, longitude: Double, uuid: String ) {
+        
+        let alertController = UIAlertController(title: "Which city are you closest to?", message: "You can change your metropolitan area at any time in your settings.", preferredStyle: .alert)
+        
+        alertController.addTextField { (textfield) in
+            textfield.autocapitalizationType = .words
+            
+        }
+        
+        let createUserAction = UIAlertAction(title: "Add City", style: .default) { (result) in
+            
+            guard let text = alertController.textFields?.first?.text, !text.isEmpty else { return }
+            
+            let cityRef = text.lowercased().replacingOccurrences(of: " ", with: "")
+            
+            UserController.shared.createUser(name: name, bio: bio, type: type, city: text, cityRef: cityRef, unsavedImages: unsavedImages, dateOfBirth: dateOfBirth, latitude: latitude, longitude: longitude, uuid: uuid) { (result) in
+                switch result {
+                case .success(_):
+                    DispatchQueue.main.async {
+                        self.saveChangesButton.isEnabled = false
+                        self.saveChangesButton.setTitle("Saved", for: .normal)
+                        
+                    }
+                case .failure(let error):
+                    print("Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")
+                    self.didNotCreateUserAlert()
+                }
+            }
+        }
+        
+        alertController.addAction(createUserAction)
+        present(alertController, animated: true)
+         
+    }
+    
+    func didNotCreateUserAlert() {
+        let alertController = UIAlertController(title: "Oops! Something went wrong.", message: "Check your connection and try creating your profile again later", preferredStyle: .actionSheet)
+        
+        let okayAction = UIAlertAction(title: "Okay", style: .default)
+        
+        alertController.addAction(okayAction)
+        present(alertController, animated: true)
+    }
+    
 }
 
 // MARK: - ProfileViewController
@@ -185,6 +231,30 @@ extension RandoCollectionViewController {
 
 //MARK: - SettingsViewController
 extension SettingsViewController {
+    
+    func logOutAlert() {
+        let actionSheet = UIAlertController(title: "",
+                                            message: "Are you sure you want to log out?",
+                                            preferredStyle: .actionSheet)
+        actionSheet.addAction(UIAlertAction(title: "Log Out", style: .destructive, handler: { [weak self] _ in
+            guard let strongSelf = self else { return }
+            
+            do {
+                try FirebaseAuth.Auth.auth().signOut()
+                let storyboard = UIStoryboard(name: "LogInSignUp", bundle: nil)
+                guard let vc = storyboard.instantiateInitialViewController() else { return }
+                vc.modalPresentationStyle = .fullScreen
+                strongSelf.present(vc, animated: true)
+            } catch {
+                print("Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")
+            }
+        }))
+        actionSheet.addAction(UIAlertAction(title: "Cancel",
+                                            style: .cancel,
+                                            handler: nil))
+        
+        present(actionSheet, animated: true)
+    }
     
      func deleteUserAlert() {
         let actionSheet = UIAlertController(title: "",

@@ -14,6 +14,9 @@ class SettingsViewController: UIViewController {
     //MARK: - Outlets
     @IBOutlet weak var logOutButton: UIButton!
     @IBOutlet weak var deleteButton: UIButton!
+    @IBOutlet weak var currentCityTextField: UITextField!
+    @IBOutlet weak var changeCityButton: UIButton!
+    @IBOutlet weak var currentCityLabel: UILabel!
     
     // MARK: - Properties
     var viewsLaidOut = false
@@ -32,44 +35,59 @@ class SettingsViewController: UIViewController {
     }
     
     //MARK: - Actions
+    @IBAction func changeCityButtonTapped(_ sender: Any) {
+        updateCity()
+    }
+    
     @IBAction func logOutButtonTapped(_ sender: Any) {
-        
-        let actionSheet = UIAlertController(title: "",
-                                            message: "Are you sure you want to log out?",
-                                            preferredStyle: .actionSheet)
-        actionSheet.addAction(UIAlertAction(title: "Log Out", style: .destructive, handler: { [weak self] _ in
-            guard let strongSelf = self else { return }
-            
-            do {
-                try FirebaseAuth.Auth.auth().signOut()
-                let storyboard = UIStoryboard(name: "LogInSignUp", bundle: nil)
-                guard let vc = storyboard.instantiateInitialViewController() else { return }
-                vc.modalPresentationStyle = .fullScreen
-                strongSelf.present(vc, animated: true)
-            } catch {
-                print("Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")
-            }
-        }))
-        actionSheet.addAction(UIAlertAction(title: "Cancel",
-                                            style: .cancel,
-                                            handler: nil))
-        
-        present(actionSheet, animated: true)
+        logOutAlert()
     }
     
     @IBAction func deleteButtonTapped(_ sender: Any) {
+        deleteUser()
+        deleteUserAlert()
+    }
+    
+    //MARK: - Methods
+    func setupViews() {
+        guard let currentUser = UserController.shared.currentUser else { return }
+        deleteButton.tintColor = .red
+        
+        currentCityTextField.backgroundColor = .whiteSmoke
+        changeCityButton.setTitle("Save", for: .normal)
+        changeCityButton.backgroundColor = .edamameGreen
+        changeCityButton.addCornerRadius()
+        changeCityButton.tintColor = .whiteSmoke
+        currentCityLabel.text = "Current Metropolitan Area:\n\(currentUser.city)"
+    }
+    
+    func updateCity() {
+        guard let currentUser = UserController.shared.currentUser, let text = currentCityTextField.text, !text.isEmpty else { return }
+        
+        currentUser.city = text
+        currentUser.cityRef = text.lowercased().replacingOccurrences(of: " ", with: "")
+        
+        UserController.shared.updateUserBy(currentUser) { (result) in
+            switch result {
+            case .success(_):
+                DispatchQueue.main.async {
+                    self.changeCityButton.setTitle("Saved!", for: .normal)
+                    guard let currentUser = UserController.shared.currentUser else { return }
+                    self.currentCityLabel.text = "Current Metropolitan Area:\n\(currentUser.city)"
+                }
+            case .failure(let error):
+                print("Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")
+            }
+        }
+    }
+    
+    func deleteUser() {
         guard let uid = UserController.shared.currentUser?.uuid else { return }
         MessageController.shared.deleteUser(with: uid) { (success) in
             if success {
                 print("Message user deleted successfully.")
             }
         }
-        deleteUserAlert()
-    }
-    
-    //MARK: - Methods
-    func setupViews() {
-        deleteButton.tintColor = .red
     }
 }
 
