@@ -21,6 +21,7 @@ class LogInViewController: UIViewController {
     @IBOutlet weak var emailTextField: UITextField!
     @IBOutlet weak var passwordTextField: UITextField!
     @IBOutlet weak var logInButton: UIButton!
+    @IBOutlet weak var logoImageView: UIImageView!
     
     // MARK: - Properties
     private let spinner = JGProgressHUD(style: .dark)
@@ -79,12 +80,17 @@ class LogInViewController: UIViewController {
     
     // MARK: - Helper Methods
     func setupViews() {
+        setupLogoImageView()
         setupEmailTextField()
         setupPasswordTextField()
         setupLogInButton()
     }
     
     // MARK: - Views
+    func setupLogoImageView() {
+        self.logoImageView.image = UIImage(named: "edamameLogo")
+    }
+    
     func setupEmailTextField() {
         self.emailTextField.autocapitalizationType = .none
         self.emailTextField.autocorrectionType = .no
