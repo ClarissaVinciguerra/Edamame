@@ -14,8 +14,8 @@ class ProfileViewController: UIViewController {
     @IBOutlet weak var nameAndAgeLabel: UILabel!
     @IBOutlet weak var typeOfVeganLabel: UILabel!
     @IBOutlet weak var distanceLabel: UILabel!
-    @IBOutlet weak var bioLabel: UILabel!
     @IBOutlet weak var addAcceptRevokeButton: UIButton!
+    @IBOutlet weak var bioTextView: UITextView!
     @IBOutlet weak var declineButton: UIButton!
     @IBOutlet weak var blockButton: UIButton!
     @IBOutlet weak var collectionView: UICollectionView!
@@ -199,7 +199,8 @@ class ProfileViewController: UIViewController {
         
         distanceLabel.text = "\(round(currentUserLocation.distance(from: otherUserLocation) * 0.000621371)) mi"
         nameAndAgeLabel.text = otherUser.name + " " + age
-        bioLabel.text = otherUser.bio
+        bioTextView.text = otherUser.bio
+        bioTextView.isEditable = false
         typeOfVeganLabel.text = otherUser.type
         
         declineButton.alpha = 0
@@ -241,7 +242,7 @@ class ProfileViewController: UIViewController {
         nameAndAgeLabel.textColor = .softBlack
         distanceLabel.textColor = .softBlack
         typeOfVeganLabel.textColor = .softBlack
-        bioLabel.textColor = .softBlack
+        bioTextView.textColor = .softBlack
         
         addAcceptRevokeButton.backgroundColor = .edamameGreen
         addAcceptRevokeButton.tintColor = .whiteSmoke
