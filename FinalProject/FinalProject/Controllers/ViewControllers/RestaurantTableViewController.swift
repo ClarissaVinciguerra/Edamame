@@ -59,7 +59,7 @@ extension RestaurantTableViewController: UITableViewDelegate, UITableViewDataSou
         
         let selectedRestaurant = restaurants[indexPath.row]
         let vc = SFSafariViewController(url: selectedRestaurant.url)
-      
+        
         present(vc, animated: true)
     }
     

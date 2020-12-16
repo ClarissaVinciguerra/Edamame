@@ -44,8 +44,6 @@ class SignUpViewController: UIViewController {
         passwordTextField.resignFirstResponder()
         confirmPasswordTextField.resignFirstResponder()
         
-        
-        
         guard let name = nameTextField.text,
               let email = emailTextField.text,
               let password = passwordTextField.text,
@@ -92,34 +90,29 @@ class SignUpViewController: UIViewController {
             UserDefaults.standard.setValue(firebaseUid, forKey: SignUpStrings.firebaseUid)
             UserDefaults.standard.setValue(birthday, forKey: SignUpStrings.birthday)
             
-            
             // Creates a new User from the User Model
             // let newUser = User(name: name, bio: "", type: "", latitude: 33.8121, longitude: 117.9190, uuid: firebaseUser.uid, images: <#T##[UIImage]#>, friends: <#T##[String]#>, pendingRequests: <#T##[String]#>, sentRequests: <#T##[String]#>, blockedArray: <#T##[String]#>)
-            
-            
             
             // Insert newUser into the realtime Database
             self.navigationController?.dismiss(animated: true, completion: nil)
         }
         
-        
-        
         //When user is successfully create, take the user to the main storyboard.
-//        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-//        storyboard.instantiateInitialViewController()
-//        let vc = storyboard.instantiateViewController(withIdentifier: "editProfileVC")
-//        vc.modalPresentationStyle = .fullScreen
-//
-//        self.present(vc, animated: true, completion: nil)
+        //        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        //        storyboard.instantiateInitialViewController()
+        //        let vc = storyboard.instantiateViewController(withIdentifier: "editProfileVC")
+        //        vc.modalPresentationStyle = .fullScreen
+        //
+        //        self.present(vc, animated: true, completion: nil)
     }
     
     
-//    let storyboard = UIStoryboard(name: "Main", bundle: nil)
-//    var vc = storyboard.instantiateViewController(withIdentifier: "profileVC") as! ProfileViewController
-//    vc.otherUser = otherUser
-//    //vc.updateViews()
-//
-//    self.present(vc, animated: true, completion: nil)
+    //    let storyboard = UIStoryboard(name: "Main", bundle: nil)
+    //    var vc = storyboard.instantiateViewController(withIdentifier: "profileVC") as! ProfileViewController
+    //    vc.otherUser = otherUser
+    //    //vc.updateViews()
+    //
+    //    self.present(vc, animated: true, completion: nil)
     
     // MARK: - Helper Methods
     func setupViews() {
