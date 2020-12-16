@@ -19,6 +19,7 @@ class ProfileViewController: UIViewController {
     @IBOutlet weak var declineButton: UIButton!
     @IBOutlet weak var blockButton: UIButton!
     @IBOutlet weak var collectionView: UICollectionView!
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     
     // MARK: - Properties
     var viewsLaidOut = false
@@ -27,6 +28,7 @@ class ProfileViewController: UIViewController {
     // MARK: - Lifecyle Functions
     override func viewDidLoad() {
         super.viewDidLoad()
+        activityIndicator.startAnimating()
         updateViews()
     }
     
@@ -40,10 +42,12 @@ class ProfileViewController: UIViewController {
     
     // MARK: - Actions
     @IBAction func addAcceptRevokeButtonTapped(_ sender: Any) {
+        activityIndicator.startAnimating()
         updateFriendStatus()
     }
     
     @IBAction func declineButtonTapped(_ sender: Any) {
+        activityIndicator.startAnimating()
         declineFriendRequest()
     }
     
@@ -228,6 +232,7 @@ class ProfileViewController: UIViewController {
             addAcceptRevokeButton.setTitle("Request Friend", for: .normal)
             
         }
+        activityIndicator.stopAnimating()
     }
     
     //MARK: - SetupViews

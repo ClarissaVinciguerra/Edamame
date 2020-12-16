@@ -113,11 +113,13 @@ extension EditProfileViewController {
                     DispatchQueue.main.async {
                         self.saveChangesButton.isEnabled = false
                         self.saveChangesButton.setTitle("Saved", for: .normal)
-                        
+                        self.activityIndicator.stopAnimating()
                     }
                 case .failure(let error):
                     print("Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")
+                    self.activityIndicator.stopAnimating()
                     self.didNotCreateUserAlert()
+                    
                 }
             }
         }
