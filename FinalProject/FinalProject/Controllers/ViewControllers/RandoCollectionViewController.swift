@@ -10,6 +10,7 @@ import CoreLocation
 import FirebaseAuth
 
 class RandoCollectionViewController: UICollectionViewController {
+    
     // MARK: - Properties
     var refresher: UIRefreshControl = UIRefreshControl()
     let locationManager = CLLocationManager()
@@ -33,6 +34,7 @@ class RandoCollectionViewController: UICollectionViewController {
     }
     
     override func viewDidAppear(_ animated: Bool) {
+        
         validateAuth()
     }
     
@@ -47,7 +49,6 @@ class RandoCollectionViewController: UICollectionViewController {
         collectionView.collectionViewLayout = configureCollectionViewLayout()
         collectionView.backgroundColor = .edamameGreen
     }
-    
     
     private func validateAuth() {
         if FirebaseAuth.Auth.auth().currentUser == nil {

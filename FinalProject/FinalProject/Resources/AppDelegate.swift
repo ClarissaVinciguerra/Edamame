@@ -7,8 +7,9 @@
 
 import UIKit
 import Firebase
-import FirebaseInstallations
 import UserNotifications
+import FirebaseMessaging
+import FirebaseInstallations
 
 enum Identifiers {
     static let viewAction = "VIEW_IDENTIFIER"

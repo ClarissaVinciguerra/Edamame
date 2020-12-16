@@ -14,7 +14,6 @@ class PendingTableViewController: UITableViewController {
     // MARK: Lifecycle Functions
     override func viewDidLoad() {
         super.viewDidLoad()
-        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -29,7 +28,6 @@ class PendingTableViewController: UITableViewController {
         refresher.attributedTitle = NSAttributedString(string: "Pull to refresh page")
         refresher.addTarget(self, action: #selector(loadData), for: .valueChanged)
         self.tableView.addSubview(refresher)
-        
     }
     
     @objc func loadData() {
