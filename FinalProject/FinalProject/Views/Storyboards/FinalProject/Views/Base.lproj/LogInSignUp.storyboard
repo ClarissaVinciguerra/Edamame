@@ -18,7 +18,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillProportionally" alignment="center" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="As2-OT-KZ6">
-                                <rect key="frame" x="24" y="152" width="366" height="170"/>
+                                <rect key="frame" x="24" y="404" width="366" height="170"/>
                                 <subviews>
                                     <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Email" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="pht-K1-t6C">
                                         <rect key="frame" x="0.0" y="0.0" width="366" height="50"/>
@@ -60,13 +60,22 @@
                                     <constraint firstItem="LDj-h9-Jrb" firstAttribute="leading" secondItem="As2-OT-KZ6" secondAttribute="leading" id="wuI-L2-duC"/>
                                 </constraints>
                             </stackView>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="et3-QS-8Hi">
+                                <rect key="frame" x="87" y="116" width="240" height="240"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="et3-QS-8Hi" secondAttribute="height" multiplier="1:1" id="Hkc-Hl-2f9"/>
+                                </constraints>
+                            </imageView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="RWe-Gh-WBU"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="As2-OT-KZ6" firstAttribute="leading" secondItem="RWe-Gh-WBU" secondAttribute="leading" constant="24" id="4r2-sw-oBz"/>
                             <constraint firstItem="RWe-Gh-WBU" firstAttribute="trailing" secondItem="As2-OT-KZ6" secondAttribute="trailing" constant="24" id="PaN-ex-S3e"/>
-                            <constraint firstItem="As2-OT-KZ6" firstAttribute="top" secondItem="RWe-Gh-WBU" secondAttribute="top" constant="64" id="wKQ-4I-dXF"/>
+                            <constraint firstItem="As2-OT-KZ6" firstAttribute="top" secondItem="et3-QS-8Hi" secondAttribute="bottom" constant="48" id="bLf-0N-hzC"/>
+                            <constraint firstItem="et3-QS-8Hi" firstAttribute="leading" secondItem="RWe-Gh-WBU" secondAttribute="leading" constant="87" id="qAX-i2-sqS"/>
+                            <constraint firstItem="et3-QS-8Hi" firstAttribute="top" secondItem="RWe-Gh-WBU" secondAttribute="top" constant="28" id="shc-Gl-V15"/>
+                            <constraint firstItem="et3-QS-8Hi" firstAttribute="centerX" secondItem="RWe-Gh-WBU" secondAttribute="centerX" id="wdH-B9-dA0"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Log In" id="6ei-VI-kl4">
@@ -79,6 +88,7 @@
                     <connections>
                         <outlet property="emailTextField" destination="pht-K1-t6C" id="wGp-w1-yNo"/>
                         <outlet property="logInButton" destination="miU-8h-9Ol" id="1cc-g6-QmT"/>
+                        <outlet property="logoImageView" destination="et3-QS-8Hi" id="5F4-p3-fdt"/>
                         <outlet property="passwordTextField" destination="LDj-h9-Jrb" id="ExA-ev-D5s"/>
                     </connections>
                 </viewController>
