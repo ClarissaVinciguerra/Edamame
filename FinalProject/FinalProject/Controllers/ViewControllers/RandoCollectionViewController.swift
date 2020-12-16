@@ -15,6 +15,19 @@ class RandoCollectionViewController: UICollectionViewController {
     let locationManager = CLLocationManager()
     var latitude: Double?
     var longitude: Double?
+    lazy var emptyMessage: UILabel = {
+        let messageLabel = UILabel()
+        messageLabel.translatesAutoresizingMaskIntoConstraints = false
+        messageLabel.textColor = .whiteSmoke
+        messageLabel.text = "You are one of the first\nto join edamame in your area!\n\n Make sure all notifications\nare turned on so you\ndon't miss out as our\ncommunity continues to grow."
+        messageLabel.backgroundColor = .edamameGreen
+        messageLabel.numberOfLines = 0
+        messageLabel.textAlignment = .center
+        messageLabel.font = UIFont(name: "SourceSansPro-Bold", size: 48)
+        messageLabel.sizeToFit()
+
+        return messageLabel
+    }()
     
     // MARK: - Lifecycle Functions
     override func viewDidLoad() {
@@ -89,6 +102,11 @@ class RandoCollectionViewController: UICollectionViewController {
             case .success(let randos):
                 DispatchQueue.main.async {
                     UserController.shared.randos = randos
+                    if randos.isEmpty {
+                        self.showEmptyState()
+                    } else {
+                        self.hideEmptyState()
+                    }
                     self.updateViews()
                 }
             case .failure(let error):
@@ -96,9 +114,19 @@ class RandoCollectionViewController: UICollectionViewController {
             }
         }
     }
+    func showEmptyState() {
+          collectionView.addSubview(emptyMessage)
+          emptyMessage.centerXAnchor.constraint(equalTo: collectionView.centerXAnchor).isActive = true
+          emptyMessage.centerYAnchor.constraint(equalTo: collectionView.centerYAnchor).isActive = true
+      }
+
+      func hideEmptyState() {
+          emptyMessage.removeFromSuperview()
+      }
     
     func updateViews() {
         DispatchQueue.main.async {
+            self.collectionView.isHidden = false
             self.collectionView.reloadData()
             self.refresher.endRefreshing()
         }
