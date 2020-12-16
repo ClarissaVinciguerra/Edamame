@@ -11,32 +11,19 @@ import UserNotifications
 import FirebaseMessaging
 import FirebaseInstallations
 
-enum Identifiers {
-    static let viewAction = "VIEW_IDENTIFIER"
-}
-
 @UIApplicationMain
 //@main
 class AppDelegate: UIResponder, UIApplicationDelegate {
     
     var window: UIWindow?
     
+    
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         
-        UNUserNotificationCenter.current().delegate = self
         FirebaseApp.configure()
-//        registerForPushNotifications()
         
-        let notificationOption = launchOptions?[.remoteNotification]
-        
-        if
-            let notification = notificationOption as? [String: AnyObject],
-            let aps = notification["aps"] as? [String: AnyObject] {
-            
-            //          NewsItem.makeNewsItem(aps)
-            
-            (window?.rootViewController as? UITabBarController)?.selectedIndex = 2
-        }
+        let pushManager = PushNotificationManager(userID: "currently_logged_in_user_id")
+        pushManager.registerForPushNotifications()
         
         return true
     }
@@ -57,51 +44,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     //MARK: - Push Notifications
     func application(_ application: UIApplication,didReceiveRemoteNotification userInfo:
                         [AnyHashable: Any],fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
-//        guard let aps = userInfo["aps"] as? [String: AnyObject] else {
-//            completionHandler(.failed)
-//            return
-//        }
-//        if aps["content-available"] as? Int == 1 {
-//            let podcastStore = PodcastStore.sharedStore
-//
-//            podcastStore.refreshItems { didLoadNewItems in
-//
-//                completionHandler(didLoadNewItems ? .newData : .noData)
-//            }
-//        } else {
-//
-//            //            NewsItem.makeNewsItem(aps)
-//            completionHandler(.newData)
-//        }
+        
     }
     
     func application(_ application: UIApplication,didFailToRegisterForRemoteNotificationsWithError error: Error) {
         print("Failed to register: \(error)")
+        
     }
-    
-//    func registerForPushNotifications() {
-//
-//        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]) {
-//            [weak self] granted, _ in
-//            print("Permission granted: \(granted)")
-//            guard granted
-//            else { return }
-//
-//            let viewAction = UNNotificationAction(
-//                identifier: Identifiers.viewAction,
-//                title: "View",
-//                options: [.foreground])
-//
-//            let newsCategory = UNNotificationCategory(
-//                identifier: Identifiers.newsCategory,
-//                actions: [viewAction],
-//                intentIdentifiers: [],
-//                options: [])
-//
-//            UNUserNotificationCenter.current().setNotificationCategories([newsCategory])
-//            self?.getNotificationSettings()
-//        }
-//    }
     
     func getNotificationSettings() {
         UNUserNotificationCenter.current().getNotificationSettings { settings in
@@ -114,25 +63,50 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func application(_ application: UIApplication,didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
-        let tokenParts = deviceToken.map { data in String(format: "%02.2hhx", data) }
-        let token = tokenParts.joined()
-        print("Device Token: \(token)")
+        
+        
+    }
+    
+    class PushNotificationManager: NSObject, MessagingDelegate, UNUserNotificationCenterDelegate {
+        let userID: String
+        init(userID: String) {
+            self.userID = userID
+            super.init()
+        }
+        func registerForPushNotifications() {
+            if #available(iOS 10.0, *) {
+                // For iOS 10 display notification (sent via APNS)
+                UNUserNotificationCenter.current().delegate = self
+                let authOptions: UNAuthorizationOptions = [.alert, .badge, .sound]
+                UNUserNotificationCenter.current().requestAuthorization(
+                    options: authOptions,
+                    completionHandler: {_, _ in })
+                // For iOS 10 data message (sent via FCM)
+                Messaging.messaging().delegate = self
+            } else {
+                let settings: UIUserNotificationSettings =
+                    UIUserNotificationSettings(types: [.alert, .badge, .sound], categories: nil)
+                UIApplication.shared.registerUserNotificationSettings(settings)
+            }
+            UIApplication.shared.registerForRemoteNotifications()
+            updateFirestorePushTokenIfNeeded()
+        }
+        func updateFirestorePushTokenIfNeeded() {
+            if let token = Messaging.messaging().fcmToken {
+                let usersRef = Firestore.firestore().collection("users_table").document(userID)
+                usersRef.setData(["fcmToken": token], merge: true)
+            }
+        }
+        func messaging(_ messaging: Messaging, didReceive remoteMessage: MessagingRemoteMessage) {
+            print(remoteMessage.appData)
+        }
+        func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String) {
+            updateFirestorePushTokenIfNeeded()
+        }
+        func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
+            print(response)
+        }
     }
 }
 
 //MARK: - Extensions
-extension AppDelegate: UNUserNotificationCenterDelegate {
-    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response:UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
-
-        let userInfo = response.notification.request.content.userInfo
-
-//        if
-//            let aps = userInfo["aps"] as? [String: AnyObject],
-//            let newsItem = NewsItem.makeNewsItem(aps) {
-//            (window?.rootViewController as? UITabBarController)?.selectedIndex = 2
-//        }
-
-//        completionHandler()
-    }
-}
-
