@@ -111,6 +111,7 @@ class RandoCollectionViewController: UICollectionViewController {
                     } else {
                         self.hideEmptyState()
                         self.activityIndicator.stopAnimating()
+                        self.updateViews()
                     }
                     self.updateViews()
                 }

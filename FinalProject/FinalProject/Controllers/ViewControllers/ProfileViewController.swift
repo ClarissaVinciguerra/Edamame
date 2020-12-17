@@ -85,7 +85,7 @@ class ProfileViewController: UIViewController {
             currentUser.sentRequests.append(otherUser.uuid)
             otherUser.pendingRequests.append(currentUser.uuid)
             
-            update(otherUser)
+            updateOtherUser(with: otherUser)
             update(currentUser)
             updateViews()
         }
@@ -97,6 +97,7 @@ class ProfileViewController: UIViewController {
             case .success(let user):
                 DispatchQueue.main.async {
                     UserController.shared.currentUser = user
+                    self.updateViews()
                 }
             case .failure(let error):
                 print("Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")
@@ -119,7 +120,7 @@ class ProfileViewController: UIViewController {
     }
     
     private func removeSentRequestOf(_ otherUser: User, andPendingRequestOf user: User) {
-        UserController.shared.removeFromSentRequestsOf(otherUser, andPendingRequestOf: user) { (result) in
+        UserController.shared.removeFromSentRequestsOf(otherUser.uuid, andPendingRequestOf: user.uuid) { (result) in
             switch result {
             case .success(_):
                 DispatchQueue.main.async {
