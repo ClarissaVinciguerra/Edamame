@@ -478,15 +478,19 @@ class UserController {
                             print("Error removing document: \(error)")
                             completion(.failure(.couldNotRemove))
                         } else {
-                            
-                            // deletes user from firebase Auth
-                            self.deleteCurrentUserFromAuth(with: currentUser.uuid) { (result) in
-                                switch result {
-                                case .success():
-                                    completion(.success(()))
-                                case .failure(let error):
-                                    print("Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")
-                                    completion(.failure(.couldNotRemove))
+                            // deletes user messages
+                            MessageController.shared.deleteUser(with: currentUser.uuid) { (success) in
+                                if success {
+                                    // deletes user from firebase Auth
+                                    self.deleteCurrentUserFromAuth(with: currentUser.uuid) { (result) in
+                                        switch result {
+                                        case .success():
+                                            completion(.success(()))
+                                        case .failure(let error):
+                                            print("Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")
+                                            completion(.failure(.couldNotRemove))
+                                        }
+                                    }
                                 }
                             }
                         }
@@ -498,6 +502,11 @@ class UserController {
                 
             }
         }
+    }
+    
+    func deleteUser() {
+        guard let uid = UserController.shared.currentUser?.uuid else { return }
+        
     }
     
     func deleteCurrentUserFromAuth(with uuid: String, completion: @escaping (Result<Void, UserError>) -> Void) {

@@ -186,7 +186,8 @@ extension ProfileViewController {
 }
 
 // MARK: - RandoCollectionViewController
-extension RandoCollectionViewController {
+//extension RandoCollectionViewController {
+extension UIViewController {
     
     func presentLocationPermissionsAlert() {
         let alertController = UIAlertController(title: "Unable to access location", message: "This app cannot be used without permission to access your location.", preferredStyle: .alert)
@@ -225,6 +226,7 @@ extension RandoCollectionViewController {
         present(alertController, animated: true, completion: nil)
         
     }
+
 }
 
 //MARK: - SettingsViewController
