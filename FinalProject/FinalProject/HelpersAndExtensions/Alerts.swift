@@ -30,7 +30,7 @@ extension SignUpViewController {
     
     func alertUserSignUpError() {
         let signUpError = UIAlertController(title: "Error Signing Up", message: SignUpAlertMessage,
-            preferredStyle: .alert)
+                                            preferredStyle: .alert)
         let okAction = UIAlertAction(title: "Ok", style: .cancel, handler: nil)
         
         signUpError.addAction(okAction)
@@ -126,7 +126,6 @@ extension EditProfileViewController {
         
         alertController.addAction(createUserAction)
         present(alertController, animated: true)
-         
     }
     
     func didNotCreateUserAlert() {
@@ -137,7 +136,6 @@ extension EditProfileViewController {
         alertController.addAction(okayAction)
         present(alertController, animated: true)
     }
-    
 }
 
 // MARK: - ProfileViewController
@@ -147,8 +145,8 @@ extension ProfileViewController {
         let alertController = UIAlertController(title: "", message: "You will no longer appear in this app on \(otherUserName)'s account.", preferredStyle: .alert)
         
         let okayAction = UIAlertAction(title: "Okay", style: .default) { (_) in
-          
-                self.navigationController?.popViewController(animated: true)
+            
+            self.navigationController?.popViewController(animated: true)
             
         }
         
@@ -172,7 +170,6 @@ extension ProfileViewController {
         present(alertController, animated: true, completion: nil)
     }
     
-    
     func presentReportUserAlert() {
         let alertController = UIAlertController(title: "Are you sure you want to report this user?", message: "Users should be reported for WHAT ARE WE HAVING PEOPLE REPORT USERS FOR?", preferredStyle: .alert)
         
@@ -186,7 +183,6 @@ extension ProfileViewController {
         
         present(alertController, animated: true, completion: nil)
     }
-    
 }
 
 // MARK: - RandoCollectionViewController
@@ -259,7 +255,7 @@ extension SettingsViewController {
         present(actionSheet, animated: true)
     }
     
-     func deleteUserAlert() {
+    func deleteUserAlert() {
         let actionSheet = UIAlertController(title: "",
                                             message: "Are you sure you want to DELETE your account?",
                                             preferredStyle: .actionSheet)

@@ -231,7 +231,6 @@ class ProfileViewController: UIViewController {
         } else {
             
             addAcceptRevokeButton.setTitle("Request Friend", for: .normal)
-            
         }
         activityIndicator.stopAnimating()
     }

@@ -80,18 +80,18 @@ class EditProfileViewController: UIViewController, UITextViewDelegate {
     }
     
     // MARK: - Class Methods
-//    private func validateAuth() {
-//        if FirebaseAuth.Auth.auth().currentUser == nil {
-//            let storyboard = UIStoryboard(name: "LogInSignUp", bundle: nil)
-//            guard let vc = storyboard.instantiateInitialViewController() else { return }
-//            vc.modalPresentationStyle = .fullScreen
-//            present(vc, animated: false)
-//        } else {
-//            guard let uidKey = UserDefaults.standard.value(forKey: LogInStrings.firebaseUidKey) else { return }
-//            let uidString = "\(uidKey)"
-//            fetchUser(with: uidString)
-//        }
-//    }
+    //    private func validateAuth() {
+    //        if FirebaseAuth.Auth.auth().currentUser == nil {
+    //            let storyboard = UIStoryboard(name: "LogInSignUp", bundle: nil)
+    //            guard let vc = storyboard.instantiateInitialViewController() else { return }
+    //            vc.modalPresentationStyle = .fullScreen
+    //            present(vc, animated: false)
+    //        } else {
+    //            guard let uidKey = UserDefaults.standard.value(forKey: LogInStrings.firebaseUidKey) else { return }
+    //            let uidString = "\(uidKey)"
+    //            fetchUser(with: uidString)
+    //        }
+    //    }
     
     private func initiateFetchUser() {
         guard let uidKey = UserDefaults.standard.value(forKey: LogInStrings.firebaseUidKey) else { return }
@@ -230,7 +230,6 @@ class EditProfileViewController: UIViewController, UITextViewDelegate {
         saveChangesButton.isEnabled = true
     }
     
-    
     func configureCollectionViewLayout() -> UICollectionViewLayout {
         
         let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.99), heightDimension: .fractionalHeight(0.99))
@@ -252,24 +251,23 @@ class EditProfileViewController: UIViewController, UITextViewDelegate {
         return UICollectionViewCompositionalLayout(section: section)
     }
     
-
-//    private func appendImageToCloud(image: UIImage) {
-//        guard let currentUser = UserController.shared.currentUser else { return }
-//        UserController.shared.appendImage(image: image, user: currentUser) { (result) in
-//            switch result {
-//            case .success():
-//                DispatchQueue.main.async {
-//                    guard let currentUser = UserController.shared.currentUser else { return }
-//                    currentUser.images.append(image)
-//                    self.collectionView.reloadData()
-//                }
-//            case .failure(let error):
-//                print("Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")
-//                // present alert to user that iamge didnt save
-//            }
-//        }
-//    }
-
+    
+    //    private func appendImageToCloud(image: UIImage) {
+    //        guard let currentUser = UserController.shared.currentUser else { return }
+    //        UserController.shared.appendImage(image: image, user: currentUser) { (result) in
+    //            switch result {
+    //            case .success():
+    //                DispatchQueue.main.async {
+    //                    guard let currentUser = UserController.shared.currentUser else { return }
+    //                    currentUser.images.append(image)
+    //                    self.collectionView.reloadData()
+    //                }
+    //            case .failure(let error):
+    //                print("Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")
+    //                // present alert to user that iamge didnt save
+    //            }
+    //        }
+    //    }
 }
 
 //MARK: - Extensions

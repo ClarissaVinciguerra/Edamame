@@ -9,9 +9,8 @@ import UIKit
 import JGProgressHUD
 
 class NewConversationViewController: UIViewController {
-
-    // MARK: - Properties
     
+    // MARK: - Properties
     public var completion: ((SearchResult) -> (Void))?
     
     private let spinner = JGProgressHUD(style: .dark)
@@ -27,7 +26,6 @@ class NewConversationViewController: UIViewController {
         searchBar.placeholder = "Search for Users..."
         return searchBar
     }()
-    
     
     private let tableView: UITableView = {
         let table = UITableView()
@@ -76,7 +74,6 @@ class NewConversationViewController: UIViewController {
     @objc private func dismissSelf() {
         dismiss(animated: true, completion: nil)
     }
-
 }
 
 // MARK: - Extensions
@@ -120,7 +117,6 @@ extension NewConversationViewController: UISearchBarDelegate {
         results.removeAll()
         spinner.show(in: view)
         self.searchUsers(query: text)
-        
     }
     
     func searchUsers(query: String) {
@@ -144,7 +140,6 @@ extension NewConversationViewController: UISearchBarDelegate {
         //if not, fetch then filter
         
         //update the ui
-        
     }
     
     func filterUsers(with term: String) {
@@ -158,7 +153,7 @@ extension NewConversationViewController: UISearchBarDelegate {
         
         let results: [SearchResult] = users.filter({
             guard let uid = $0[LogInStrings.firebaseUidKey], uid != currentUserUid else { return false }
-        
+            
             guard let name = $0["name"]?.lowercased() else {
                 return false
             }
@@ -167,15 +162,15 @@ extension NewConversationViewController: UISearchBarDelegate {
         }).compactMap({
             
             guard let uid = $0[LogInStrings.firebaseUidKey],
-                let name = $0["name"] else {
-                    return nil
+                  let name = $0["name"] else {
+                return nil
             }
             
             return SearchResult(name: name, uid: uid)
         })
         
         self.results = results
-
+        
         updateUI()
         
     }

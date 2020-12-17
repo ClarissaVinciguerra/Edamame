@@ -206,47 +206,47 @@ class UserController {
             }
         }
     }
+    
+    func fetchUsersFrom (_ currentUserArray: [String], completion: @escaping (Result<[User], UserError>) -> Void) {
         
-        func fetchUsersFrom (_ currentUserArray: [String], completion: @escaping (Result<[User], UserError>) -> Void) {
+        let dispatchGroup = DispatchGroup()
+        var fetchedUsers: [User] = []
+        
+        for uuid in currentUserArray {
             
-            let dispatchGroup = DispatchGroup()
-            var fetchedUsers: [User] = []
+            dispatchGroup.enter()
             
-            for uuid in currentUserArray {
+            let docRef = database.collection(userCollection).document(uuid)
+            docRef.getDocument { (document, error) in
                 
-                dispatchGroup.enter()
-                
-                let docRef = database.collection(userCollection).document(uuid)
-                docRef.getDocument { (document, error) in
+                if let document = document, document.exists {
                     
-                    if let document = document, document.exists {
-                        
-                        guard let user = User(document: document) else { return }
-                        
-                        StorageController.shared.downloadImages(with: user.uuid) { (result) in
-                            switch result {
-                            case .success(let images):
-                                user.images = images
-                                fetchedUsers.append(user)
-                                dispatchGroup.leave()
-                                
-                            case .failure(let error):
-                                print("Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")
-                                fetchedUsers.append(user)
-                                dispatchGroup.leave()
-                                
-                            }
+                    guard let user = User(document: document) else { return }
+                    
+                    StorageController.shared.downloadImages(with: user.uuid) { (result) in
+                        switch result {
+                        case .success(let images):
+                            user.images = images
+                            fetchedUsers.append(user)
+                            dispatchGroup.leave()
+                            
+                        case .failure(let error):
+                            print("Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")
+                            fetchedUsers.append(user)
+                            dispatchGroup.leave()
+                            
                         }
-                    } else if let error = error {
-                        completion(.failure(.firebaseError(error)))
                     }
+                } else if let error = error {
+                    completion(.failure(.firebaseError(error)))
                 }
             }
-            
-            dispatchGroup.notify(queue: .main) {
-                return completion(.success(fetchedUsers))
-            }
         }
+        
+        dispatchGroup.notify(queue: .main) {
+            return completion(.success(fetchedUsers))
+        }
+    }
     
     // MARK: - UPDATE
     func updateUserBy(_ user: User, updatedImages: [Image] = [], completion: @escaping (Result<User, UserError>) -> Void) {
@@ -255,11 +255,11 @@ class UserController {
         if !updatedImages.isEmpty {
             
             var updatedImageNames: [String] = []
-
+            
             for image in updatedImages {
                 // creates an array of exisitng images identified by name.
                 updatedImageNames.append(image.name)
-
+                
                 // saves images that have not yet been assigned a name (new images) to storage
                 if image.name.isEmpty {
                     guard let imageData = image.image.jpegData(compressionQuality: 0.5) else { return completion(.failure(.errorConvertingImage))}
@@ -273,7 +273,7 @@ class UserController {
                     }
                 }
             }
-
+            
             for existingImage in user.images {
                 // deletes exisiting images in storage that are not found in the new array of images that the user wants to keep
                 if !updatedImageNames.contains(existingImage.name) {
@@ -281,7 +281,7 @@ class UserController {
                         switch result {
                         case .success():
                             print("Image successfully deleted from storage!")
-
+                            
                         case .failure(let error):
                             print("Error deleting image from storage: \(error.localizedDescription)")
                         }
@@ -291,6 +291,7 @@ class UserController {
         }
    
         let documentReference = database.collection(userCollection).document(user.uuid)
+
         documentReference.updateData([
             UserStrings.nameKey : "\(user.name)",
             UserStrings.bioKey : user.bio,
@@ -512,5 +513,4 @@ class UserController {
             }
         }
     }
-    
 }
