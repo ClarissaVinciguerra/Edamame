@@ -113,11 +113,13 @@ extension EditProfileViewController {
                     DispatchQueue.main.async {
                         self.saveChangesButton.isEnabled = false
                         self.saveChangesButton.setTitle("Saved", for: .normal)
-                        
+                        self.activityIndicator.stopAnimating()
                     }
                 case .failure(let error):
                     print("Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")
+                    self.activityIndicator.stopAnimating()
                     self.didNotCreateUserAlert()
+                    
                 }
             }
         }
@@ -234,6 +236,7 @@ extension SettingsViewController {
                                             preferredStyle: .actionSheet)
         actionSheet.addAction(UIAlertAction(title: "Log Out", style: .destructive, handler: { [weak self] _ in
             guard let strongSelf = self else { return }
+            UserController.shared.currentUser = nil
             
             do {
                 try FirebaseAuth.Auth.auth().signOut()
@@ -262,6 +265,7 @@ extension SettingsViewController {
             UserController.shared.deleteCurrentUser { (result) in
                 switch result {
                 case .success():
+                    UserController.shared.currentUser = nil
                     let storyboard = UIStoryboard(name: "LogInSignUp", bundle: nil)
                     guard let vc = storyboard.instantiateInitialViewController() else { return }
                     vc.modalPresentationStyle = .fullScreen

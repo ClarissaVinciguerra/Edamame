@@ -81,48 +81,6 @@ class UserController {
     }
     
     // MARK: - READ
-    /*
-     func fetchUserByField(with uuid: String, completion: @escaping (Result<User, UserError>) -> Void) {
-     let docRef = database.collection(userCollection)
-     
-     docRef.whereField(UserStrings.firebaseUIDKey, isEqualTo: uuid).getDocuments { (querySnapshot, error) in
-     if let error = error {
-     print("There was an error fetching connections for this User. Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")
-     } else {
-     guard let doc = querySnapshot!.documents.first, let fetchedUser = User(document: doc) else { return completion(.failure(.couldNotUnwrap)) }
-     
-     fetchedUser.images = []
-     
-     let dispatchGroup = DispatchGroup()
-     
-     for imageUUID in fetchedUser.imageUUIDs {
-     
-     dispatchGroup.enter()
-     
-     StorageController.shared.downloadURL(for: imageUUID, with: fetchedUser.uuid) { (result) in
-     switch result {
-     case .success(let url):
-     self.convertURLToImage(urlString: "\(url)") { (image) in
-     guard let image = image else { return completion(.failure(.couldNotUnwrap))}
-     fetchedUser.images.append(image)
-     dispatchGroup.leave()
-     }
-     
-     case .failure(let error):
-     print("Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")
-     dispatchGroup.leave()
-     }
-     }
-     }
-     
-     dispatchGroup.notify(queue: .main) {
-     self.currentUser = fetchedUser
-     completion(.success(fetchedUser))
-     }
-     }
-     }
-     }
-     */
     
     func fetchUserBy(_ uuid: String, completion: @escaping (Result<User, UserError>) -> Void) {
         let userDocRef = database.collection(userCollection).document(uuid)
@@ -216,8 +174,10 @@ class UserController {
                             
                             let randoLocation = CLLocation(latitude: rando.latitude, longitude: rando.longitude)
                             
-                            // should we still filter for location?
-                            if currentUser.sentRequests.contains(rando.uuid) || currentUser.friends.contains(rando.uuid) || currentUser.uuid == rando.uuid || currentUser.blockedArray.contains(rando.uuid) || rando.reportCount >= 3 || myLocation.distance(from: randoLocation) > 56327 {
+                            // add to filter for location within 35 mi    || myLocation.distance(from: randoLocation) > 56327
+                            
+                            if currentUser.sentRequests.contains(rando.uuid) || currentUser.friends.contains(rando.uuid) || currentUser.uuid == rando.uuid || currentUser.blockedArray.contains(rando.uuid) || rando.reportCount >= 3  {
+                            
                                 
                                 dispatchGroup.leave()
                                 
@@ -329,10 +289,9 @@ class UserController {
                 }
             }  
         }
-        
-        guard let currentUser = currentUser else { return completion (.failure(.couldNotUnwrap)) }
-        
-        let documentReference = database.collection(userCollection).document(currentUser.uuid)
+   
+        let documentReference = database.collection(userCollection).document(user.uuid)
+
         documentReference.updateData([
             UserStrings.nameKey : "\(user.name)",
             UserStrings.bioKey : user.bio,
@@ -357,10 +316,10 @@ class UserController {
     }
     
     // MARK: - REMOVE
-    func removeFromSentRequestsOf (_ otherUser: User, andPendingRequestOf currentUser: User, completion: @escaping (Result<Bool, UserError>) -> Void) {
+    func removeFromSentRequestsOf (_ otherUserUUID: String, andPendingRequestOf currentUserUUID: String, completion: @escaping (Result<Bool, UserError>) -> Void) {
         
-        let pendingRequestsDocRef = database.collection(userCollection).document(currentUser.uuid)
-        let sentRequestsDocRef = database.collection(userCollection).document(otherUser.uuid)
+        let pendingRequestsDocRef = database.collection(userCollection).document(currentUserUUID)
+        let sentRequestsDocRef = database.collection(userCollection).document(otherUserUUID)
         
         database.runTransaction({ (transaction, errorPointer) -> Any? in
             let pendingRequestDocument: DocumentSnapshot
@@ -378,17 +337,17 @@ class UserController {
                 return nil
             }
             
-            guard let pendingRequestIndex = pendingRequestsArray.firstIndex(of: otherUser.uuid), let sentRequestIndex = sentRequestsArray.firstIndex(of: currentUser.uuid) else { return completion(.failure(.couldNotUnwrap)) }
+            guard let pendingRequestIndex = pendingRequestsArray.firstIndex(of: otherUserUUID), let sentRequestIndex = sentRequestsArray.firstIndex(of: currentUserUUID) else { return completion(.failure(.couldNotUnwrap)) }
             
             pendingRequestsArray.remove(at: pendingRequestIndex)
             sentRequestsArray.remove(at: sentRequestIndex)
             transaction.updateData([UserStrings.pendingRequestsKey : pendingRequestsArray], forDocument: pendingRequestsDocRef)
             transaction.updateData([UserStrings.sentRequestsKey: sentRequestsArray], forDocument: sentRequestsDocRef)
             
-            if let index = currentUser.pendingRequests.firstIndex(of: otherUser.uuid) {
-                currentUser.pendingRequests.remove(at: index)
-            }
-            
+//            if let index = currentUser?.pendingRequests.firstIndex(of: otherUserUUID) {
+//                currentUser?.pendingRequests.remove(at: index)
+//            }
+//
             return completion(.success(true))
             
         }) { (object, error) in
@@ -435,39 +394,59 @@ class UserController {
         }
     }
     
-    func removeFromBlockedArrayOf (currentUser: User, blockedUserUUID: String, completion: @escaping (Result<User, UserError>) -> Void) {
+    func deleteUserFromOtherUserArrays(_ user: User, completion: @escaping (Result<Void, UserError>) -> Void) {
+       
+        let dispatchGroup = DispatchGroup()
         
-        let unblockedDocRef = database.collection(userCollection).document(currentUser.uuid)
-        
-        database.runTransaction({ (transaction, errorPointer) -> Any? in
-            let unblockDocument: DocumentSnapshot
+        for userID in user.friends {
+            dispatchGroup.enter()
             
-            do {
-                try unblockDocument = transaction.getDocument(unblockedDocRef)
-            } catch let fetchError as NSError {
-                errorPointer?.pointee = fetchError
-                return nil
-            }
-            
-            guard var blockedArray = unblockDocument.data()?["blocked"] as? [String] else {
-                print("There was an error fetching the blocked array for the current user.")
-                return nil
-            }
-            
-            guard let blockedIndex = blockedArray.firstIndex(of: blockedUserUUID) else { return completion(.failure(.couldNotUnwrap)) }
-            
-            blockedArray.remove(at: blockedIndex)
-            transaction.updateData(["blocked": blockedArray], forDocument: unblockedDocRef)
-            
-            return completion(.success(currentUser))
-            
-        }) { (object, error) in
-            if let error = error {
-                print("There was an error deleting this UUID from the current user's blocked array: Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")
+            removeFriend(otherUserUUID: userID, currentUserUUID: user.uuid) { (result) in
+                switch result {
+                case .success(_):
+                    dispatchGroup.leave()
+                case .failure(let error):
+                    print("Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")
+                    dispatchGroup.leave()
+                    return completion(.failure(UserError.couldNotRemove))
+                }
             }
         }
+        
+        for userID in user.pendingRequests {
+            dispatchGroup.enter()
+            
+            removeFromSentRequestsOf(userID, andPendingRequestOf: user.uuid) { (result) in
+                switch result {
+                case .success(_):
+                    dispatchGroup.leave()
+                case .failure(_):
+                    dispatchGroup.leave()
+                    return completion(.failure(UserError.couldNotRemove))
+                }
+            }
+            
+        }
+        
+        for userID in user.sentRequests {
+            dispatchGroup.enter()
+            
+            removeFromSentRequestsOf(user.uuid, andPendingRequestOf: userID) { (result) in
+                switch result {
+                case .success(_):
+                    dispatchGroup.leave()
+                case .failure(_):
+                    dispatchGroup.leave()
+                    return completion(.failure(UserError.couldNotRemove))
+                }
+            }
+        }
+        
+        dispatchGroup.notify(queue: .main) {
+            return completion(.success(()))
+        }
     }
-    
+        
     // MARK: - DELETE USER
     func deleteCurrentUser(completion: @escaping (Result<Void, UserError>) -> Void) {
         
@@ -490,41 +469,36 @@ class UserController {
         }
         
         dispatchGroup.notify(queue: .main) {
-            
-            // deletes user document from firebase cloud
-            self.database.collection(self.userCollection).document(currentUser.uuid).delete() { error in
-                if let error = error {
-                    print("Error removing document: \(error)")
-                    completion(.failure(.couldNotRemove))
-                } else {
-                    
-                    // deletes user from firebase Auth
-                    self.deleteCurrentUserFromAuth(with: currentUser.uuid) { (result) in
-                        switch result {
-                        case .success():
-                            completion(.success(()))
-                        case .failure(let error):
-                            print("Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")
+            self.deleteUserFromOtherUserArrays(currentUser) { (result) in
+                switch result {
+                case .success():
+                    // deletes user document from firebase cloud
+                    self.database.collection(self.userCollection).document(currentUser.uuid).delete() { error in
+                        if let error = error {
+                            print("Error removing document: \(error)")
                             completion(.failure(.couldNotRemove))
+                        } else {
+                            
+                            // deletes user from firebase Auth
+                            self.deleteCurrentUserFromAuth(with: currentUser.uuid) { (result) in
+                                switch result {
+                                case .success():
+                                    completion(.success(()))
+                                case .failure(let error):
+                                    print("Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")
+                                    completion(.failure(.couldNotRemove))
+                                }
+                            }
                         }
                     }
+                case .failure(let error):
+                    print("Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")
+                    completion (.failure(UserError.couldNotRemove))
                 }
+                
             }
         }
     }
-    
-    //    func deleteCurrentUserFromAuth(with uuid: String, completion: @escaping (Result<Void, UserError>) -> Void) {
-    //        do {
-    //            try FirebaseAuth.Auth.auth().currentUser?.delete(completion: { (error) in
-    //                if let error = error {
-    //                    print("Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")
-    //                }
-    //            })
-    //
-    //        } catch {
-    //            print("Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")
-    //        }
-    //    }
     
     func deleteCurrentUserFromAuth(with uuid: String, completion: @escaping (Result<Void, UserError>) -> Void) {
         

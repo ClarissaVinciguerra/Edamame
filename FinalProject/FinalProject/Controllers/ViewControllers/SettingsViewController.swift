@@ -17,6 +17,7 @@ class SettingsViewController: UIViewController {
     @IBOutlet weak var currentCityTextField: UITextField!
     @IBOutlet weak var changeCityButton: UIButton!
     @IBOutlet weak var currentCityLabel: UILabel!
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     
     // MARK: - Properties
     var viewsLaidOut = false
@@ -24,6 +25,7 @@ class SettingsViewController: UIViewController {
     //MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        activityIndicator.startAnimating()
     }
     
     override func viewDidLayoutSubviews() {
@@ -31,11 +33,13 @@ class SettingsViewController: UIViewController {
         if viewsLaidOut == false {
             setupViews()
             viewsLaidOut = true
+            activityIndicator.stopAnimating()
         }
     }
     
     //MARK: - Actions
     @IBAction func changeCityButtonTapped(_ sender: Any) {
+        activityIndicator.startAnimating()
         updateCity()
     }
     
@@ -74,9 +78,11 @@ class SettingsViewController: UIViewController {
                     self.changeCityButton.setTitle("Saved!", for: .normal)
                     guard let currentUser = UserController.shared.currentUser else { return }
                     self.currentCityLabel.text = "Current Metropolitan Area:\n\(currentUser.city)"
+                    self.activityIndicator.stopAnimating()
                 }
             case .failure(let error):
                 print("Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")
+                self.activityIndicator.stopAnimating()
             }
         }
     }
@@ -86,6 +92,8 @@ class SettingsViewController: UIViewController {
         MessageController.shared.deleteUser(with: uid) { (success) in
             if success {
                 print("Message user deleted successfully.")
+                self.activityIndicator.stopAnimating()
+                // user alert that account was successfully deleted
             }
         }
     }

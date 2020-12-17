@@ -29,11 +29,14 @@ class RandoCollectionViewController: UICollectionViewController {
 
         return messageLabel
     }()
+    // MARK: - Outlets
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
+    
     
     // MARK: - Lifecycle Functions
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        activityIndicator.startAnimating()
         locationManager.delegate = self
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
         
@@ -105,8 +108,11 @@ class RandoCollectionViewController: UICollectionViewController {
                     UserController.shared.randos = randos
                     if randos.isEmpty {
                         self.showEmptyState()
+                        self.activityIndicator.stopAnimating()
                     } else {
                         self.hideEmptyState()
+                        self.activityIndicator.stopAnimating()
+                        self.updateViews()
                     }
                     self.updateViews()
                 }

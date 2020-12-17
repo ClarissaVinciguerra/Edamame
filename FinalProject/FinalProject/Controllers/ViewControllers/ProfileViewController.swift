@@ -19,6 +19,7 @@ class ProfileViewController: UIViewController {
     @IBOutlet weak var declineButton: UIButton!
     @IBOutlet weak var blockButton: UIButton!
     @IBOutlet weak var collectionView: UICollectionView!
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     
     // MARK: - Properties
     var viewsLaidOut = false
@@ -27,6 +28,7 @@ class ProfileViewController: UIViewController {
     // MARK: - Lifecyle Functions
     override func viewDidLoad() {
         super.viewDidLoad()
+        activityIndicator.startAnimating()
         updateViews()
     }
     
@@ -40,10 +42,12 @@ class ProfileViewController: UIViewController {
     
     // MARK: - Actions
     @IBAction func addAcceptRevokeButtonTapped(_ sender: Any) {
+        activityIndicator.startAnimating()
         updateFriendStatus()
     }
     
     @IBAction func declineButtonTapped(_ sender: Any) {
+        activityIndicator.startAnimating()
         declineFriendRequest()
     }
     
@@ -81,7 +85,7 @@ class ProfileViewController: UIViewController {
             currentUser.sentRequests.append(otherUser.uuid)
             otherUser.pendingRequests.append(currentUser.uuid)
             
-            update(otherUser)
+            updateOtherUser(with: otherUser)
             update(currentUser)
             updateViews()
         }
@@ -93,6 +97,7 @@ class ProfileViewController: UIViewController {
             case .success(let user):
                 DispatchQueue.main.async {
                     UserController.shared.currentUser = user
+                    self.updateViews()
                 }
             case .failure(let error):
                 print("Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")
@@ -115,7 +120,7 @@ class ProfileViewController: UIViewController {
     }
     
     private func removeSentRequestOf(_ otherUser: User, andPendingRequestOf user: User) {
-        UserController.shared.removeFromSentRequestsOf(otherUser, andPendingRequestOf: user) { (result) in
+        UserController.shared.removeFromSentRequestsOf(otherUser.uuid, andPendingRequestOf: user.uuid) { (result) in
             switch result {
             case .success(_):
                 DispatchQueue.main.async {
@@ -227,6 +232,7 @@ class ProfileViewController: UIViewController {
             
             addAcceptRevokeButton.setTitle("Request Friend", for: .normal)
         }
+        activityIndicator.stopAnimating()
     }
     
     //MARK: - SetupViews

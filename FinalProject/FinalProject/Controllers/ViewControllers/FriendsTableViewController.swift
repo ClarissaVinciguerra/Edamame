@@ -12,9 +12,13 @@ class FriendsTableViewController: UITableViewController {
     // MARK: - Properties
     var refresher: UIRefreshControl = UIRefreshControl()
     
+    // MARK: - Outlets
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
+    
     // MARK: - Lifecycle Functions
     override func viewDidLoad() {
         super.viewDidLoad()
+        activityIndicator.startAnimating()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -40,9 +44,11 @@ class FriendsTableViewController: UITableViewController {
                 DispatchQueue.main.async {
                     UserController.shared.friends = friends
                     self.tableView.reloadData()
+                    self.activityIndicator.stopAnimating()
                 }
             case .failure(let error):
                 print("Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")
+                self.activityIndicator.stopAnimating()
             }
         }
     }

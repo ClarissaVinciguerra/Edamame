@@ -19,6 +19,7 @@ class EditProfileViewController: UIViewController, UITextViewDelegate {
     @IBOutlet weak var cameraBarButton: UIBarButtonItem!
     @IBOutlet weak var infoButton: UIButton!
     @IBOutlet weak var settingsButton: UIButton!
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     
     //MARK: - Properties
     var viewsLaidOut = false
@@ -27,6 +28,7 @@ class EditProfileViewController: UIViewController, UITextViewDelegate {
     // MARK: - Lifecycle Functions
     override func viewDidLoad() {
         super.viewDidLoad()
+        activityIndicator.startAnimating()
         bioTextView.delegate = self
         updateViews()
     }
@@ -40,6 +42,7 @@ class EditProfileViewController: UIViewController, UITextViewDelegate {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         //validateAuth()
+       
     }
     
     override func viewDidLayoutSubviews() {
@@ -47,6 +50,7 @@ class EditProfileViewController: UIViewController, UITextViewDelegate {
         if viewsLaidOut == false {
             setupViews()
             viewsLaidOut = true
+            activityIndicator.stopAnimating()
         }
     }
     
@@ -67,6 +71,7 @@ class EditProfileViewController: UIViewController, UITextViewDelegate {
     }
     
     @IBAction func saveChangesButtonTapped(_ sender: Any) {
+        activityIndicator.startAnimating()
         createOrUpdateUser()
     }
     
@@ -134,8 +139,10 @@ class EditProfileViewController: UIViewController, UITextViewDelegate {
                 case .success(_):
                     self.saveChangesButton.setTitle("Saved", for: .normal)
                     self.saveChangesButton.isEnabled = false
+                    self.activityIndicator.stopAnimating()
                 case .failure(let error):
                     print("Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")
+                    self.activityIndicator.stopAnimating()
                 }
             }
         } else {
@@ -162,6 +169,7 @@ class EditProfileViewController: UIViewController, UITextViewDelegate {
         if profileImages.count > 1 {
             addCityAlertToCreateUser(name: name, bio: bio, type: type, unsavedImages: images, dateOfBirth: birthdayKey, latitude: 0.0, longitude: 0.0, uuid: firebaseuid)
         } else {
+            self.activityIndicator.stopAnimating()
             presentImageAlert()
         }
     }
