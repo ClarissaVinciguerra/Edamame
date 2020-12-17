@@ -20,15 +20,16 @@ class RandoCollectionViewController: UICollectionViewController {
         let messageLabel = UILabel()
         messageLabel.translatesAutoresizingMaskIntoConstraints = false
         messageLabel.textColor = .whiteSmoke
+        messageLabel.font = UIFont(name: "SourceSansPro-Bold", size: 48)
         messageLabel.text = "You are one of the first\nto join edamame in your area!\n\n Make sure all notifications\nare turned on so you\ndon't miss out as our\ncommunity continues to grow."
         messageLabel.backgroundColor = .edamameGreen
         messageLabel.numberOfLines = 0
         messageLabel.textAlignment = .center
-        messageLabel.font = UIFont(name: "SourceSansPro-Bold", size: 48)
         messageLabel.sizeToFit()
 
         return messageLabel
     }()
+    
     // MARK: - Outlets
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     
@@ -93,7 +94,7 @@ class RandoCollectionViewController: UICollectionViewController {
                 }
             case .failure(_):
                 print("User does not yet exist in database")
-                self.updateViews()
+
             }
         }
     }

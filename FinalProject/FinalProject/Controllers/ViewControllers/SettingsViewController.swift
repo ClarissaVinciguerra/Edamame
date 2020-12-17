@@ -48,7 +48,6 @@ class SettingsViewController: UIViewController {
     }
     
     @IBAction func deleteButtonTapped(_ sender: Any) {
-        deleteUser()
         deleteUserAlert()
     }
     
@@ -86,16 +85,6 @@ class SettingsViewController: UIViewController {
             }
         }
     }
-    
-    func deleteUser() {
-        guard let uid = UserController.shared.currentUser?.uuid else { return }
-        MessageController.shared.deleteUser(with: uid) { (success) in
-            if success {
-                print("Message user deleted successfully.")
-                self.activityIndicator.stopAnimating()
-                // user alert that account was successfully deleted
-            }
-        }
-    }
+   
 }
 
