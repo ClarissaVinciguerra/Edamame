@@ -202,6 +202,7 @@ class EditProfileViewController: UIViewController, UITextViewDelegate {
         typeOfVeganTextField.addAccentBorder(width: 0.5, color: .whiteSmoke)
         typeOfVeganTextField.addCornerRadius(radius: 6)
         typeOfVeganTextField.backgroundColor = .whiteSmoke
+        typeOfVeganTextField.textColor = .spaceBlack
         bioTextLabel.textColor = .spaceBlack
         
         infoButton.tintColor = .darkerGreen
@@ -210,8 +211,10 @@ class EditProfileViewController: UIViewController, UITextViewDelegate {
         bioTextView.backgroundColor = .whiteSmoke
         bioTextView.addCornerRadius(radius: 6)
         
+        dismissKeyboard()
+                
         view.backgroundColor = .white
-        
+
         navigationItem.leftBarButtonItem = editButtonItem
     }
     
@@ -219,6 +222,12 @@ class EditProfileViewController: UIViewController, UITextViewDelegate {
         if profileImages.count >= 6 {
             cameraBarButton.isEnabled = false
         }
+    }
+    
+    public func dismissKeyboard() {
+        
+        let tapGesture = UITapGestureRecognizer(target: view, action: #selector(UIView.endEditing))
+        view.addGestureRecognizer(tapGesture)
     }
     
     func textViewChanged () {
