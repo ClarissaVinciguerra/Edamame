@@ -62,10 +62,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
 //    private func updateUserPushID(newPushID: String) {
-//        
+//
 //        if let user = UserController.shared.currentUser {
 //            user.pushID = newPushID
-//            
 //        }
 //    }
 }

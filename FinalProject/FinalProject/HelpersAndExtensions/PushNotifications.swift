@@ -13,11 +13,18 @@ class PushNotificationService {
     
     private init() {}
     
-    func sendPushNOtificationTo(userIDs: [String], body: String) {
+    func sendPushNotificationTo(userID: String, body: String) {
 
-        
-        
-        
+        UserController.shared.fetchUserBy(userID) { (result) in
+            switch result {
+            case .success(let user):
+                guard let pushID = user.pushID
+                else { return }
+                self.sendMessageToUser(to: pushID, title: user.name, body: body)
+            case .failure(let error):
+                print("Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")
+            }
+        }
     }
     
     private func sendMessageToUser(to token: String, title: String, body: String) {

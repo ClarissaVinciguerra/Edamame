@@ -128,10 +128,9 @@ class ChatViewController: MessagesViewController {
         titleButton.addTarget(self, action: #selector(titleButtonTapped), for:. touchUpInside)
         navigationItem.titleView = titleButton
     }
-}// End of Class
+}
 
 // MARK: - Extensions
-
 extension ChatViewController: InputBarAccessoryViewDelegate {
     func inputBar(_ inputBar: InputBarAccessoryView, didPressSendButtonWith text: String) {
         guard !text.replacingOccurrences(of: " ", with: "").isEmpty, let selfSender = self.selfSender, let messageID = createMessageID() else {
@@ -149,6 +148,7 @@ extension ChatViewController: InputBarAccessoryViewDelegate {
             // create conversation in Database
             MessageController.shared.createNewConversation(with: otherUserUid, otherUserName: self.title ?? "User", firstMessage: message) { [weak self] (success) in
                 if success {
+                    PushNotificationService.shared.sendPushNotificationTo(userID: self!.otherUserUid, body: text)
                     print("message sent")
                     self?.isNewConversation = false
                     let newConversationID = "conversation_\(message.messageId)"
@@ -164,6 +164,7 @@ extension ChatViewController: InputBarAccessoryViewDelegate {
             // append to existing conversation data
             MessageController.shared.sendMessage(to: conversationID, otherUserUid: otherUserUid, newMessage: message, name: name) { (success) in
                 if success {
+                    PushNotificationService.shared.sendPushNotificationTo(userID: self.otherUserUid, body: text)
                     print("message sent")
                 } else {
                     print("failed to send")
