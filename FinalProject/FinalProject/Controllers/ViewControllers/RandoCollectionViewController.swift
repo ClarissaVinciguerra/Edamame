@@ -42,6 +42,8 @@ class RandoCollectionViewController: UICollectionViewController {
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
         
         retrieveCurrentLocation()
+        guard let currentUid = UserDefaults.standard.value(forKey: LogInStrings.firebaseUidKey) as? String else { return }
+        fetchUser(with: currentUid)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -51,8 +53,7 @@ class RandoCollectionViewController: UICollectionViewController {
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        
-        validateAuth()
+    
     }
     
     // MARK: - Class methods
@@ -65,19 +66,6 @@ class RandoCollectionViewController: UICollectionViewController {
         self.collectionView.addSubview(refresher)
         collectionView.collectionViewLayout = configureCollectionViewLayout()
         collectionView.backgroundColor = .edamameGreen
-    }
-    
-    private func validateAuth() {
-        if FirebaseAuth.Auth.auth().currentUser == nil {
-            let storyboard = UIStoryboard(name: "LogInSignUp", bundle: nil)
-            guard let vc = storyboard.instantiateInitialViewController() else { return }
-            vc.modalPresentationStyle = .fullScreen
-            present(vc, animated: false)
-        } else {
-            guard let uidKey = UserDefaults.standard.value(forKey: LogInStrings.firebaseUidKey) else { return }
-            let uidString = "\(uidKey)"
-            fetchUser(with: uidString)
-        }
     }
     
     private func fetchUser(with firebaseUID: String) {
@@ -94,6 +82,7 @@ class RandoCollectionViewController: UICollectionViewController {
                 }
             case .failure(_):
                 print("User does not yet exist in database")
+                self.tabBarController?.selectedIndex = 3
 
             }
         }

@@ -73,12 +73,55 @@ class LogInViewController: UIViewController {
             UserDefaults.standard.set(firebaseUid, forKey: LogInStrings.firebaseUidKey)
             
             print("Logged In User: \(firebaseUser)")
+            
+            DispatchQueue.main.async {
+                self?.spinner.show(in: (self?.view)!)
+            }
+            
+            self?.fetchUser(with: firebaseUid)
+            
+            DispatchQueue.main.async {
+                self?.spinner.dismiss()
+            }
+            
+            
+            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+            let mainTabBarController = storyboard.instantiateViewController(identifier: "MainTabBarController")
+            
+            (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeRootViewController(mainTabBarController)
+            
             //Dismisses the current view controller and returns to the main storyboard.
-            strongSelf.navigationController?.dismiss(animated: true, completion: nil)
+//            strongSelf.tabBarController?.selectedIndex = 3
+//            strongSelf.navigationController?.dismiss(animated: true, completion: nil)
         }
     }
     
     // MARK: - Helper Methods
+    private func initiateFetchUser() {
+        guard let uidKey = UserDefaults.standard.value(forKey: LogInStrings.firebaseUidKey) else { return }
+        let uidString = "\(uidKey)"
+        fetchUser(with: uidString)
+    }
+    // CHECK IF THIS IS NECESSARY BEFORE SUBMISSION
+    private func fetchUser(with firebaseUID: String) {
+        
+        UserController.shared.fetchUserBy(firebaseUID) { (result) in
+            switch result {
+            case .success(let user):
+                DispatchQueue.main.async {
+                    UserController.shared.currentUser = user
+                    //self.profileImages = user.images
+                    //self.setupViews()
+                    //self.updateViews()
+                    //self.disableCameraBarButton()
+                }
+            case .failure(_):
+                print("User does not yet exist in database")
+                //self.updateViews()
+            }
+        }
+    }
+    
     func setupViews() {
         setupLogoImageView()
         setupEmailTextField()
