@@ -208,7 +208,7 @@ class UserController {
         }
     }
     
-    func fetchUsersFrom (_ currentUserArray: [String], completion: @escaping (Result<[User], UserError>) -> Void) {
+    func fetchUserUUIDsFrom (_ currentUserArray: [String], completion: @escaping (Result<[User], UserError>) -> Void) {
         
         let dispatchGroup = DispatchGroup()
         var fetchedUsers: [User] = []
