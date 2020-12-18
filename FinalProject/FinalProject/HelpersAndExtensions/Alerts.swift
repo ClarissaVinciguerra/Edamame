@@ -107,7 +107,7 @@ extension EditProfileViewController {
             
             let cityRef = text.lowercased().replacingOccurrences(of: " ", with: "")
             
-            UserController.shared.createUser(name: name, bio: bio, type: type, city: text, cityRef: cityRef, unsavedImages: unsavedImages, dateOfBirth: dateOfBirth, latitude: latitude, longitude: longitude, uuid: uuid) { (result) in
+            UserController.shared.createUser(name: name, bio: bio, type: type, city: text, cityRef: cityRef, unsavedImages: unsavedImages, dateOfBirth: dateOfBirth, latitude: latitude, longitude: longitude, uuid: uuid, pushID: uuid) { (result) in
                 switch result {
                 case .success(_):
                     DispatchQueue.main.async {
