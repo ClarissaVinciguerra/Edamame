@@ -100,20 +100,25 @@ class EditProfileViewController: UIViewController, UITextViewDelegate {
     }
     // CHECK IF THIS IS NECESSARY BEFORE SUBMISSION
     private func fetchUser(with firebaseUID: String) {
+        // this wont be necessary when hte fetchUser Fucntion is moved
         profileImages = []
         
         UserController.shared.fetchUserBy(firebaseUID) { (result) in
             switch result {
             case .success(let user):
                 DispatchQueue.main.async {
+                    // if success - the user needs to be set to the current user and taken to the randoVC (index[0])
                     UserController.shared.currentUser = user
+                    // profileImages are to store the users images... I think we should be able to work around having. I will continue to explore this functionality but it likely can be put in the VDL
                     self.profileImages = user.images
+                    // these can be called in VDL of this VC
                     self.setupViews()
                     self.updateViews()
                     self.disableCameraBarButton()
                 }
             case .failure(_):
                 print("User does not yet exist in database")
+                // If the user is not fetched send to index[3] of tab bar controller and disable other tab bars - maybe we should add an alert
                 self.updateViews()
             }
         }

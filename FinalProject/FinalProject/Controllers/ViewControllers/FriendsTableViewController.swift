@@ -38,7 +38,7 @@ class FriendsTableViewController: UITableViewController {
     @objc func loadData() {
         guard let friends = UserController.shared.currentUser?.friends else { return }
         
-        UserController.shared.fetchUsersFrom(friends) { (result) in
+        UserController.shared.fetchUserUUIDsFrom(friends) { (result) in
             switch result {
             case .success(let friends):
                 DispatchQueue.main.async {
