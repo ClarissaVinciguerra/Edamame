@@ -114,6 +114,8 @@ class UserController {
                 
                 completion(.failure(.firebaseError(error)))
                 
+            } else {
+                completion(.failure(.noExistingUser))
             }
         }
         //        completion(.failure(.noExistingUser))

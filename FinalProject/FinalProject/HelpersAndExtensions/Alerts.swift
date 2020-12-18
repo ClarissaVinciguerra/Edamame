@@ -243,9 +243,13 @@ extension SettingsViewController {
             do {
                 try FirebaseAuth.Auth.auth().signOut()
                 let storyboard = UIStoryboard(name: "LogInSignUp", bundle: nil)
-                guard let vc = storyboard.instantiateInitialViewController() else { return }
-                vc.modalPresentationStyle = .fullScreen
-                strongSelf.present(vc, animated: true)
+                let loginNavController = storyboard.instantiateViewController(identifier: "LoginNavigationController")
+                
+                (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeRootViewController(loginNavController)
+//                let storyboard = UIStoryboard(name: "LogInSignUp", bundle: nil)
+//                guard let vc = storyboard.instantiateInitialViewController() else { return }
+//                vc.modalPresentationStyle = .fullScreen
+//                strongSelf.present(vc, animated: true)
             } catch {
                 print("Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")
             }
@@ -267,11 +271,10 @@ extension SettingsViewController {
             UserController.shared.deleteCurrentUser { (result) in
                 switch result {
                 case .success():
-                    UserController.shared.currentUser = nil
                     let storyboard = UIStoryboard(name: "LogInSignUp", bundle: nil)
-                    guard let vc = storyboard.instantiateInitialViewController() else { return }
-                    vc.modalPresentationStyle = .fullScreen
-                    strongSelf.present(vc, animated: true)
+                    let loginNavController = storyboard.instantiateViewController(identifier: "LoginNavigationController")
+                    
+                    (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeRootViewController(loginNavController)
                 case .failure(let error):
                     print("Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")
                 }
