@@ -23,9 +23,9 @@ class UserController {
     var friends: [User] = []
     
     // MARK: - CREATE
-    func createUser(name: String, bio: String, type: String, city: String, cityRef: String, unsavedImages: [UIImage], dateOfBirth: Date, latitude: Double, longitude: Double, uuid: String, completion: @escaping (Result<User, UserError>) -> Void) {
+    func createUser(name: String, bio: String, type: String, city: String, cityRef: String, unsavedImages: [UIImage], dateOfBirth: Date, latitude: Double, longitude: Double, uuid: String, pushID: String, completion: @escaping (Result<User, UserError>) -> Void) {
         
-        let newUser = User(name: name, dateOfBirth: dateOfBirth, bio: bio, type: type, city: city, cityRef: cityRef, latitude: latitude, longitude: longitude, uuid: uuid)
+        let newUser = User(name: name, dateOfBirth: dateOfBirth, bio: bio, type: type, city: city, cityRef: cityRef, latitude: latitude, longitude: longitude, uuid: uuid, pushID: uuid)
         
         let timeInterval = newUser.dateOfBirth.timeIntervalSince1970
         
@@ -65,7 +65,8 @@ class UserController {
                 UserStrings.pendingRequestsKey : newUser.pendingRequests,
                 UserStrings.sentRequestsKey : newUser.sentRequests,
                 UserStrings.blockedArrayKey : newUser.blockedArray,
-                UserStrings.reportCountKey : newUser.reportCount
+                UserStrings.reportCountKey : newUser.reportCount,
+                UserStrings.pushIDKey : newUser.pushID ?? ""
                 
             ]) { error in
                 if let error = error {
@@ -209,7 +210,7 @@ class UserController {
         }
     }
     
-    func fetchUsersFrom (_ currentUserArray: [String], completion: @escaping (Result<[User], UserError>) -> Void) {
+    func fetchUserUUIDsFrom (_ currentUserArray: [String], completion: @escaping (Result<[User], UserError>) -> Void) {
         
         let dispatchGroup = DispatchGroup()
         var fetchedUsers: [User] = []
@@ -306,7 +307,9 @@ class UserController {
             UserStrings.pendingRequestsKey : user.pendingRequests,
             UserStrings.sentRequestsKey : user.sentRequests,
             UserStrings.blockedArrayKey : user.blockedArray,
-            UserStrings.reportCountKey : user.reportCount
+            UserStrings.reportCountKey : user.reportCount,
+            UserStrings.pushIDKey : user.pushID ?? ""
+            
         ]) { (error) in
             if let error = error {
                 print("Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")

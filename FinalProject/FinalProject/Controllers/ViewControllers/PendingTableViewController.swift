@@ -37,7 +37,7 @@ class PendingTableViewController: UITableViewController {
     @objc func loadData() {
         guard let pendingRequests = UserController.shared.currentUser?.pendingRequests else { return }
         
-        UserController.shared.fetchUsersFrom(pendingRequests) { (result) in
+        UserController.shared.fetchUserUUIDsFrom(pendingRequests) { (result) in
             switch result {
             case .success(let pendingRequests):
                 DispatchQueue.main.async {
