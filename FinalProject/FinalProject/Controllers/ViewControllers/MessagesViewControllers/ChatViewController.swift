@@ -206,6 +206,34 @@ extension ChatViewController: MessagesDataSource, MessagesLayoutDelegate, Messag
     func numberOfSections(in messagesCollectionView: MessagesCollectionView) -> Int {
         return messages.count
     }
+    
+    func backgroundColor(for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> UIColor {
+            let sender = message.sender
+            if sender.senderId == selfSender?.senderId {
+                // our message that we've sent
+                return .edamameGreen
+            }
+
+            return .secondarySystemBackground
+        }
+    
+    func configureAvatarView(_ avatarView: AvatarView, for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) {
+        if let layout = messagesCollectionView.collectionViewLayout as? MessagesCollectionViewFlowLayout {
+                   //
+                   // set avatar size zero
+                   //
+                   layout.setMessageIncomingAvatarSize(.zero)
+                   layout.setMessageOutgoingAvatarSize(.zero)
+                   //
+                   // set top\bottom label position
+                   //
+                   layout.setMessageOutgoingMessageTopLabelAlignment(LabelAlignment(textAlignment: .right, textInsets: UIEdgeInsets(top: 0, left:0, bottom: 0, right: 10)))
+                   layout.setMessageIncomingMessageTopLabelAlignment(LabelAlignment(textAlignment: .left, textInsets: UIEdgeInsets(top: 0, left:10, bottom: 0, right: 0)))
+                   
+                   layout.setMessageOutgoingMessageBottomLabelAlignment(LabelAlignment(textAlignment: .right, textInsets: UIEdgeInsets(top: 0, left:0, bottom: 0, right: 10)))
+                   layout.setMessageIncomingCellBottomLabelAlignment(LabelAlignment(textAlignment: .left, textInsets: UIEdgeInsets(top: 0, left:10, bottom: 0, right: 0)))
+                 }
+    }
 }
 
 
