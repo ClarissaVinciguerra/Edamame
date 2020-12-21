@@ -670,8 +670,10 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = FinalProject/FinalProject.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
+
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 27P7HR5369;
+
 				INFOPLIST_FILE = FinalProject/Resources/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -693,8 +695,10 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = FinalProject/FinalProject.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
+
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 27P7HR5369;
+
 				INFOPLIST_FILE = FinalProject/Resources/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

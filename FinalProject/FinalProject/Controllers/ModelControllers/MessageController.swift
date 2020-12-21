@@ -44,7 +44,7 @@ final class MessageController {
                 completion(false)
                 return
             }
-            
+            // adds name and UUID to user array at bottom of database - only if they are not already there
             self.database.child("users").observeSingleEvent(of: .value) { (snapshot) in
                 if var usersCollection = snapshot.value as? [[String: String]] {
                     //append to user dictionary
