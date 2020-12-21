@@ -73,6 +73,7 @@ class FriendsTableViewController: UITableViewController {
                 let vc = ChatViewController(with: otherUserUid, otherUserName: otherUserName, id: conversationId)
                 vc.isNewConversation = false
                 vc.title = otherUserName
+                vc.otherUser = otherUser
                 vc.navigationItem.largeTitleDisplayMode = .never
                 strongSelf.navigationController?.pushViewController(vc, animated: true)
                 
