@@ -501,7 +501,9 @@ extension MessageController {
                             ]
                             var databaseEntryConversations =  [[String : Any]]()
                             
-                            guard let currentUserName = UserDefaults.standard.value(forKey: "name") as? String else { return }
+                            guard let currentUserName = UserController.shared.currentUser?.name  else {
+                                completion(false)
+                                return }
                             
                             if var otherUserConversations = snapshot.value as? [[String: Any]] {
                                 var targetConversation: [String : Any]?
