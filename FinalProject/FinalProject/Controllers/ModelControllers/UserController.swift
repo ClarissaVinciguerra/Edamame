@@ -25,7 +25,7 @@ class UserController {
     // MARK: - CREATE
     func createUser(name: String, bio: String, type: String, city: String, cityRef: String, unsavedImages: [UIImage], dateOfBirth: Date, latitude: Double, longitude: Double, uuid: String, pushID: String, completion: @escaping (Result<User, UserError>) -> Void) {
         
-        let newUser = User(name: name, dateOfBirth: dateOfBirth, bio: bio, type: type, city: city, cityRef: cityRef, latitude: latitude, longitude: longitude, uuid: uuid, pushID: uuid)
+        let newUser = User(name: name, dateOfBirth: dateOfBirth, bio: bio, type: type, city: city, cityRef: cityRef, latitude: latitude, longitude: longitude, uuid: uuid, pushID: pushID)
         
         let timeInterval = newUser.dateOfBirth.timeIntervalSince1970
         
