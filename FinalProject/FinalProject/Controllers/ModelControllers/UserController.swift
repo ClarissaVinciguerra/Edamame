@@ -296,7 +296,11 @@ class UserController {
         }
    
         let documentReference = database.collection(userCollection).document(user.uuid)
-
+        
+        if let pushID = UserController.shared.pushID {
+            user.pushID = pushID
+        }
+        
         documentReference.updateData([
             UserStrings.nameKey : "\(user.name)",
             UserStrings.bioKey : user.bio,
