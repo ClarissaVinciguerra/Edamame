@@ -5,7 +5,10 @@
 //  Created by Deven Day on 12/17/20.
 //
 
-import Foundation
+import UIKit
+import FirebaseFirestore
+import FirebaseMessaging
+import UserNotificationsUI
 
 class PushNotificationService {
     
@@ -15,16 +18,17 @@ class PushNotificationService {
     
     func sendPushNotificationTo(userID: String, body: String) {
 
-        UserController.shared.fetchUserBy(userID) { (result) in
+        /*UserController.shared.fetchUserBy(userID) { (result) in
             switch result {
             case .success(let user):
                 guard let pushID = user.pushID
                 else { return }
-                self.sendMessageToUser(to: pushID, title: user.name, body: body)
+                self.sendMessageToUser(to: userID, title: user.name, body: body)
             case .failure(let error):
                 print("Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")
             }
-        }
+        }*/
+        self.sendMessageToUser(to: userID, title: "b", body: body)
     }
     
     private func sendMessageToUser(to token: String, title: String, body: String) {
@@ -36,8 +40,9 @@ class PushNotificationService {
                                             "notification" : [
                                                 "title" : title,
                                                 "body" : body,
-                                                "budge" : "1",
-                                                "sound" : "default"
+                                                "badge" : "1",
+                                                "sound" : "default",
+                                                "content-available": 1
                                             ]
         ]
         
@@ -49,6 +54,9 @@ class PushNotificationService {
         
         let task = URLSession.shared.dataTask(with: request as URLRequest) {
             (data, response, error) in
+            if let error = error {
+                print(error.localizedDescription)
+            }
         }
         task.resume()
     }

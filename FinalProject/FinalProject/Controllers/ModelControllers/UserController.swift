@@ -16,6 +16,7 @@ class UserController {
     static let shared = UserController()
     let database = Firestore.firestore()
     var currentUser: User?
+    var pushID: String?
     let userCollection = "users"
     var randos: [User] = []
     var sentRequests: [User] = []
@@ -23,10 +24,11 @@ class UserController {
     var friends: [User] = []
     
     // MARK: - CREATE
-    func createUser(name: String, bio: String, type: String, city: String, cityRef: String, unsavedImages: [UIImage], dateOfBirth: Date, latitude: Double, longitude: Double, uuid: String, pushID: String, completion: @escaping (Result<User, UserError>) -> Void) {
+    func createUser(name: String, bio: String, type: String, city: String, cityRef: String, unsavedImages: [UIImage], dateOfBirth: Date, latitude: Double, longitude: Double, uuid: String, completion: @escaping (Result<User, UserError>) -> Void) {
         
-        let newUser = User(name: name, dateOfBirth: dateOfBirth, bio: bio, type: type, city: city, cityRef: cityRef, latitude: latitude, longitude: longitude, uuid: uuid, pushID: pushID)
-        
+
+        let newUser = User(name: name, dateOfBirth: dateOfBirth, bio: bio, type: type, city: city, cityRef: cityRef, latitude: latitude, longitude: longitude, uuid: uuid, pushID: UserController.shared.pushID ?? "")
+
         let timeInterval = newUser.dateOfBirth.timeIntervalSince1970
         
         let dispatchGroup = DispatchGroup()
