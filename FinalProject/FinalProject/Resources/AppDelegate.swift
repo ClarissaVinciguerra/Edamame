@@ -59,10 +59,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     private func requestPushNotificationPermission() {
         
         UNUserNotificationCenter.current().delegate = self
+        
         let authOptions: UNAuthorizationOptions  = [.alert, .badge, .sound]
         // requests authorization for specific notifications
         UNUserNotificationCenter.current().requestAuthorization(options: authOptions, completionHandler: {_, _ in })
     }
+    
 }
 
 //MARK: - Extensions 
