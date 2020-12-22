@@ -44,10 +44,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // If any sessions were discarded while the application was not running, this will be called shortly after application:didFinishLaunchingWithOptions.
         // Use this method to release any resources that were specific to the discarded scenes, as they will not return.
     }
-}
-
-//MARK: - Extensions
-extension AppDelegate : UNUserNotificationCenterDelegate {
+    
     //MARK: - Push notifications
     
     // this function passes the remote notification we recieved
@@ -60,11 +57,16 @@ extension AppDelegate : UNUserNotificationCenterDelegate {
     }
     
     private func requestPushNotificationPermission() {
+        
         UNUserNotificationCenter.current().delegate = self
         let authOptions: UNAuthorizationOptions  = [.alert, .badge, .sound]
         // requests authorization for specific notifications
         UNUserNotificationCenter.current().requestAuthorization(options: authOptions, completionHandler: {_, _ in })
     }
+}
+
+//MARK: - Extensions 
+extension AppDelegate : UNUserNotificationCenterDelegate {
 /*
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
         Messaging.messaging().setAPNSToken(deviceToken, type: MessagingAPNSTokenType.unknown)
@@ -82,9 +84,34 @@ extension AppDelegate : UNUserNotificationCenterDelegate {
 }
 
 extension AppDelegate : MessagingDelegate {
+    // allows you to retrieve token with token completion handler
+   /* Messaging.messaging().token { token, error in
+      if let error = error {
+        print("Error fetching FCM registration token: \(error)")
+      } else if let token = token {
+        print("FCM registration token: \(token)")
+        self.fcmRegTokenMessage.text  = "Remote FCM registration token: \(token)"
+      }
+    }*/
     
     func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String) {
         print("user push id is ", fcmToken)
+        UserController.shared.pushID = fcmToken
+    }
+    
+    private func updatePushID(fcmToken: String) {
+        if let currentUser = UserController.shared.currentUser {
+            currentUser.pushID = fcmToken
+            UserController.shared.updateUserBy(currentUser) { (result) in
+                switch result {
+                case .success(let user):
+                    print("User successfully updated with new pushID: \(String(describing: user.pushID))")
+                case .failure(let error):
+                    print("Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")
+                }
+            }
+        }
+        
         UserController.shared.pushID = fcmToken
     }
 }
