@@ -590,6 +590,40 @@ extension MessageController {
         }
     }
     
+    public func getConversation(otherUserUid: String, completion: @escaping(Result<Conversation,Error>) -> Void) {
+        guard let userUid = UserDefaults.standard.value(forKey: LogInStrings.firebaseUidKey) as? String else { return }
+        
+        let ref = database.child("\(userUid)/conversations")
+        ref.observeSingleEvent(of: .value) { (snapshot) in
+            if let conversations = snapshot.value as? [[String: Any]] {
+                var conversationIndex = 0
+                for conversation in conversations {
+                    if let id = conversation["other_user_uid"] as? String, id == otherUserUid {
+                        print("found conversation")
+                        break
+                    }
+                    conversationIndex += 1
+                    }
+                let targetConversation = conversations[conversationIndex]
+                guard let conversationID = targetConversation["id"] as? String,
+                      let name = targetConversation["other_user_name"] as? String,
+                      let otherUserUid = targetConversation["other_user_uid"] as? String,
+                      let latestMessage = targetConversation["latest_message"] as? [String : Any],
+                      let date = latestMessage["date"] as? String,
+                      let message = latestMessage["message"] as? String,
+                      let isRead = latestMessage["is_read"] as? Bool else {
+                    return
+                }
+                let latestMessageObject = LatestMessage(date: date, text: message, isRead: isRead)
+                let resultConversation = Conversation(id: conversationID, name: name, otherUserUid: otherUserUid, latestMessage: latestMessageObject)
+                completion(.success(resultConversation))
+            } else {
+                completion(.failure(DatabaseError.failedToFetch))
+                return
+            }
+            }
+        }
+    
     public func conversationExists(with targetRecipientUid: String, completion: @escaping(Result<String,Error>) ->Void) {
         //let safeRecipientEmail = MessageController.safeEmail(emailAddress: targetRecipientEmail)
         guard let senderUid = UserDefaults.standard.value(forKey: LogInStrings.firebaseUidKey) as? String else {
