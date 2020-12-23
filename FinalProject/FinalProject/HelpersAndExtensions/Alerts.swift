@@ -142,7 +142,7 @@ extension EditProfileViewController {
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .actionSheet)
         
         let okayAction = UIAlertAction(title: "Okay!", style: .default) { (_) in
-            // change position in tab bar here
+            self.tabBarController?.selectedIndex = 0
         }
         alertController.addAction(okayAction)
         present(alertController, animated: true)
