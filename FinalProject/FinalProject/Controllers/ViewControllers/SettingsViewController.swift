@@ -78,6 +78,7 @@ class SettingsViewController: UIViewController {
                     guard let currentUser = UserController.shared.currentUser else { return }
                     self.currentCityLabel.text = "Current Metropolitan Area:\n\(currentUser.city)"
                     self.activityIndicator.stopAnimating()
+                    self.updatedCityAlert()
                 }
             case .failure(let error):
                 print("Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")

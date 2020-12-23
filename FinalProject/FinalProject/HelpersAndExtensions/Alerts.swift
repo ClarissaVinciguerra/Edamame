@@ -114,6 +114,7 @@ extension EditProfileViewController {
                         self.saveChangesButton.isEnabled = false
                         self.saveChangesButton.setTitle("Saved", for: .normal)
                         self.activityIndicator.stopAnimating()
+                        self.userProfileSavedAlert(title: "Your profile has been created!", message: "Check out some other plant loving members of our community in your news feed!")
                     }
                 case .failure(let error):
                     print("Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")
@@ -133,6 +134,16 @@ extension EditProfileViewController {
         
         let okayAction = UIAlertAction(title: "Okay", style: .default)
         
+        alertController.addAction(okayAction)
+        present(alertController, animated: true)
+    }
+    
+    func userProfileSavedAlert(title: String, message: String) {
+        let alertController = UIAlertController(title: title, message: message, preferredStyle: .actionSheet)
+        
+        let okayAction = UIAlertAction(title: "Okay!", style: .default) { (_) in
+            // change position in tab bar here
+        }
         alertController.addAction(okayAction)
         present(alertController, animated: true)
     }
@@ -285,6 +296,17 @@ extension SettingsViewController {
                                             handler: nil))
         
         present(actionSheet, animated: true)
+    }
+    
+    func updatedCityAlert() {
+        let alertController = UIAlertController(title: "Your nearest city has been successfully updated!", message: nil, preferredStyle: .actionSheet)
+        
+        let okayAction = UIAlertAction(title: "Cool!", style: .default) { (_) in
+            self.navigationController?.popViewController(animated: true)
+        }
+        
+        alertController.addAction(okayAction)
+        present(alertController, animated: true)
     }
 }
 
