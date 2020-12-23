@@ -28,8 +28,11 @@ class ProfileViewController: UIViewController {
     // MARK: - Lifecyle Functions
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         activityIndicator.startAnimating()
         updateViews()
+        // ensures that the local version of "otherUser" has the most recent data from cloud - we may be able to take this out, but it solves previous issues of requests being sent multiple times from teh same user
+        fetchOtherUser()
     }
     
     override func viewDidLayoutSubviews() {
@@ -112,7 +115,8 @@ class ProfileViewController: UIViewController {
     
     // Called when friend status changes
     private func updateOtherUser(with otherUser: User) {
-        UserController.shared.updateUserBy(otherUser) { (result) in
+        
+        UserController.shared.updatePendingOrFriendsArray(with: otherUser) { (result) in
             switch result {
             case .success(_):
                 DispatchQueue.main.async {
@@ -198,6 +202,21 @@ class ProfileViewController: UIViewController {
         
         update(otherUser)
         blockUser()
+    }
+    
+    private func fetchOtherUser() {
+        guard let user = otherUser else { return }
+        UserController.shared.fetchUserBy(user.uuid) { (result) in
+            switch result {
+            case .success(let fetchedUser):
+                DispatchQueue.main.async {
+                    self.otherUser = fetchedUser
+                    self.updateViews()
+                }
+            case .failure(let error):
+                print("Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")
+            }
+        }
     }
     
     // MARK: - UpdateViews

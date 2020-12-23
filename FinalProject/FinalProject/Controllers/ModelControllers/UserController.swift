@@ -110,7 +110,7 @@ class UserController {
                 }
                 
                 dispatchGroup.notify(queue: .main) {
-                    self.currentUser = user
+//                    self.currentUser = user
                     completion(.success(user))
                 }
                 
@@ -298,10 +298,6 @@ class UserController {
    
         let documentReference = database.collection(userCollection).document(user.uuid)
         
-//        if let pushID = UserController.shared.pushID {
-//            user.pushID = pushID
-//        }
-        
         documentReference.updateData([
             UserStrings.nameKey : "\(user.name)",
             UserStrings.bioKey : user.bio,
@@ -334,6 +330,23 @@ class UserController {
         docRef.updateData([
             UserStrings.badgeCountKey : user.badgeCount,
             UserStrings.pushIDKey : user.pushID ?? ""
+        ]) { err in
+            if let err = err {
+                print("Error updating document: \(err)")
+                return completion(.failure(UserError.noExistingUser))
+            } else {
+                print("Document successfully updated")
+                return completion(.success(()))
+            }
+        }
+    }
+    
+    func updatePendingOrFriendsArray (with user: User, completion: @escaping (Result<Void, UserError>) -> Void) {
+        let docRef = database.collection("users").document(user.uuid)
+
+        docRef.updateData([
+            UserStrings.pendingRequestsKey : user.pendingRequests,
+            UserStrings.friendsKey : user.friends
         ]) { err in
             if let err = err {
                 print("Error updating document: \(err)")
