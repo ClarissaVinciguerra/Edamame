@@ -174,6 +174,7 @@ class EditProfileViewController: UIViewController, UITextViewDelegate {
         
         if profileImages.count > 1 {
             addCityAlertToCreateUser(name: name, bio: bio, type: type, unsavedImages: images, dateOfBirth: birthdayKey, latitude: 0.0, longitude: 0.0, uuid: firebaseuid)
+            profileImages = []
         } else {
             self.activityIndicator.stopAnimating()
             presentImageAlert()
