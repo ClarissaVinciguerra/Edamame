@@ -21,7 +21,7 @@ class RandoCollectionViewController: UICollectionViewController {
         messageLabel.translatesAutoresizingMaskIntoConstraints = false
         messageLabel.textColor = .whiteSmoke
         messageLabel.font = UIFont(name: "SourceSansPro-Bold", size: 48)
-        messageLabel.text = "You are one of the first\nto join edamame in your area!\n\n Make sure all notifications\nare turned on so you\ndon't miss out as our\ncommunity continues to grow."
+        messageLabel.text = "You are one of the first\nto join edamame in \(UserController.shared.currentUser?.city ?? "your area")!\n\n Make sure all notifications\nare turned on so you\ndon't miss out as our\ncommunity continues to grow."
         messageLabel.backgroundColor = .edamameGreen
         messageLabel.numberOfLines = 0
         messageLabel.textAlignment = .center
@@ -47,7 +47,7 @@ class RandoCollectionViewController: UICollectionViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        
+        hideEmptyState()
         setupViews()
         loadData()
     }
@@ -118,7 +118,6 @@ class RandoCollectionViewController: UICollectionViewController {
                         self.activityIndicator.stopAnimating()
                     } else {
                         self.hideEmptyState()
-                        self.activityIndicator.stopAnimating()
                         self.updateViews()
                     }
                     self.updateViews()
@@ -143,6 +142,7 @@ class RandoCollectionViewController: UICollectionViewController {
             self.collectionView.isHidden = false
             self.collectionView.reloadData()
             self.refresher.endRefreshing()
+            self.activityIndicator.stopAnimating()
         }
     }
     
