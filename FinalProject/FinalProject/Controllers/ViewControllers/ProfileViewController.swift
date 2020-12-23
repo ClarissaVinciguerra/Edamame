@@ -74,6 +74,8 @@ class ProfileViewController: UIViewController {
             update(currentUser)
             updateOtherUser(with: otherUser)
             
+            PushNotificationService.shared.sendPushNotificationTo(userID: otherUser.uuid, title: "\(currentUser.name) has accepted your friend request!", body: "Start a conversation.")
+            
         } else if let index = currentUser.friends.firstIndex(of: otherUser.uuid) {
             // remove from friends arrays and put other user in blocked array
             currentUser.friends.remove(at: index)
@@ -87,6 +89,9 @@ class ProfileViewController: UIViewController {
             
             updateOtherUser(with: otherUser)
             update(currentUser)
+            
+            PushNotificationService.shared.sendPushNotificationTo(userID: otherUser.uuid, title: "\(currentUser.name) wants to connect!", body: "Check out their profile under your pending requests tab.")
+            
             updateViews()
         }
     }

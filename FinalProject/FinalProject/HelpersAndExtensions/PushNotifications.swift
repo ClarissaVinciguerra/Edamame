@@ -16,7 +16,7 @@ class PushNotificationService {
     
     private init() {}
     
-    func sendPushNotificationTo(userID: String, body: String) {
+    func sendPushNotificationTo(userID: String, title: String, body: String) {
 
         UserController.shared.fetchUserBy(userID) { (result) in
             switch result {
@@ -25,7 +25,7 @@ class PushNotificationService {
                 user.badgeCount += 1
                 self.updateBadgeCount(with: user)
                 
-                self.sendPushNotificationToUser(to: pushID, title: user.name, body: body, badgeCount: user.badgeCount)
+                self.sendPushNotificationToUser(to: pushID, title: title, body: body, badgeCount: user.badgeCount)
             case .failure(let error):
                 print("Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")
             }
