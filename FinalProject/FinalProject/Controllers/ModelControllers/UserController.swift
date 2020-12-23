@@ -358,6 +358,23 @@ class UserController {
         }
     }
     
+    func updateSentOrFriendsArray (with user: User, completion: @escaping (Result<Void, UserError>) -> Void) {
+        let docRef = database.collection("users").document(user.uuid)
+
+        docRef.updateData([
+            UserStrings.sentRequestsKey : user.sentRequests,
+            UserStrings.friendsKey : user.friends
+        ]) { err in
+            if let err = err {
+                print("Error updating document: \(err)")
+                return completion(.failure(UserError.noExistingUser))
+            } else {
+                print("Document successfully updated")
+                return completion(.success(()))
+            }
+        }
+    }
+    
     // MARK: - REMOVE
     func removeFromSentRequestsOf (_ otherUserUUID: String, andPendingRequestOf currentUserUUID: String, completion: @escaping (Result<Bool, UserError>) -> Void) {
         

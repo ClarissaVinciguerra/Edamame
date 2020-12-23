@@ -68,14 +68,22 @@ class ProfileViewController: UIViewController {
         guard let otherUser = otherUser, let currentUser = UserController.shared.currentUser else { return }
         
         if currentUser.pendingRequests.contains(otherUser.uuid) {
+           // hide button so user can't keep clicking and begin loading icon
+            addAcceptRevokeButton.isEnabled = false
+            declineButton.isHidden = true
+            activityIndicator.startAnimating()
+            
             // remove pending status and place in friends array
             removeSentRequestOf(otherUser, andPendingRequestOf: currentUser)
             
             currentUser.friends.append(otherUser.uuid)
             otherUser.friends.append(currentUser.uuid)
             
+            
             update(currentUser)
             updateOtherUser(with: otherUser)
+            
+            updateViews()
             
             PushNotificationService.shared.sendPushNotificationTo(userID: otherUser.uuid, title: "\(currentUser.name) has accepted your friend request!", body: "Start a conversation.")
             
@@ -100,11 +108,10 @@ class ProfileViewController: UIViewController {
     }
     
     private func update(_ user: User) {
-        UserController.shared.updateUserBy(user) { (result) in
+        UserController.shared.updateSentOrFriendsArray (with: user) { (result) in
             switch result {
-            case .success(let user):
+            case .success(_):
                 DispatchQueue.main.async {
-                    UserController.shared.currentUser = user
                     self.updateViews()
                 }
             case .failure(let error):
@@ -256,6 +263,7 @@ class ProfileViewController: UIViewController {
             
             addAcceptRevokeButton.setTitle("Request Friend", for: .normal)
         }
+        
         activityIndicator.stopAnimating()
     }
     
