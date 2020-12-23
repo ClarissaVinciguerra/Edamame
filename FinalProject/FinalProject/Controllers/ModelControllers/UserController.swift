@@ -68,7 +68,8 @@ class UserController {
                 UserStrings.sentRequestsKey : newUser.sentRequests,
                 UserStrings.blockedArrayKey : newUser.blockedArray,
                 UserStrings.reportCountKey : newUser.reportCount,
-                UserStrings.pushIDKey : newUser.pushID ?? ""
+                UserStrings.pushIDKey : newUser.pushID ?? "",
+                UserStrings.badgeCountKey : newUser.badgeCount
                 
             ]) { error in
                 if let error = error {
@@ -297,9 +298,9 @@ class UserController {
    
         let documentReference = database.collection(userCollection).document(user.uuid)
         
-        if let pushID = UserController.shared.pushID {
-            user.pushID = pushID
-        }
+//        if let pushID = UserController.shared.pushID {
+//            user.pushID = pushID
+//        }
         
         documentReference.updateData([
             UserStrings.nameKey : "\(user.name)",
@@ -314,7 +315,8 @@ class UserController {
             UserStrings.sentRequestsKey : user.sentRequests,
             UserStrings.blockedArrayKey : user.blockedArray,
             UserStrings.reportCountKey : user.reportCount,
-            UserStrings.pushIDKey : user.pushID ?? ""
+            UserStrings.pushIDKey : user.pushID ?? "",
+            UserStrings.badgeCountKey : user.badgeCount
             
         ]) { (error) in
             if let error = error {
@@ -322,6 +324,23 @@ class UserController {
                 return completion(.failure(.firebaseError(error)))
             } else {
                 return completion(.success(user))
+            }
+        }
+    }
+    
+    func updateBadgeCount(with user: User, completion: @escaping (Result<Void, UserError>) -> Void) {
+        let docRef = database.collection("users").document(user.uuid)
+
+        docRef.updateData([
+            UserStrings.badgeCountKey : user.badgeCount,
+            UserStrings.pushIDKey : user.pushID ?? ""
+        ]) { err in
+            if let err = err {
+                print("Error updating document: \(err)")
+                return completion(.failure(UserError.noExistingUser))
+            } else {
+                print("Document successfully updated")
+                return completion(.success(()))
             }
         }
     }

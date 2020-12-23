@@ -21,17 +21,18 @@ class PushNotificationService {
         UserController.shared.fetchUserBy(userID) { (result) in
             switch result {
             case .success(let user):
-                guard let pushID = user.pushID
-                else { return }
-                self.sendMessageToUser(to: pushID, title: user.name, body: body)
+                guard let pushID = user.pushID else { return }
+                user.badgeCount += 1
+                self.updateBadgeCount(with: user)
+                
+                self.sendPushNotificationToUser(to: pushID, title: user.name, body: body, badgeCount: user.badgeCount)
             case .failure(let error):
                 print("Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")
             }
         }
-//        self.sendMessageToUser(to: userID, title: "b", body: body)
     }
     
-    private func sendMessageToUser(to token: String, title: String, body: String) {
+    private func sendPushNotificationToUser(to token: String, title: String, body: String, badgeCount: Int) {
         
         guard let url = URL(string: "https://fcm.googleapis.com/fcm/send")
         else { return }
@@ -40,7 +41,7 @@ class PushNotificationService {
                                             "notification" : [
                                                 "title" : title,
                                                 "body" : body,
-                                                "badge" : "1",
+                                                "badge" : badgeCount,
                                                 "sound" : "default",
                                                 "content-available": 1
                                             ]
@@ -59,5 +60,16 @@ class PushNotificationService {
             }
         }
         task.resume()
+    }
+    
+    private func updateBadgeCount(with user: User) {
+        UserController.shared.updateBadgeCount(with: user) { (result) in
+            switch result {
+            case .success():
+                print("User badge count updated")
+            case .failure(let error):
+                print("Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")
+            }
+        }
     }
 }

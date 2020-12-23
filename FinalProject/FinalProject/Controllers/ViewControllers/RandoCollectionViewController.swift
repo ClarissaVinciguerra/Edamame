@@ -74,7 +74,13 @@ class RandoCollectionViewController: UICollectionViewController {
             switch result {
             case .success(let user):
                 DispatchQueue.main.async {
+                    user.badgeCount = 0
+                    if let pushID = UserController.shared.pushID {
+                        user.pushID = pushID
+                    }
+                    
                     UserController.shared.currentUser = user
+                    self.updateBadgeCountAndPushID(with: user)
                     if user.reportCount >= 3 {
                         self.presentAccountReportedAlert(user)
                     }
@@ -84,6 +90,17 @@ class RandoCollectionViewController: UICollectionViewController {
                 print("User does not yet exist in database")
                 self.tabBarController?.selectedIndex = 3
 
+            }
+        }
+    }
+    
+    private func updateBadgeCountAndPushID(with user: User) {
+        UserController.shared.updateUserBy(user) { (result) in
+            switch result {
+            case .success(_):
+                print("PushID and badge count updated successfully.")
+            case .failure(let error):
+                print("Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")
             }
         }
     }
