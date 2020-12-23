@@ -25,6 +25,7 @@ struct UserStrings {
     static let blockedArrayKey = "blocked"
     static let reportCountKey = "reportCount"
     static let pushIDKey = "pushID"
+    static let badgeCountKey = "badgeCount"
 }
 
 struct Image {
@@ -50,8 +51,9 @@ class User {
     var blockedArray: [String]
     var reportCount: Int
     var pushID: String?
+    var badgeCount: Int
     
-    init(name: String, dateOfBirth: Date, bio: String, type: String, city: String, cityRef: String, latitude: Double, longitude: Double, uuid: String, images: [Image] = [], friends: [String] = [], pendingRequests: [String] = [], sentRequests: [String] = [], blockedArray: [String] = [], reportCount: Int = 0, pushID: String) {
+    init(name: String, dateOfBirth: Date, bio: String, type: String, city: String, cityRef: String, latitude: Double, longitude: Double, uuid: String, images: [Image] = [], friends: [String] = [], pendingRequests: [String] = [], sentRequests: [String] = [], blockedArray: [String] = [], reportCount: Int = 0, pushID: String, badgeCount: Int = 0) {
         self.name = name
         self.dateOfBirth = dateOfBirth
         self.bio = bio
@@ -68,6 +70,7 @@ class User {
         self.reportCount = reportCount
         self.images = images
         self.pushID = pushID
+        self.badgeCount = badgeCount
     }
     
     convenience init?(document: DocumentSnapshot) {
@@ -84,10 +87,11 @@ class User {
               let sentRequests = document[UserStrings.sentRequestsKey] as? [String],
               let blockedArray = document[UserStrings.blockedArrayKey] as? [String],
               let reportCount = document[UserStrings.reportCountKey] as? Int,
-              let pushID = document[UserStrings.pushIDKey] as? String else { return nil }
+              let pushID = document[UserStrings.pushIDKey] as? String,
+              let badgeCount = document[UserStrings.badgeCountKey] as? Int else { return nil }
         let dateOfBirth = Date(timeIntervalSince1970: timeInterval)
         
-        self.init(name: name, dateOfBirth: dateOfBirth, bio: bio, type: type, city: city, cityRef: cityRef, latitude: latitude, longitude: longitude, uuid: document.documentID, images: [], friends: friends, pendingRequests: pendingRequests, sentRequests: sentRequests, blockedArray: blockedArray, reportCount: reportCount, pushID: pushID)
+        self.init(name: name, dateOfBirth: dateOfBirth, bio: bio, type: type, city: city, cityRef: cityRef, latitude: latitude, longitude: longitude, uuid: document.documentID, images: [], friends: friends, pendingRequests: pendingRequests, sentRequests: sentRequests, blockedArray: blockedArray, reportCount: reportCount, pushID: pushID, badgeCount: badgeCount)
     }
 }
 

@@ -148,7 +148,7 @@ extension ChatViewController: InputBarAccessoryViewDelegate {
             // create conversation in Database
             MessageController.shared.createNewConversation(with: otherUserUid, otherUserName: self.title ?? "User", firstMessage: message) { [weak self] (success) in
                 if success {
-                    PushNotificationService.shared.sendPushNotificationTo(userID: self!.otherUserUid, body: text)
+                    PushNotificationService.shared.sendPushNotificationTo(userID: self!.otherUserUid, title: UserController.shared.currentUser?.name ?? "", body: text)
                     print("message sent")
                     self?.isNewConversation = false
                     let newConversationID = "conversation_\(message.messageId)"
@@ -164,7 +164,7 @@ extension ChatViewController: InputBarAccessoryViewDelegate {
             // append to existing conversation data
             MessageController.shared.sendMessage(to: conversationID, otherUserUid: otherUserUid, newMessage: message, name: name) { (success) in
                 if success {
-                    PushNotificationService.shared.sendPushNotificationTo(userID: self.otherUserUid, body: text)
+                    PushNotificationService.shared.sendPushNotificationTo(userID: self.otherUserUid, title: UserController.shared.currentUser?.name ?? "", body: text)
                     print("message sent")
                 } else {
                     print("failed to send")

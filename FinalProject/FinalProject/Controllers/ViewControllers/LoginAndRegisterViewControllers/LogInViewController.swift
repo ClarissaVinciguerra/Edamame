@@ -110,10 +110,6 @@ class LogInViewController: UIViewController {
             case .success(let user):
                 DispatchQueue.main.async {
                     UserController.shared.currentUser = user
-                    //self.profileImages = user.images
-                    //self.setupViews()
-                    //self.updateViews()
-                    //self.disableCameraBarButton()
                 }
             case .failure(_):
                 print("User does not yet exist in database")
