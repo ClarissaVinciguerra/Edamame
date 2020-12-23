@@ -46,6 +46,7 @@ class LogInViewController: UIViewController {
               !email.isEmpty,
               !password.isEmpty,
               password.count >= 6 else {
+            alertUserLoginError()
             return
         }
         
@@ -63,6 +64,7 @@ class LogInViewController: UIViewController {
             
             guard let result = authResult, error == nil else {
                 print("Failed to log in user with email: \(email)")
+                self?.alertIncorrectPasswordOrEmail()
                 return
             }
             

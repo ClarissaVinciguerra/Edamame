@@ -18,6 +18,14 @@ extension LogInViewController {
         loginError.addAction(okAction)
         present(loginError, animated: true)
     }
+    
+    func alertIncorrectPasswordOrEmail() {
+        let loginError = UIAlertController(title: "Error Logging In", message: "Email or password is incorrect.", preferredStyle: .alert)
+        let okAction = UIAlertAction(title: "Ok", style: .cancel, handler: nil)
+        
+        loginError.addAction(okAction)
+        present(loginError, animated: true)
+    }
 }
 
 // MARK: - SignUpViewController
@@ -36,6 +44,8 @@ extension SignUpViewController {
         signUpError.addAction(okAction)
         present(signUpError, animated: true)
     }
+    
+    
 }
 
 // MARK: - EditProfileViewController
