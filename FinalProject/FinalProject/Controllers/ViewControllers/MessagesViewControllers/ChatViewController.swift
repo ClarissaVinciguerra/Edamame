@@ -83,7 +83,7 @@ class ChatViewController: MessagesViewController {
                     self?.messagesCollectionView.reloadDataAndKeepOffset()
                     
                     if shouldScrollToBottom {
-                        self?.messagesCollectionView.scrollToBottom()
+                        self?.messagesCollectionView.scrollToLastItem()
                     }
                 }
             case .failure(let error):
