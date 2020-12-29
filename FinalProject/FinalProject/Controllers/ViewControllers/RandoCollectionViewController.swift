@@ -33,7 +33,6 @@ class RandoCollectionViewController: UICollectionViewController {
     // MARK: - Outlets
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     
-    
     // MARK: - Lifecycle Functions
     override func viewDidLoad() {
         super.viewDidLoad()

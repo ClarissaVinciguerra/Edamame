@@ -56,7 +56,7 @@ class EditProfileViewController: UIViewController, UITextViewDelegate {
     
     // MARK: - Actions
     @IBAction private func textFieldDidChange(_ sender: Any) {
-        textViewChanged()
+        textFieldChanged()
     }
     
     func textViewDidBeginEditing(_ textView: UITextView) {
@@ -100,18 +100,17 @@ class EditProfileViewController: UIViewController, UITextViewDelegate {
     }
     // CHECK IF THIS IS NECESSARY BEFORE SUBMISSION
     private func fetchUser(with firebaseUID: String) {
-        // this wont be necessary when hte fetchUser Fucntion is moved
+        // this wont be necessary when the fetchUser function is moved
         profileImages = []
         
         UserController.shared.fetchUserBy(firebaseUID) { (result) in
             switch result {
             case .success(let user):
                 DispatchQueue.main.async {
-                    
+                    // if success - the user needs to be set to the current user and taken to the randoVC (index[0])
                     UserController.shared.currentUser = user
-             
                     self.profileImages = user.images
-                    
+                    // these can be called in VDL of this VC
                     self.setupViews()
                     self.updateViews()
                     self.disableCameraBarButton()
@@ -145,7 +144,6 @@ class EditProfileViewController: UIViewController, UITextViewDelegate {
                     self.saveChangesButton.setTitle("Saved", for: .normal)
                     self.saveChangesButton.isEnabled = false
                     self.activityIndicator.stopAnimating()
-                    self.userProfileSavedAlert(title: "Your profile has been updated!", message: "")
                 case .failure(let error):
                     print("Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")
                     self.activityIndicator.stopAnimating()
@@ -174,7 +172,6 @@ class EditProfileViewController: UIViewController, UITextViewDelegate {
         
         if profileImages.count > 1 {
             addCityAlertToCreateUser(name: name, bio: bio, type: type, unsavedImages: images, dateOfBirth: birthdayKey, latitude: 0.0, longitude: 0.0, uuid: firebaseuid)
-            profileImages = []
         } else {
             self.activityIndicator.stopAnimating()
             presentImageAlert()
@@ -184,7 +181,8 @@ class EditProfileViewController: UIViewController, UITextViewDelegate {
     func updateViews() {
         if let currentUser = UserController.shared.currentUser {
             
-            typeOfVeganTextField.placeholder = currentUser.type
+//            typeOfVeganTextField.placeholder = currentUser.type
+            typeOfVeganTextField.attributedPlaceholder = NSAttributedString(string: currentUser.type, attributes: [NSAttributedString.Key.foregroundColor: UIColor.spaceBlack])
             bioTextView.text = currentUser.bio
             saveChangesButton.setTitle("Save Changes", for: .normal)
             saveChangesButton.isEnabled = true
@@ -237,11 +235,12 @@ class EditProfileViewController: UIViewController, UITextViewDelegate {
         view.addGestureRecognizer(tapGesture)
     }
     
-    func textViewChanged () {
-        guard let currentUser = UserController.shared.currentUser else { return }
+    func textFieldChanged () {
+        guard let currentUser = UserController.shared.currentUser, let typeOfVegan = typeOfVeganTextField.text else { return }
         
-        typeOfVeganTextField.placeholder = ""
-        currentUser.type = ""
+        typeOfVeganTextField.attributedPlaceholder = NSAttributedString(string: "", attributes: [NSAttributedString.Key.foregroundColor: UIColor.spaceBlack])
+        
+        currentUser.type = typeOfVegan
         saveChangesButton.setTitle("Save Changes", for: .normal)
         saveChangesButton.isEnabled = true
     }
