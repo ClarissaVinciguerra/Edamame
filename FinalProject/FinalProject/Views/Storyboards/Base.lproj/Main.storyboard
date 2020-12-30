@@ -163,14 +163,14 @@
                                     </collectionViewCell>
                                 </cells>
                             </collectionView>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="1uQ-Xd-5DU">
-                                <rect key="frame" x="8" y="502" width="398" height="51.5"/>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="1uQ-Xd-5DU">
+                                <rect key="frame" x="8" y="502" width="398" height="63.5"/>
                                 <subviews>
-                                    <stackView opaque="NO" contentMode="scaleToFill" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="BI7-2c-dyv">
+                                    <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="BI7-2c-dyv">
                                         <rect key="frame" x="0.0" y="0.0" width="398" height="24.5"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="Name and Age Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XxT-9J-kKh">
-                                                <rect key="frame" x="0.0" y="0.0" width="269" height="24.5"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="277" height="24.5"/>
                                                 <fontDescription key="fontDescription" name="SourceSansPro-Bold" family="Source Sans Pro" pointSize="21"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
@@ -184,7 +184,7 @@
                                         </subviews>
                                     </stackView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Type of Vegan" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DG7-PT-3r9">
-                                        <rect key="frame" x="0.0" y="32.5" width="100.5" height="19"/>
+                                        <rect key="frame" x="0.0" y="44.5" width="100.5" height="19"/>
                                         <fontDescription key="fontDescription" name="SourceSansPro-Regular" family="Source Sans Pro" pointSize="16"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
@@ -246,7 +246,7 @@
                                 </constraints>
                             </stackView>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="q8z-9N-4fS">
-                                <rect key="frame" x="8" y="557.5" width="398" height="85.5"/>
+                                <rect key="frame" x="8" y="569.5" width="398" height="105.5"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <color key="textColor" systemColor="labelColor"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -264,7 +264,7 @@
                             <constraint firstItem="q8z-9N-4fS" firstAttribute="trailing" secondItem="1uQ-Xd-5DU" secondAttribute="trailing" id="DQQ-pG-3gc"/>
                             <constraint firstItem="5Wz-5M-yJK" firstAttribute="top" secondItem="Db2-hX-w85" secondAttribute="top" id="Guu-Tb-UN4"/>
                             <constraint firstItem="2Hf-eg-1dv" firstAttribute="centerY" secondItem="Db2-hX-w85" secondAttribute="centerY" id="Lks-Wd-faC"/>
-                            <constraint firstItem="q8z-9N-4fS" firstAttribute="height" secondItem="DG7-PT-3r9" secondAttribute="height" multiplier="4.4878" id="RAf-T2-cFg"/>
+                            <constraint firstItem="q8z-9N-4fS" firstAttribute="height" secondItem="DG7-PT-3r9" secondAttribute="height" multiplier="4.4878" constant="20" id="RAf-T2-cFg"/>
                             <constraint firstItem="q8z-9N-4fS" firstAttribute="top" secondItem="1uQ-Xd-5DU" secondAttribute="bottom" constant="4" id="WhM-nj-pi7"/>
                             <constraint firstItem="i4Q-eL-7YM" firstAttribute="centerX" secondItem="Db2-hX-w85" secondAttribute="centerX" id="a9a-Hr-kRn"/>
                             <constraint firstItem="2Hf-eg-1dv" firstAttribute="centerX" secondItem="Db2-hX-w85" secondAttribute="centerX" id="fC9-6l-r3s"/>
@@ -419,12 +419,21 @@
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         </activityIndicatorView>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="pendingRequest" id="dOt-Hf-db2">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="pendingRequest" textLabel="ScN-ma-7fO" style="IBUITableViewCellStyleDefault" id="dOt-Hf-db2">
                                 <rect key="frame" x="0.0" y="28" width="414" height="43.5"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="dOt-Hf-db2" id="p2R-3g-3Cr">
                                     <rect key="frame" x="0.0" y="0.0" width="414" height="43.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="ScN-ma-7fO">
+                                            <rect key="frame" x="20" y="0.0" width="374" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
                                 </tableViewCellContentView>
                                 <connections>
                                     <segue destination="DTI-oU-dNp" kind="show" identifier="toPendingProfileVC" id="AZf-ve-JTA"/>
