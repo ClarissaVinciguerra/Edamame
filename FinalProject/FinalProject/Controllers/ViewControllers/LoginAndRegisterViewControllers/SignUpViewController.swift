@@ -95,7 +95,6 @@ class SignUpViewController: UIViewController {
             
             (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeRootViewController(mainTabBarController)
             //self.navigationController?.dismiss(animated: true, completion: nil)
-            
         }
     }
     
@@ -129,7 +128,7 @@ class SignUpViewController: UIViewController {
         passwordTextField.autocorrectionType = .no
         passwordTextField.returnKeyType = .continue
         passwordTextField.layer.cornerRadius = 12
-        passwordTextField.isSecureTextEntry = false
+        passwordTextField.isSecureTextEntry = true
     }
     
     func setupConfirmPasswordTextField(){
@@ -137,7 +136,7 @@ class SignUpViewController: UIViewController {
         confirmPasswordTextField.autocorrectionType = .no
         confirmPasswordTextField.returnKeyType = .done
         confirmPasswordTextField.layer.cornerRadius = 12
-        confirmPasswordTextField.isSecureTextEntry = false
+        confirmPasswordTextField.isSecureTextEntry = true
     }
     
     func setupBirthdayDatePicker(){

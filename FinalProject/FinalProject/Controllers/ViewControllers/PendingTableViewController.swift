@@ -10,6 +10,18 @@ import UIKit
 class PendingTableViewController: UITableViewController {
     // MARK: - Properties
     var refresher: UIRefreshControl = UIRefreshControl()
+    lazy var emptyMessage: UILabel = {
+        let messageLabel = UILabel()
+        messageLabel.translatesAutoresizingMaskIntoConstraints = false
+        messageLabel.textColor = .spaceBlack
+        messageLabel.font = UIFont(name: "SourceSansPro-Bold", size: 60)
+        messageLabel.text = "You don't have any pending requests right now \nGet out there and make some new friends."
+        messageLabel.numberOfLines = 0
+        messageLabel.textAlignment = .center
+        messageLabel.sizeToFit()
+
+        return messageLabel
+    }()
     
     // MARK: - Outlets
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
@@ -22,6 +34,7 @@ class PendingTableViewController: UITableViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
+        hideEmptyState()
         setupViews()
         loadData()
     }
@@ -42,14 +55,30 @@ class PendingTableViewController: UITableViewController {
             case .success(let pendingRequests):
                 DispatchQueue.main.async {
                     UserController.shared.pendingRequests = pendingRequests
-                    self.tableView.reloadData()
-                    self.activityIndicator.stopAnimating()
+                    if pendingRequests.isEmpty {
+                        self.showEmptyState()
+                        self.activityIndicator.stopAnimating()
+                    } else {
+                        self.hideEmptyState()
+                        self.tableView.reloadData()
+                        self.activityIndicator.stopAnimating()
+                    }
                 }
             case .failure(let error):
                 print("Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")
                 self.activityIndicator.stopAnimating()
             }
         }
+    }
+    
+    func showEmptyState() {
+        tableView.addSubview(emptyMessage)
+        emptyMessage.centerXAnchor.constraint(equalTo: tableView.centerXAnchor).isActive = true
+        emptyMessage.centerYAnchor.constraint(equalTo: tableView.centerYAnchor).isActive = true
+    }
+    
+    func hideEmptyState() {
+        emptyMessage.removeFromSuperview()
     }
     
     // MARK: - Table view data source
