@@ -138,7 +138,7 @@ class EditProfileViewController: UIViewController, UITextViewDelegate {
         currentUser.type = type
         
         if profileImages.count > 1 {
-            UserController.shared.updateUserBy(currentUser, updatedImages: profileImages) { (result) in
+            UserController.shared.updateUserInfoBy(currentUser, updatedImages: profileImages) { (result) in
                 switch result {
                 case .success(_):
                     self.saveChangesButton.setTitle("Saved", for: .normal)

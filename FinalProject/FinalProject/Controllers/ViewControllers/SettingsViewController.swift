@@ -70,7 +70,7 @@ class SettingsViewController: UIViewController {
         currentUser.city = text
         currentUser.cityRef = text.lowercased().replacingOccurrences(of: " ", with: "")
         
-        UserController.shared.updateUserBy(currentUser) { (result) in
+        UserController.shared.updateCity(with: currentUser) { (result) in
             switch result {
             case .success(_):
                 DispatchQueue.main.async {

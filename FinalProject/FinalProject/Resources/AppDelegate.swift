@@ -104,10 +104,10 @@ extension AppDelegate : MessagingDelegate {
     private func updatePushID(fcmToken: String) {
         if let currentUser = UserController.shared.currentUser {
             currentUser.pushID = fcmToken
-            UserController.shared.updateUserBy(currentUser) { (result) in
+            UserController.shared.updatePushID (with: currentUser) { (result) in
                 switch result {
-                case .success(let user):
-                    print("User successfully updated with new pushID: \(String(describing: user.pushID))")
+                case .success(_):
+                    print("User successfully updated with new pushID: \(fcmToken)")
                 case .failure(let error):
                     print("Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")
                 }

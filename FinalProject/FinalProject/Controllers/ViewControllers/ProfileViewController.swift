@@ -79,10 +79,9 @@ class ProfileViewController: UIViewController {
             currentUser.friends.append(otherUser.uuid)
             otherUser.friends.append(currentUser.uuid)
             
-            
-            update(currentUser)
-            updateOtherUser(with: otherUser)
-            
+            // add to respective friends arrays
+            addToFriendsArray(of: currentUser, and: otherUser)
+           
             updateViews()
             
             PushNotificationService.shared.sendPushNotificationTo(userID: otherUser.uuid, title: "\(currentUser.name) has accepted your friend request!", body: "Start a conversation.")
@@ -98,8 +97,8 @@ class ProfileViewController: UIViewController {
             currentUser.sentRequests.append(otherUser.uuid)
             otherUser.pendingRequests.append(currentUser.uuid)
             
-            updateOtherUser(with: otherUser)
-            update(currentUser)
+            updateOtherUsersPendingArray(with: otherUser)
+            updateSentArray(of: currentUser)
             
             PushNotificationService.shared.sendPushNotificationTo(userID: otherUser.uuid, title: "\(currentUser.name) wants to connect!", body: "Check out their profile under your pending requests tab.")
             
@@ -107,8 +106,19 @@ class ProfileViewController: UIViewController {
         }
     }
     
-    private func update(_ user: User) {
-        UserController.shared.updateSentOrFriendsArray (with: user) { (result) in
+    private func addToFriendsArray(of user: User, and otherUser: User) {
+        UserController.shared.updateFriendsArrays(with: user, and: otherUser) { (result) in
+            switch result {
+            case .success():
+                print("Friends arrays of both users successfully updated")
+            case .failure(let error):
+                print("Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")
+            }
+        }
+    }
+    
+    private func updateSentArray(of user: User) {
+        UserController.shared.updateSentArray (with: user) { (result) in
             switch result {
             case .success(_):
                 DispatchQueue.main.async {
@@ -121,9 +131,9 @@ class ProfileViewController: UIViewController {
     }
     
     // Called when friend status changes
-    private func updateOtherUser(with otherUser: User) {
+    private func updateOtherUsersPendingArray(with otherUser: User) {
         
-        UserController.shared.updatePendingOrFriendsArray(with: otherUser) { (result) in
+        UserController.shared.updatePendingArray(with: otherUser) { (result) in
             switch result {
             case .success(_):
                 DispatchQueue.main.async {
@@ -189,7 +199,7 @@ class ProfileViewController: UIViewController {
         }
         
         currentUser.blockedArray.append(otherUser.uuid)
-        UserController.shared.updateUserBy(currentUser) { (result) in
+        UserController.shared.updateBlockedArray(with: currentUser) { (result) in
             switch result {
             case .success(_):
                 DispatchQueue.main.async {
@@ -207,7 +217,7 @@ class ProfileViewController: UIViewController {
         
         otherUser.reportCount += 1
         
-        update(otherUser)
+        updateSentArray(of: otherUser)
         blockUser()
     }
     
