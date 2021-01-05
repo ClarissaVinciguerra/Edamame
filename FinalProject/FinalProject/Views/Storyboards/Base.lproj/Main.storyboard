@@ -195,13 +195,13 @@
                                 </constraints>
                             </stackView>
                             <stackView opaque="NO" contentMode="scaleToFill" spacing="24" translatesAutoresizingMaskIntoConstraints="NO" id="i4Q-eL-7YM">
-                                <rect key="frame" x="65" y="748" width="284" height="30"/>
+                                <rect key="frame" x="65" y="710" width="284" height="48"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="uQQ-0L-K2h">
-                                        <rect key="frame" x="0.0" y="0.0" width="196" height="30"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="196" height="48"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="249" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="B5n-sH-lhE">
-                                                <rect key="frame" x="0.0" y="0.0" width="94" height="30"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="94" height="48"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="94" id="HfQ-gV-Eq7"/>
                                                 </constraints>
@@ -212,7 +212,7 @@
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="bN9-HO-54v">
-                                                <rect key="frame" x="102" y="0.0" width="94" height="30"/>
+                                                <rect key="frame" x="102" y="0.0" width="94" height="48"/>
                                                 <fontDescription key="fontDescription" name="SourceSansPro-Regular" family="Source Sans Pro" pointSize="14"/>
                                                 <state key="normal" title="Decline"/>
                                                 <connections>
@@ -225,10 +225,10 @@
                                         </constraints>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="W4d-Nr-brs">
-                                        <rect key="frame" x="220" y="0.0" width="64" height="30"/>
+                                        <rect key="frame" x="220" y="0.0" width="64" height="48"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="characterWrap" translatesAutoresizingMaskIntoConstraints="NO" id="sye-md-uDW">
-                                                <rect key="frame" x="0.0" y="0.0" width="64" height="30"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="64" height="48"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="64" id="xeA-DN-9Q5"/>
                                                 </constraints>
@@ -257,6 +257,7 @@
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="5Wz-5M-yJK" firstAttribute="leading" secondItem="Db2-hX-w85" secondAttribute="leading" id="6K7-ry-uCA"/>
+                            <constraint firstItem="uQQ-0L-K2h" firstAttribute="top" secondItem="q8z-9N-4fS" secondAttribute="bottom" constant="25" id="95X-mC-iCC"/>
                             <constraint firstItem="Db2-hX-w85" firstAttribute="trailing" secondItem="1uQ-Xd-5DU" secondAttribute="trailing" constant="8" id="CMN-ON-Y4r"/>
                             <constraint firstItem="q8z-9N-4fS" firstAttribute="trailing" secondItem="1uQ-Xd-5DU" secondAttribute="trailing" id="DQQ-pG-3gc"/>
                             <constraint firstItem="5Wz-5M-yJK" firstAttribute="top" secondItem="Db2-hX-w85" secondAttribute="top" id="Guu-Tb-UN4"/>
@@ -268,7 +269,7 @@
                             <constraint firstItem="1uQ-Xd-5DU" firstAttribute="top" secondItem="5Wz-5M-yJK" secondAttribute="bottom" id="fmB-qT-iNr"/>
                             <constraint firstItem="Db2-hX-w85" firstAttribute="trailing" secondItem="5Wz-5M-yJK" secondAttribute="trailing" id="hOg-9Z-rQL"/>
                             <constraint firstItem="1uQ-Xd-5DU" firstAttribute="leading" secondItem="Db2-hX-w85" secondAttribute="leading" constant="8" id="jU9-f6-HmK"/>
-                            <constraint firstItem="Db2-hX-w85" firstAttribute="bottom" secondItem="i4Q-eL-7YM" secondAttribute="bottom" constant="35" id="jZ7-zW-A2T"/>
+                            <constraint firstItem="Db2-hX-w85" firstAttribute="bottom" secondItem="i4Q-eL-7YM" secondAttribute="bottom" constant="55" id="jZ7-zW-A2T"/>
                             <constraint firstItem="q8z-9N-4fS" firstAttribute="centerX" secondItem="1uQ-Xd-5DU" secondAttribute="centerX" id="qa0-sO-PHy"/>
                             <constraint firstItem="q8z-9N-4fS" firstAttribute="leading" secondItem="1uQ-Xd-5DU" secondAttribute="leading" id="wuj-2E-nho"/>
                         </constraints>
