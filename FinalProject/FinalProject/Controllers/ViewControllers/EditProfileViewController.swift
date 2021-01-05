@@ -20,6 +20,8 @@ class EditProfileViewController: UIViewController, UITextViewDelegate {
     @IBOutlet weak var infoButton: UIButton!
     @IBOutlet weak var settingsButton: UIButton!
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
+    @IBOutlet weak var scrollViewBottomConstraint: NSLayoutConstraint!
+    @IBOutlet weak var scrollView: UIScrollView!
     
     //MARK: - Properties
     var viewsLaidOut = false
@@ -31,6 +33,7 @@ class EditProfileViewController: UIViewController, UITextViewDelegate {
         activityIndicator.startAnimating()
         bioTextView.delegate = self
         updateViews()
+        addObserver()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -54,6 +57,11 @@ class EditProfileViewController: UIViewController, UITextViewDelegate {
         }
     }
     
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+        
+    }
+   
     // MARK: - Actions
     @IBAction private func textFieldDidChange(_ sender: Any) {
         textFieldChanged()
@@ -176,6 +184,24 @@ class EditProfileViewController: UIViewController, UITextViewDelegate {
             self.activityIndicator.stopAnimating()
             presentImageAlert()
         }
+    }
+    
+    private func addObserver() {
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillAppear(notification:)), name: UIResponder.keyboardWillShowNotification, object: nil)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(notification:)), name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
+    
+    @objc func keyboardWillAppear(notification: Notification) {
+       
+        if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
+            scrollView.contentOffset = CGPoint(x: 0, y: keyboardSize.height)
+        }
+    }
+    
+    @objc func keyboardWillHide(notification: Notification) {
+       
+        scrollView.contentOffset = CGPoint(x: 0, y: scrollView.contentSize.height - view.frame.height)
     }
     
     func updateViews() {
