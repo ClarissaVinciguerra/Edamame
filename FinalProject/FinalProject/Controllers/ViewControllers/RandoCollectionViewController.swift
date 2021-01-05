@@ -39,8 +39,8 @@ class RandoCollectionViewController: UICollectionViewController {
         activityIndicator.startAnimating()
         locationManager.delegate = self
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
-        
         retrieveCurrentLocation()
+        
         guard let currentUid = UserDefaults.standard.value(forKey: LogInStrings.firebaseUidKey) as? String else { return }
         fetchUser(with: currentUid)
     }
