@@ -382,11 +382,9 @@ class UserController {
         }
     }
     
-<<<<<<< HEAD
+
     func updateSentArray (with user: User, completion: @escaping (Result<Void, UserError>) -> Void) {
-=======
-    func updateSentOrFriendsArray (with user: User, completion: @escaping (Result<User, UserError>) -> Void) {
->>>>>>> a702740a1a64daefe9757f3b6827dd04bb940c77
+
         let docRef = database.collection("users").document(user.uuid)
 
         docRef.updateData([
@@ -442,12 +440,10 @@ class UserController {
                 return completion(.failure(UserError.noExistingUser))
             } else {
                 print("Document successfully updated")
-<<<<<<< HEAD
+
                 self.currentUser = user
                 return completion(.success(()))
-=======
-                return completion(.success(user))
->>>>>>> a702740a1a64daefe9757f3b6827dd04bb940c77
+
             }
         }
     }

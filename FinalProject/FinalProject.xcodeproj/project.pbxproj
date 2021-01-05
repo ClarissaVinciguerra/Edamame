@@ -681,28 +681,22 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = FinalProject/FinalProject.entitlements;
-<<<<<<< HEAD
-				CODE_SIGN_IDENTITY = "Apple Development";
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = AUMR9FHDU3;
-=======
+
 
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = NZ84G65WL7;
 
->>>>>>> a702740a1a64daefe9757f3b6827dd04bb940c77
+
 				INFOPLIST_FILE = FinalProject/Resources/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-<<<<<<< HEAD
-				PRODUCT_BUNDLE_IDENTIFIER = com.ClarissaVinciguerra.dvmtn.FinalProject.CV;
-=======
+
 
 				PRODUCT_BUNDLE_IDENTIFIER = com.ClarissaVinciguerra.dvmtn.FinalProject;
->>>>>>> a702740a1a64daefe9757f3b6827dd04bb940c77
+
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
@@ -717,29 +711,23 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = FinalProject/FinalProject.entitlements;
-<<<<<<< HEAD
-				CODE_SIGN_IDENTITY = "Apple Development";
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = AUMR9FHDU3;
-=======
+
 
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = NZ84G65WL7;
 
->>>>>>> a702740a1a64daefe9757f3b6827dd04bb940c77
+
 				INFOPLIST_FILE = FinalProject/Resources/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-<<<<<<< HEAD
-				PRODUCT_BUNDLE_IDENTIFIER = com.ClarissaVinciguerra.dvmtn.FinalProject.CV;
-=======
+
 
 				PRODUCT_BUNDLE_IDENTIFIER = com.ClarissaVinciguerra.dvmtn.FinalProject;
 
->>>>>>> a702740a1a64daefe9757f3b6827dd04bb940c77
+
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
