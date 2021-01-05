@@ -11,6 +11,18 @@ class FriendsTableViewController: UITableViewController {
     
     // MARK: - Properties
     var refresher: UIRefreshControl = UIRefreshControl()
+    lazy var emptyMessage: UILabel = {
+        let messageLabel = UILabel()
+        messageLabel.translatesAutoresizingMaskIntoConstraints = false
+        messageLabel.textColor = .spaceBlack
+        messageLabel.font = UIFont(name: "SourceSansPro-Bold", size: 60)
+        messageLabel.text = "You haven't made any new friends. \nGet out there and meet other veegans!"
+        messageLabel.numberOfLines = 0
+        messageLabel.textAlignment = .center
+        messageLabel.sizeToFit()
+
+        return messageLabel
+    }()
     
     // MARK: - Outlets
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
@@ -23,6 +35,7 @@ class FriendsTableViewController: UITableViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
+        hideEmptyState()
         setupViews()
         loadData()
     }
@@ -43,14 +56,30 @@ class FriendsTableViewController: UITableViewController {
             case .success(let friends):
                 DispatchQueue.main.async {
                     UserController.shared.friends = friends
-                    self.tableView.reloadData()
-                    self.activityIndicator.stopAnimating()
+                    if friends.isEmpty {
+                        self.showEmptyState()
+                        self.activityIndicator.stopAnimating()
+                    }else {
+                        self.hideEmptyState()
+                        self.tableView.reloadData()
+                        self.activityIndicator.stopAnimating()
+                    }
                 }
             case .failure(let error):
                 print("Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")
                 self.activityIndicator.stopAnimating()
             }
         }
+    }
+    
+    func showEmptyState() {
+        tableView.addSubview(emptyMessage)
+        emptyMessage.centerXAnchor.constraint(equalTo: tableView.centerXAnchor).isActive = true
+        emptyMessage.centerYAnchor.constraint(equalTo: tableView.centerYAnchor).isActive = true
+    }
+    
+    func hideEmptyState() {
+        emptyMessage.removeFromSuperview()
     }
     
     func openConversation(_ model: Conversation) {
