@@ -97,7 +97,7 @@ class ProfileViewController: UIViewController {
             currentUser.sentRequests.append(otherUser.uuid)
             otherUser.pendingRequests.append(currentUser.uuid)
             
-            updateOtherUsersPendingArray(with: otherUser)
+            updatePendingArray(of: otherUser)
             updateSentArray(of: currentUser)
             
             PushNotificationService.shared.sendPushNotificationTo(userID: otherUser.uuid, title: "\(currentUser.name) wants to connect!", body: "Check out their profile under your pending requests tab.")
@@ -131,7 +131,7 @@ class ProfileViewController: UIViewController {
     }
     
     // Called when friend status changes
-    private func updateOtherUsersPendingArray(with otherUser: User) {
+    private func updatePendingArray(of otherUser: User) {
         
         UserController.shared.updatePendingArray(with: otherUser) { (result) in
             switch result {
