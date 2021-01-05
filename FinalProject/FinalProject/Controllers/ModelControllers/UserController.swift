@@ -358,7 +358,7 @@ class UserController {
         }
     }
     
-    func updateSentOrFriendsArray (with user: User, completion: @escaping (Result<Void, UserError>) -> Void) {
+    func updateSentOrFriendsArray (with user: User, completion: @escaping (Result<User, UserError>) -> Void) {
         let docRef = database.collection("users").document(user.uuid)
 
         docRef.updateData([
@@ -370,7 +370,7 @@ class UserController {
                 return completion(.failure(UserError.noExistingUser))
             } else {
                 print("Document successfully updated")
-                return completion(.success(()))
+                return completion(.success(user))
             }
         }
     }
@@ -577,7 +577,7 @@ class UserController {
 //    func deleteCurrentUserFromAuth(with uuid: String, completion: @escaping (Result<Void, UserError>) -> Void) {
 //
 //        let user = Auth.auth().currentUser
-//        
+//
 //        user?.delete { error in
 //            if let error = error {
 //                print("Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")
