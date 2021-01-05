@@ -304,7 +304,7 @@ class UserController {
             UserStrings.typeKey : user.type,
             UserStrings.cityKey : user.city,
             UserStrings.cityRefKey : user.cityRef,
-            UserStrings.pushIDKey : user.pushID ?? "",
+            UserStrings.pushIDKey : user.pushID ?? ""
             
         ]) { (error) in
             if let error = error {
@@ -384,11 +384,10 @@ class UserController {
     
 
     func updateSentArray (with user: User, completion: @escaping (Result<Void, UserError>) -> Void) {
-
         let docRef = database.collection("users").document(user.uuid)
 
         docRef.updateData([
-            UserStrings.sentRequestsKey : user.sentRequests,
+            UserStrings.sentRequestsKey : user.sentRequests
         ]) { err in
             if let err = err {
                 print("Error updating document: \(err)")
