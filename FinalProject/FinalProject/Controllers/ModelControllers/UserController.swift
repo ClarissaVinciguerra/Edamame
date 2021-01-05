@@ -255,7 +255,7 @@ class UserController {
     }
     
     // MARK: - UPDATE
-    func updateUserBy(_ user: User, updatedImages: [Image] = [], completion: @escaping (Result<User, UserError>) -> Void) {
+    func updateUserInfoBy(_ user: User, updatedImages: [Image] = [], completion: @escaping (Result<User, UserError>) -> Void) {
         
         // protects against functions outside of the editProfileViewController from deleting images whilst updating for reasons such as adding a user to a blocked array or updating a friend status
         if !updatedImages.isEmpty {
@@ -304,15 +304,7 @@ class UserController {
             UserStrings.typeKey : user.type,
             UserStrings.cityKey : user.city,
             UserStrings.cityRefKey : user.cityRef,
-            UserStrings.latitudeKey : user.latitude,
-            UserStrings.longitudeKey : user.longitude,
-            UserStrings.friendsKey : user.friends,
-            UserStrings.pendingRequestsKey : user.pendingRequests,
-            UserStrings.sentRequestsKey : user.sentRequests,
-            UserStrings.blockedArrayKey : user.blockedArray,
-            UserStrings.reportCountKey : user.reportCount,
             UserStrings.pushIDKey : user.pushID ?? "",
-            UserStrings.badgeCountKey : user.badgeCount
             
         ]) { (error) in
             if let error = error {
@@ -324,7 +316,7 @@ class UserController {
         }
     }
     
-    func updateBadgeCount(with user: User, completion: @escaping (Result<Void, UserError>) -> Void) {
+    func updateBadgeCountAndPushID(with user: User, completion: @escaping (Result<Void, UserError>) -> Void) {
         let docRef = database.collection("users").document(user.uuid)
 
         docRef.updateData([
@@ -341,12 +333,11 @@ class UserController {
         }
     }
     
-    func updatePendingOrFriendsArray (with user: User, completion: @escaping (Result<Void, UserError>) -> Void) {
+    func updatePushID(with user: User, completion: @escaping (Result<Void, UserError>) -> Void) {
         let docRef = database.collection("users").document(user.uuid)
 
         docRef.updateData([
-            UserStrings.pendingRequestsKey : user.pendingRequests,
-            UserStrings.friendsKey : user.friends
+            UserStrings.pushIDKey : user.pushID ?? ""
         ]) { err in
             if let err = err {
                 print("Error updating document: \(err)")
@@ -358,12 +349,12 @@ class UserController {
         }
     }
     
-    func updateSentOrFriendsArray (with user: User, completion: @escaping (Result<User, UserError>) -> Void) {
+    func updateUserCurrentLocation(with user: User, completion: @escaping (Result<User, UserError>) -> Void) {
         let docRef = database.collection("users").document(user.uuid)
 
         docRef.updateData([
-            UserStrings.sentRequestsKey : user.sentRequests,
-            UserStrings.friendsKey : user.friends
+            UserStrings.latitudeKey : user.latitude,
+            UserStrings.longitudeKey : user.longitude
         ]) { err in
             if let err = err {
                 print("Error updating document: \(err)")
@@ -374,6 +365,122 @@ class UserController {
             }
         }
     }
+    
+    func updatePendingArray (with user: User, completion: @escaping (Result<Void, UserError>) -> Void) {
+        let docRef = database.collection("users").document(user.uuid)
+
+        docRef.updateData([
+            UserStrings.pendingRequestsKey : user.pendingRequests,
+        ]) { err in
+            if let err = err {
+                print("Error updating document: \(err)")
+                return completion(.failure(UserError.noExistingUser))
+            } else {
+                print("Document successfully updated")
+                return completion(.success(()))
+            }
+        }
+    }
+    
+
+    func updateSentArray (with user: User, completion: @escaping (Result<Void, UserError>) -> Void) {
+
+        let docRef = database.collection("users").document(user.uuid)
+
+        docRef.updateData([
+            UserStrings.sentRequestsKey : user.sentRequests,
+        ]) { err in
+            if let err = err {
+                print("Error updating document: \(err)")
+                return completion(.failure(UserError.noExistingUser))
+            } else {
+                self.currentUser = user
+                print("Document successfully updated")
+                return completion(.success(()))
+            }
+        }
+    }
+    
+    func updateFriendsArrays (with user: User, and otherUser: User, completion: @escaping (Result<Void, UserError>) -> Void) {
+        let userDocRef = database.collection("users").document(user.uuid)
+        let otherUserDocRef = database.collection("users").document(otherUser.uuid)
+
+        userDocRef.updateData([
+            UserStrings.friendsKey : user.friends
+        ]) { err in
+            if let err = err {
+                print("Error updating document: \(err)")
+                return completion(.failure(UserError.noExistingUser))
+            } else {
+                self.currentUser = user
+                
+                otherUserDocRef.updateData([
+                    UserStrings.friendsKey : otherUser.friends
+                ]) { err in
+                    if let err = err {
+                        print("Error updating document: \(err)")
+                        return completion(.failure(UserError.noExistingUser))
+                    } else {
+                        print("Document successfully updated")
+                        return completion(.success(()))
+                    }
+                }
+            }
+        }
+    }
+    
+    func updateBlockedArray (with user: User, completion: @escaping (Result<Void, UserError>) -> Void) {
+        let docRef = database.collection("users").document(user.uuid)
+
+        docRef.updateData([
+            UserStrings.blockedArrayKey : user.blockedArray
+        ]) { err in
+            if let err = err {
+                print("Error updating document: \(err)")
+                return completion(.failure(UserError.noExistingUser))
+            } else {
+                print("Document successfully updated")
+
+                self.currentUser = user
+                return completion(.success(()))
+
+            }
+        }
+    }
+    
+    func updateReportCount (with user: User, completion: @escaping (Result<Void, UserError>) -> Void) {
+        let docRef = database.collection("users").document(user.uuid)
+
+        docRef.updateData([
+            UserStrings.reportCountKey : user.reportCount
+        ]) { err in
+            if let err = err {
+                print("Error updating document: \(err)")
+                return completion(.failure(UserError.noExistingUser))
+            } else {
+                print("Document successfully updated")
+                return completion(.success(()))
+            }
+        }
+    }
+    
+    func updateCity (with user: User, completion: @escaping (Result<Void, UserError>) -> Void) {
+        let docRef = database.collection("users").document(user.uuid)
+
+        docRef.updateData([
+            UserStrings.reportCountKey : user.reportCount
+        ]) { err in
+            if let err = err {
+                print("Error updating document: \(err)")
+                return completion(.failure(UserError.noExistingUser))
+            } else {
+                print("Document successfully updated")
+                self.currentUser = user
+                return completion(.success(()))
+            }
+        }
+    }
+    
     
     // MARK: - REMOVE
     func removeFromSentRequestsOf (_ otherUserUUID: String, andPendingRequestOf currentUserUUID: String, completion: @escaping (Result<Bool, UserError>) -> Void) {
