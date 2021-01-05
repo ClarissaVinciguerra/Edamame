@@ -120,8 +120,9 @@ class ProfileViewController: UIViewController {
     private func updateSentArray(of user: User) {
         UserController.shared.updateSentArray (with: user) { (result) in
             switch result {
-            case .success(_):
+            case .success(let user):
                 DispatchQueue.main.async {
+                    UserController.shared.currentUser = user
                     self.updateViews()
                 }
             case .failure(let error):
