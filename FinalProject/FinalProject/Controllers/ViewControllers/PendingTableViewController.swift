@@ -39,6 +39,8 @@ class PendingTableViewController: UITableViewController {
         loadData()
     }
     
+   
+    
     // MARK: - Class Methods
     func setupViews() {
         
@@ -55,12 +57,12 @@ class PendingTableViewController: UITableViewController {
             case .success(let pendingRequests):
                 DispatchQueue.main.async {
                     UserController.shared.pendingRequests = pendingRequests
+                    self.tableView.reloadData()
                     if pendingRequests.isEmpty {
                         self.showEmptyState()
                         self.activityIndicator.stopAnimating()
                     } else {
                         self.hideEmptyState()
-                        self.tableView.reloadData()
                         self.activityIndicator.stopAnimating()
                     }
                 }

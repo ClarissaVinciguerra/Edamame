@@ -482,7 +482,7 @@ class UserController {
     
     
     // MARK: - REMOVE
-    func removeFromSentRequestsOf (_ otherUserUUID: String, andPendingRequestOf currentUserUUID: String, completion: @escaping (Result<Bool, UserError>) -> Void) {
+    func removeFromSentRequestsOf (_ otherUserUUID: String, andPendingRequestOf currentUserUUID: String, completion: @escaping (Result<[String], UserError>) -> Void) {
         
         let pendingRequestsDocRef = database.collection(userCollection).document(currentUserUUID)
         let sentRequestsDocRef = database.collection(userCollection).document(otherUserUUID)
@@ -514,7 +514,7 @@ class UserController {
 //                currentUser?.pendingRequests.remove(at: index)
 //            }
 //
-            return completion(.success(true))
+            return completion(.success(pendingRequestsArray))
             
         }) { (object, error) in
             if let error = error {
