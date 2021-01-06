@@ -148,8 +148,9 @@ class ProfileViewController: UIViewController {
     private func removeSentRequestOf(_ otherUser: User, andPendingRequestOf user: User) {
         UserController.shared.removeFromSentRequestsOf(otherUser.uuid, andPendingRequestOf: user.uuid) { (result) in
             switch result {
-            case .success(_):
+            case .success(let pendingIDArray):
                 DispatchQueue.main.async {
+                    UserController.shared.currentUser?.pendingRequests = pendingIDArray
                     self.updateViews()
                 }
             case .failure(let error):
