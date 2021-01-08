@@ -57,6 +57,12 @@ class ChatViewController: MessagesViewController {
         messagesCollectionView.messagesLayoutDelegate = self
         messagesCollectionView.messagesDisplayDelegate = self
         messageInputBar.delegate = self
+        
+        if let layout = messagesCollectionView.collectionViewLayout as? MessagesCollectionViewFlowLayout {
+                   layout.setMessageIncomingAvatarSize(.zero)
+                   layout.setMessageOutgoingAvatarSize(.zero)
+        }
+        
         setupViews()
     }
     
@@ -117,6 +123,7 @@ class ChatViewController: MessagesViewController {
                                                             target: self,
                                                             action: #selector(meetupSpotsTapped))
         createTitleButton()
+        
     }
     
     private func createTitleButton() {
@@ -174,7 +181,7 @@ extension ChatViewController: InputBarAccessoryViewDelegate {
         inputBar.inputTextView.text = ""
     }
     
-    private func createMessageID() -> String? {
+    public func createMessageID() -> String? {
         // date, otherUserEmail, senderEmail, randomInt
         
         guard let currentUserUid = UserDefaults.standard.value(forKey: LogInStrings.firebaseUidKey) as? String else { return nil }
@@ -233,6 +240,7 @@ extension ChatViewController: MessagesDataSource, MessagesLayoutDelegate, Messag
                    layout.setMessageOutgoingMessageBottomLabelAlignment(LabelAlignment(textAlignment: .right, textInsets: UIEdgeInsets(top: 0, left:0, bottom: 0, right: 10)))
                    layout.setMessageIncomingCellBottomLabelAlignment(LabelAlignment(textAlignment: .left, textInsets: UIEdgeInsets(top: 0, left:10, bottom: 0, right: 0)))
                  }
+        
     }
 }
 
