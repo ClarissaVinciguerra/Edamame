@@ -164,6 +164,7 @@ class UserController {
                             
                             let randoLocation = CLLocation(latitude: rando.latitude, longitude: rando.longitude)
                             
+                            rando.dist = randoLocation.distance(from: myLocation)
                             
                             // add to filter for location within 35 mi    || myLocation.distance(from: randoLocation) > 56327
                             
@@ -191,6 +192,7 @@ class UserController {
                     }
                     
                     dispatchGroup.notify(queue: .main) {
+                        randosToAppear.sort(by: { $0.dist < $1.dist })
                         completion(.success(randosToAppear))
                     }
                 }
@@ -224,13 +226,10 @@ class UserController {
                         
                         if let rando = User(document: document) {
                             
-//                            let randoLocation = CLLocation(latitude: rando.latitude, longitude: rando.longitude)
-                            
                             // add to filter for location within 35 mi    || myLocation.distance(from: randoLocation) > 56327
                             
                             if currentUser.sentRequests.contains(rando.uuid) || currentUser.friends.contains(rando.uuid) || currentUser.uuid == rando.uuid || currentUser.blockedArray.contains(rando.uuid) || rando.reportCount >= 3 || rando.blockedArray.contains(currentUser.uuid)  {
                             
-                                
                                 dispatchGroup.leave()
                                 
                             } else {
