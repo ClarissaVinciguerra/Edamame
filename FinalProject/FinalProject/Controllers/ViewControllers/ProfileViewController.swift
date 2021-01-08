@@ -24,6 +24,13 @@ class ProfileViewController: UIViewController {
     // MARK: - Properties
     var viewsLaidOut = false
     var otherUser: User?
+    var selfSender: Sender? {
+        guard let userUid = UserDefaults.standard.value(forKey: LogInStrings.firebaseUidKey)  as? String else { return nil }
+        return Sender(photoURL: "",
+                      senderId: userUid,
+                      displayName: "Me")
+    }
+    
     
     // MARK: - Lifecyle Functions
     override func viewDidLoad() {
@@ -79,6 +86,14 @@ class ProfileViewController: UIViewController {
             currentUser.friends.append(otherUser.uuid)
             otherUser.friends.append(currentUser.uuid)
             
+            createMessageUsers(otherUser: otherUser) { (success) in
+                switch success {
+                case true:
+                    self.createInitialConversation(otherUser: otherUser, currentUser: currentUser)
+                case false:
+                    print("unable to create Message Users")
+                }
+            }
             
             update(currentUser)
             updateOtherUser(with: otherUser)
@@ -106,6 +121,55 @@ class ProfileViewController: UIViewController {
             updateViews()
         }
     }
+    
+    private func createMessageUsers(otherUser: User, completion: @escaping (Bool) -> Void) {
+        
+        guard let userUid = UserDefaults.standard.value(forKey: LogInStrings.firebaseUidKey) as? String else { return }
+        MessageController.shared.userExists(with: userUid) { (result) in
+            switch result {
+            case true:
+                return
+            case false:
+                let chatUser = MessageAppUser(name: UserController.shared.currentUser!.name, uid: userUid)
+                MessageController.shared.insertUser(with: chatUser) { (success) in
+                    print("created chat app user successfully")
+                }
+            }
+        }
+        MessageController.shared.userExists(with: otherUser.uuid) { (result) in
+            switch result {
+            case true:
+                return
+            case false:
+                let chatUser = MessageAppUser(name: otherUser.name, uid: otherUser.uuid)
+                MessageController.shared.insertUser(with: chatUser) { (success) in
+                    print("created chat app user successfully")
+                }
+            }
+            completion(true)
+        }
+    }
+    
+    private func createInitialConversation(otherUser: User, currentUser: User) {
+        let dateString = ChatViewController.self.dateFormatter.string(from: Date())
+        let newMessageID = "\(otherUser.uuid)_\(currentUser.uuid)_\(dateString)"
+        
+        guard let selfSender = self.selfSender else { return }
+        let message = Message(sender: selfSender,
+                              messageId: newMessageID,
+                              sentDate: Date(),
+                              kind: .text("Say hello to your new friend!"))
+        
+        MessageController.shared.createNewConversation (with: otherUser.uuid, otherUserName: otherUser.name, firstMessage: message) { (success) in
+            switch success {
+            case true:
+                print("created new conversation")
+            case false:
+                print("failed to create new conversation")
+            }
+        }
+    }
+    
     
     private func update(_ user: User) {
         UserController.shared.updateSentOrFriendsArray (with: user) { (result) in

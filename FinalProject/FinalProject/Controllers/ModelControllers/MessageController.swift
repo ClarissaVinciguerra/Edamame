@@ -15,6 +15,8 @@ final class MessageController {
     
     private let database = Database.database().reference()
     
+    //let convesations = [Conversation]()
+    
     static func safeEmail(emailAddress: String) -> String {
         var safeEmail = emailAddress.replacingOccurrences(of: ".", with: "-")
         safeEmail = safeEmail.replacingOccurrences(of: "@", with: "-")
@@ -318,7 +320,7 @@ extension MessageController {
             
             let conversations: [Conversation] = value.compactMap { (dictionary) in
                 guard let conversationID = dictionary["id"] as? String,
-                      let name = dictionary["name"] as? String,
+                      let name = dictionary["other_user_name"] as? String,
                       let otherUserUid = dictionary["other_user_uid"] as? String,
                       let latestMessage = dictionary["latest_message"] as? [String : Any],
                       let date = latestMessage["date"] as? String,
@@ -334,7 +336,8 @@ extension MessageController {
                 return Conversation(id: conversationID, name: name, otherUserUid: otherUserUid, latestMessage: latestMessageObject)
                 
             }
-            completion(.success(conversations))
+            let sortedConversations = conversations.sorted(by: { $0.latestMessage.date > $1.latestMessage.date })
+            completion(.success(sortedConversations))
         }
     }
     

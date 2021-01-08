@@ -40,10 +40,10 @@
 		A60933D5256C2C0300A1C767 /* SearchResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = A60933D4256C2C0300A1C767 /* SearchResult.swift */; };
 		A60933E0256C2CEE00A1C767 /* NewConversationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A60933DF256C2CEE00A1C767 /* NewConversationViewController.swift */; };
 		A60933E3256C2D6E00A1C767 /* MessagesViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = A60933E2256C2D6E00A1C767 /* MessagesViewExtension.swift */; };
-		A60933E6256C2DA700A1C767 /* ConversationTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A60933E5256C2DA700A1C767 /* ConversationTableViewCell.swift */; };
 		A6093408256C310000A1C767 /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6093407256C310000A1C767 /* ChatViewController.swift */; };
 		A6093448256C578400A1C767 /* NewConversationTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6093447256C578400A1C767 /* NewConversationTableViewCell.swift */; };
 		A66A5B8E25795FD8001046EB /* MessageAppUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = A66A5B8D25795FD8001046EB /* MessageAppUser.swift */; };
+		A6BAE6D525A80B95000859E4 /* FriendTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6BAE6D425A80B94000859E4 /* FriendTableViewCell.swift */; };
 		A6DF43EB258354EA00679324 /* Alerts.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6DF43EA258354EA00679324 /* Alerts.swift */; };
 		C33E283B256EC4390092442F /* NetworkError.swift in Sources */ = {isa = PBXBuildFile; fileRef = C33E283A256EC4390092442F /* NetworkError.swift */; };
 		C33E283E256EC45B0092442F /* Restaurant.swift in Sources */ = {isa = PBXBuildFile; fileRef = C33E283D256EC45B0092442F /* Restaurant.swift */; };
@@ -100,10 +100,10 @@
 		A60933D4256C2C0300A1C767 /* SearchResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResult.swift; sourceTree = "<group>"; };
 		A60933DF256C2CEE00A1C767 /* NewConversationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewConversationViewController.swift; sourceTree = "<group>"; };
 		A60933E2256C2D6E00A1C767 /* MessagesViewExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagesViewExtension.swift; sourceTree = "<group>"; };
-		A60933E5256C2DA700A1C767 /* ConversationTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationTableViewCell.swift; sourceTree = "<group>"; };
 		A6093407256C310000A1C767 /* ChatViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewController.swift; sourceTree = "<group>"; };
 		A6093447256C578400A1C767 /* NewConversationTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewConversationTableViewCell.swift; sourceTree = "<group>"; };
 		A66A5B8D25795FD8001046EB /* MessageAppUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageAppUser.swift; sourceTree = "<group>"; };
+		A6BAE6D425A80B94000859E4 /* FriendTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendTableViewCell.swift; sourceTree = "<group>"; };
 		A6DF43EA258354EA00679324 /* Alerts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Alerts.swift; sourceTree = "<group>"; };
 		C33E283A256EC4390092442F /* NetworkError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkError.swift; sourceTree = "<group>"; };
 		C33E283D256EC45B0092442F /* Restaurant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Restaurant.swift; sourceTree = "<group>"; };
@@ -188,6 +188,7 @@
 		706A80A92566DE4600A07C9C /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				706A81112567164B00A07C9C /* Conversation.swift */,
 				706A80AF2566F61200A07C9C /* User.swift */,
 				706A810B2567162D00A07C9C /* Message.swift */,
 				706A810E2567163700A07C9C /* Sender.swift */,
@@ -214,7 +215,6 @@
 				A60933D7256C2C5B00A1C767 /* MessagesViewControllers */,
 				706A80BB2566F70500A07C9C /* FriendsTableViewController.swift */,
 				706A80C22566F85A00A07C9C /* PendingTableViewController.swift */,
-				706A81112567164B00A07C9C /* Conversation.swift */,
 				706A80C52566F89700A07C9C /* EditProfileViewController.swift */,
 				706A80B82566F6E000A07C9C /* RandoCollectionViewController.swift */,
 				706A80CC2566F91200A07C9C /* ProfileViewController.swift */,
@@ -267,8 +267,8 @@
 				706A811A2567184E00A07C9C /* RandoCollectionViewCell.swift */,
 				706A811D2567188600A07C9C /* EditPhotoCollectionViewCell.swift */,
 				706A8120256718AD00A07C9C /* ViewPhotoCollectionViewCell.swift */,
-				A60933E5256C2DA700A1C767 /* ConversationTableViewCell.swift */,
 				A6093447256C578400A1C767 /* NewConversationTableViewCell.swift */,
+				A6BAE6D425A80B94000859E4 /* FriendTableViewCell.swift */,
 			);
 			path = CustomCells;
 			sourceTree = "<group>";
@@ -491,7 +491,6 @@
 				706A80C32566F85A00A07C9C /* PendingTableViewController.swift in Sources */,
 				706A80D32566F9A600A07C9C /* LogInViewController.swift in Sources */,
 				A60933D5256C2C0300A1C767 /* SearchResult.swift in Sources */,
-				A60933E6256C2DA700A1C767 /* ConversationTableViewCell.swift in Sources */,
 				706A81122567164B00A07C9C /* Conversation.swift in Sources */,
 				C36610DE25800D2D0048531B /* SettingsViewController.swift in Sources */,
 				706A80B02566F61200A07C9C /* User.swift in Sources */,
@@ -509,6 +508,7 @@
 				706A81182567168500A07C9C /* DatabaseError.swift in Sources */,
 				706A8106256715FE00A07C9C /* MessageController.swift in Sources */,
 				C37191122579512A006D1A01 /* EdamameButton.swift in Sources */,
+				A6BAE6D525A80B95000859E4 /* FriendTableViewCell.swift in Sources */,
 				706A8106256715FE00A07C9C /* MessageController.swift in Sources */,
 				706A811B2567184E00A07C9C /* RandoCollectionViewCell.swift in Sources */,
 				A6093408256C310000A1C767 /* ChatViewController.swift in Sources */,
