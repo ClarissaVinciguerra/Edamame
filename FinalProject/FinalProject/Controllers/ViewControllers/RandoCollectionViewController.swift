@@ -39,8 +39,8 @@ class RandoCollectionViewController: UICollectionViewController {
         activityIndicator.startAnimating()
         locationManager.delegate = self
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
-        
         retrieveCurrentLocation()
+        
         guard let currentUid = UserDefaults.standard.value(forKey: LogInStrings.firebaseUidKey) as? String else { return }
         fetchUser(with: currentUid)
     }
@@ -94,7 +94,7 @@ class RandoCollectionViewController: UICollectionViewController {
     }
     
     private func updateBadgeCountAndPushID(with user: User) {
-        UserController.shared.updateUserBy(user) { (result) in
+        UserController.shared.updateBadgeCountAndPushID(with: user) { (result) in
             switch result {
             case .success(_):
                 print("PushID and badge count updated successfully.")
@@ -257,7 +257,7 @@ extension RandoCollectionViewController: CLLocationManagerDelegate {
             currentUser.latitude = location.coordinate.latitude
             currentUser.longitude = location.coordinate.longitude
             
-            UserController.shared.updateUserBy(currentUser) { (result) in
+            UserController.shared.updateUserCurrentLocation(with: currentUser) { (result) in
                 switch result{
                 case .success(let user):
                     DispatchQueue.main.async {

@@ -63,7 +63,7 @@ class PushNotificationService {
     }
     
     private func updateBadgeCount(with user: User) {
-        UserController.shared.updateBadgeCount(with: user) { (result) in
+        UserController.shared.updateBadgeCountAndPushID(with: user) { (result) in
             switch result {
             case .success():
                 print("User badge count updated")
