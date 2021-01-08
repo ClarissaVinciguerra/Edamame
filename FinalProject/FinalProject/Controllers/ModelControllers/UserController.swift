@@ -144,6 +144,66 @@ class UserController {
         let dispatchGroup = DispatchGroup()
         let myLocation = CLLocation(latitude: currentUser.latitude, longitude: currentUser.longitude)
         
+        userDocRef.getDocuments { (querySnapshot, error) in
+            if let error = error {
+                
+                print("Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")
+                return completion(.failure(.firebaseError(error)))
+                
+            } else {
+                
+                var randosToAppear: [User] = []
+                
+                for document in querySnapshot!.documents {
+                    
+                    if let _ = User(document: document) {
+                        
+                        dispatchGroup.enter()
+                        
+                        if let rando = User(document: document) {
+                            
+//                            let randoLocation = CLLocation(latitude: rando.latitude, longitude: rando.longitude)
+                            
+                            // add to filter for location within 35 mi    || myLocation.distance(from: randoLocation) > 56327
+                            
+                            if currentUser.sentRequests.contains(rando.uuid) || currentUser.friends.contains(rando.uuid) || currentUser.uuid == rando.uuid || currentUser.blockedArray.contains(rando.uuid) || rando.reportCount >= 3 || rando.blockedArray.contains(currentUser.uuid)  {
+                            
+                                
+                                dispatchGroup.leave()
+                                
+                            } else {
+                                
+                                StorageController.shared.downloadImages(with: rando.uuid) { (result) in
+                                    switch result {
+                                    case .success(let images):
+                                        rando.images = images
+                                        randosToAppear.append(rando)
+                                        dispatchGroup.leave()
+                                        
+                                    case .failure(let error):
+                                        print("Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")
+                                        dispatchGroup.leave()
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    
+                    dispatchGroup.notify(queue: .main) {
+                        completion(.success(randosToAppear))
+                    }
+                }
+            }
+        }
+    }
+    
+    func fetchFilteredRandosByCity(currentUser: User, completion: @escaping (Result<[User], UserError>) -> Void) {
+        
+        let userDocRef = database.collection(userCollection)
+        let dispatchGroup = DispatchGroup()
+        // Once app has a sufficient user base
+//        let myLocation = CLLocation(latitude: currentUser.latitude, longitude: currentUser.longitude)
+        
         userDocRef.whereField(UserStrings.cityRefKey, isEqualTo: currentUser.cityRef).getDocuments { (querySnapshot, error) in
             if let error = error {
                 
@@ -156,13 +216,13 @@ class UserController {
                 
                 for document in querySnapshot!.documents {
                     
-                    if let rando = User(document: document) {
+                    if let _ = User(document: document) {
                         
                         dispatchGroup.enter()
                         
                         if let rando = User(document: document) {
                             
-                            let randoLocation = CLLocation(latitude: rando.latitude, longitude: rando.longitude)
+//                            let randoLocation = CLLocation(latitude: rando.latitude, longitude: rando.longitude)
                             
                             // add to filter for location within 35 mi    || myLocation.distance(from: randoLocation) > 56327
                             
