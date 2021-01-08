@@ -126,6 +126,7 @@ class RandoCollectionViewController: UICollectionViewController {
             }
         }
     }
+    
     func showEmptyState() {
           collectionView.addSubview(emptyMessage)
           emptyMessage.centerXAnchor.constraint(equalTo: collectionView.centerXAnchor).isActive = true
