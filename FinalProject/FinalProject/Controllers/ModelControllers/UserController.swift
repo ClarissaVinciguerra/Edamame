@@ -166,7 +166,7 @@ class UserController {
                             
                             // add to filter for location within 35 mi    || myLocation.distance(from: randoLocation) > 56327
                             
-                            if currentUser.sentRequests.contains(rando.uuid) || currentUser.friends.contains(rando.uuid) || currentUser.uuid == rando.uuid || currentUser.blockedArray.contains(rando.uuid) || rando.reportCount >= 3  {
+                            if currentUser.sentRequests.contains(rando.uuid) || currentUser.friends.contains(rando.uuid) || currentUser.uuid == rando.uuid || currentUser.blockedArray.contains(rando.uuid) || rando.reportCount >= 3 || rando.blockedArray.contains(currentUser.uuid)  {
                             
                                 
                                 dispatchGroup.leave()

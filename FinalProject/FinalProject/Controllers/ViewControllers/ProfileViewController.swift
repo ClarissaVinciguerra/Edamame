@@ -104,6 +104,8 @@ class ProfileViewController: UIViewController {
             
             PushNotificationService.shared.sendPushNotificationTo(userID: otherUser.uuid, title: "\(currentUser.name) has accepted your friend request!", body: "Start a conversation.")
             
+            navigationController?.popViewController(animated: true)
+            
         } else if let index = currentUser.friends.firstIndex(of: otherUser.uuid) {
             // remove from friends arrays and put other user in blocked array
             currentUser.friends.remove(at: index)
@@ -259,13 +261,13 @@ class ProfileViewController: UIViewController {
         if currentUser.friends.contains(otherUser.uuid) {
             alreadyFriends = true
             removeFriend(from: currentUser, and: otherUser)
-        }
-        
-        MessageController.shared.deleteConversation(otherUserUid: otherUser.uuid) { [weak self] (success) in
-            if success {
-                print("Deleted Conversation")
+            MessageController.shared.deleteConversation(otherUserUid: otherUser.uuid) { [weak self] (success) in
+                if success {
+                    print("Deleted Conversation")
+                }
             }
         }
+        
         
         currentUser.blockedArray.append(otherUser.uuid)
         UserController.shared.updateBlockedArray(with: currentUser) { (result) in
