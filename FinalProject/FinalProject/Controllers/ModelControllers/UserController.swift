@@ -197,6 +197,7 @@ class UserController {
         }
     }
     
+    /// This function will be used once there is a large enough user base to fetch by city
     func fetchFilteredRandosByCity(currentUser: User, completion: @escaping (Result<[User], UserError>) -> Void) {
         
         let userDocRef = database.collection(userCollection)
