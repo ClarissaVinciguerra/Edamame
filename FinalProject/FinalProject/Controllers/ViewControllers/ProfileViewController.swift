@@ -31,6 +31,8 @@ class ProfileViewController: UIViewController {
                       displayName: "Me")
     }
     
+    var otherUserImages: [Image]?
+    
     
     // MARK: - Lifecyle Functions
     override func viewDidLoad() {
@@ -40,6 +42,9 @@ class ProfileViewController: UIViewController {
         updateViews()
         // ensures that the local version of "otherUser" has the most recent data from cloud - we may be able to take this out, but it solves previous issues of requests being sent multiple times from teh same user
         fetchOtherUser()
+        if let otherUser = otherUser {
+            otherUserImages = otherUser.images
+        }
     }
     
     override func viewDidLayoutSubviews() {
@@ -403,13 +408,14 @@ extension ProfileViewController: UICollectionViewDataSource, UICollectionViewDel
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         
-        return otherUser?.images.count ?? 0
+        return otherUserImages?.count ?? 0
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "profileViewCell", for: indexPath) as? ViewPhotoCollectionViewCell else { return UICollectionViewCell() }
-        if let image = otherUser?.images[indexPath.row] {
+        if let image = otherUserImages?[indexPath.row] {
+            print("\(image.name) at indexPath\(indexPath.row)")
             
             cell.photo = image.image
         }
