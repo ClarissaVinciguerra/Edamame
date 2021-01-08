@@ -169,6 +169,10 @@ class ProfileViewController: UIViewController {
                 print("created new conversation")
             case false:
                 print("failed to create new conversation")
+            }
+        }
+    }
+    
     private func addToFriendsArray(of user: User, and otherUser: User) {
         UserController.shared.updateFriendsArrays(with: user, and: otherUser) { (result) in
             switch result {
