@@ -124,23 +124,7 @@ class UserController {
         }
         //        completion(.failure(.noExistingUser))
     }
-    /*
-     private func convertURLToImage(urlString: String, completion: @escaping (UIImage?) -> Void) {
-     guard let url = URL(string: urlString) else { return completion(nil) }
-     
-     URLSession.shared.dataTask(with: url) { (data, _, error) in
-     if let error = error {
-     print("Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")
-     }
-     guard let data = data else { return completion(nil) }
-     
-     print(data)
-     
-     let image = UIImage(data: data)
-     completion(image)
-     }.resume()
-     }
-     */
+
     func checkThatUserExists(with uuid: String, completion: @escaping ((Bool) -> Void)) {
         let docRef = database.collection(userCollection).document(uuid)
         
