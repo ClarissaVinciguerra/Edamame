@@ -50,8 +50,9 @@ class User {
     var reportCount: Int
     var pushID: String?
     var badgeCount: Int
+    var distance: Double
     
-    init(name: String, dateOfBirth: Date, bio: String, type: String, city: String, cityRef: String, latitude: Double, longitude: Double, uuid: String, images: [Image] = [], friends: [String] = [], pendingRequests: [String] = [], sentRequests: [String] = [], blockedArray: [String] = [], reportCount: Int = 0, pushID: String, badgeCount: Int = 0) {
+    init(name: String, dateOfBirth: Date, bio: String, type: String, city: String, cityRef: String, latitude: Double, longitude: Double, uuid: String, images: [Image] = [], friends: [String] = [], pendingRequests: [String] = [], sentRequests: [String] = [], blockedArray: [String] = [], reportCount: Int = 0, pushID: String, badgeCount: Int = 0, distance: Double = 0.0) {
         self.name = name
         self.dateOfBirth = dateOfBirth
         self.bio = bio
@@ -69,6 +70,7 @@ class User {
         self.images = images
         self.pushID = pushID
         self.badgeCount = badgeCount
+        self.distance = distance
     }
     
     convenience init?(document: DocumentSnapshot) {

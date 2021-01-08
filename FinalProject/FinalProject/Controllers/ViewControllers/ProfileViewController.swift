@@ -258,6 +258,17 @@ class ProfileViewController: UIViewController {
         navigationController?.popViewController(animated: true)
     }
     
+    private func updateReportCount(of otherUser: User) {
+        UserController.shared.updateReportCount(with: otherUser) { (result) in
+            switch result {
+            case .success():
+                print("User has been reported")
+            case .failure(let error):
+                print("Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")
+            }
+        }
+    }
+    
     func blockUser() {
         guard let otherUser = otherUser, let currentUser = UserController.shared.currentUser else { return }
         
@@ -289,12 +300,17 @@ class ProfileViewController: UIViewController {
     }
     
     func reportUser() {
-        guard let otherUser = otherUser else { return }
+        guard let otherUser = otherUser, let currentUser = UserController.shared.currentUser else { return }
         
         otherUser.reportCount += 1
+        updateReportCount(of: otherUser)
         
-        updateSentArray(of: otherUser)
-        blockUser()
+        if otherUser.sentRequests.contains(currentUser.uuid) {
+            
+            declineFriendRequest()
+        } else {
+            blockUser()
+        }
     }
     
     private func fetchOtherUser() {

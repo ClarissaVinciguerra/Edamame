@@ -162,7 +162,8 @@ class UserController {
                         
                         if let rando = User(document: document) {
                             
-//                            let randoLocation = CLLocation(latitude: rando.latitude, longitude: rando.longitude)
+                            let randoLocation = CLLocation(latitude: rando.latitude, longitude: rando.longitude)
+                            
                             
                             // add to filter for location within 35 mi    || myLocation.distance(from: randoLocation) > 56327
                             
