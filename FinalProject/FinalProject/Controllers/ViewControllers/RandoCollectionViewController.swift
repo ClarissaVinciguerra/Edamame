@@ -112,6 +112,7 @@ class RandoCollectionViewController: UICollectionViewController {
             case .success(let randos):
                 DispatchQueue.main.async {
                     UserController.shared.randos = randos
+                    self.collectionView.reloadData()
                     if randos.isEmpty {
                         self.showEmptyState()
                         self.activityIndicator.stopAnimating()
@@ -119,7 +120,6 @@ class RandoCollectionViewController: UICollectionViewController {
                         self.hideEmptyState()
                         self.updateViews()
                     }
-                    self.updateViews()
                 }
             case .failure(let error):
                 print("Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")

@@ -33,8 +33,6 @@
 		706A8121256718AD00A07C9C /* ViewPhotoCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 706A8120256718AD00A07C9C /* ViewPhotoCollectionViewCell.swift */; };
 		706A81892568676800A07C9C /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 706A81882568676800A07C9C /* GoogleService-Info.plist */; };
 		706A81C9256C100D00A07C9C /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 706A81C8256C100D00A07C9C /* SignUpViewController.swift */; };
-		70E625C0259CFD5A0029C0B0 /* Friendship.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70E625BF259CFD5A0029C0B0 /* Friendship.swift */; };
-		70E625C7259D140A0029C0B0 /* FriendshipController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70E625C6259D140A0029C0B0 /* FriendshipController.swift */; };
 		70E625CA259D16C60029C0B0 /* FriendshipError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70E625C9259D16C60029C0B0 /* FriendshipError.swift */; };
 		70EB018D256EFDD30031ED9F /* AgeCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70EB018C256EFDD30031ED9F /* AgeCalculator.swift */; };
 		70EB0190256F01630031ED9F /* StyleGuide.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70EB018F256F01630031ED9F /* StyleGuide.swift */; };
@@ -91,8 +89,6 @@
 		706A8120256718AD00A07C9C /* ViewPhotoCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewPhotoCollectionViewCell.swift; sourceTree = "<group>"; };
 		706A81882568676800A07C9C /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		706A81C8256C100D00A07C9C /* SignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
-		70E625BF259CFD5A0029C0B0 /* Friendship.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Friendship.swift; sourceTree = "<group>"; };
-		70E625C6259D140A0029C0B0 /* FriendshipController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendshipController.swift; sourceTree = "<group>"; };
 		70E625C9259D16C60029C0B0 /* FriendshipError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendshipError.swift; sourceTree = "<group>"; };
 		70EB018C256EFDD30031ED9F /* AgeCalculator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgeCalculator.swift; sourceTree = "<group>"; };
 		70EB018F256F01630031ED9F /* StyleGuide.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StyleGuide.swift; sourceTree = "<group>"; };
@@ -201,7 +197,6 @@
 				A60933D4256C2C0300A1C767 /* SearchResult.swift */,
 				C33E283D256EC45B0092442F /* Restaurant.swift */,
 				A66A5B8D25795FD8001046EB /* MessageAppUser.swift */,
-				70E625BF259CFD5A0029C0B0 /* Friendship.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -238,7 +233,6 @@
 				706A80B22566F62A00A07C9C /* UserController.swift */,
 				706A81082567161900A07C9C /* StorageController.swift */,
 				C33E2840256EC5390092442F /* RestaurantController.swift */,
-				70E625C6259D140A0029C0B0 /* FriendshipController.swift */,
 			);
 			path = ModelControllers;
 			sourceTree = "<group>";
@@ -487,7 +481,6 @@
 				706A80CD2566F91200A07C9C /* ProfileViewController.swift in Sources */,
 				706A80B32566F62A00A07C9C /* UserController.swift in Sources */,
 				C33E283B256EC4390092442F /* NetworkError.swift in Sources */,
-				70E625C7259D140A0029C0B0 /* FriendshipController.swift in Sources */,
 				706A80B92566F6E000A07C9C /* RandoCollectionViewController.swift in Sources */,
 				A60933E3256C2D6E00A1C767 /* MessagesViewExtension.swift in Sources */,
 				C33E289D256ED9780092442F /* RestaurantTableViewController.swift in Sources */,
@@ -514,7 +507,6 @@
 				706A80C62566F89700A07C9C /* EditProfileViewController.swift in Sources */,
 				A6DF43EB258354EA00679324 /* Alerts.swift in Sources */,
 				706A811E2567188700A07C9C /* EditPhotoCollectionViewCell.swift in Sources */,
-				70E625C0259CFD5A0029C0B0 /* Friendship.swift in Sources */,
 				A60933E0256C2CEE00A1C767 /* NewConversationViewController.swift in Sources */,
 				70E625CA259D16C60029C0B0 /* FriendshipError.swift in Sources */,
 				706A81182567168500A07C9C /* DatabaseError.swift in Sources */,

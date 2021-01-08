@@ -510,10 +510,6 @@ class UserController {
             transaction.updateData([UserStrings.pendingRequestsKey : pendingRequestsArray], forDocument: pendingRequestsDocRef)
             transaction.updateData([UserStrings.sentRequestsKey: sentRequestsArray], forDocument: sentRequestsDocRef)
             
-//            if let index = currentUser?.pendingRequests.firstIndex(of: otherUserUUID) {
-//                currentUser?.pendingRequests.remove(at: index)
-//            }
-//
             return completion(.success(pendingRequestsArray))
             
         }) { (object, error) in
@@ -675,22 +671,5 @@ class UserController {
         }
     }
     
-//    func deleteUser() {
-//        guard let uid = UserController.shared.currentUser?.uuid else { return }
-//
-//    }
-//
-//    func deleteCurrentUserFromAuth(with uuid: String, completion: @escaping (Result<Void, UserError>) -> Void) {
-//
-//        let user = Auth.auth().currentUser
-//
-//        user?.delete { error in
-//            if let error = error {
-//                print("Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")
-//                completion(.failure(.couldNotRemove))
-//            } else {
-//                completion(.success(()))
-//            }
-//        }
-//    }
+
 }
