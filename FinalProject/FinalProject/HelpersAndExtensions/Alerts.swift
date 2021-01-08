@@ -72,7 +72,7 @@ extension EditProfileViewController {
     }
     
     func presentBioAlert() {
-        let alertController = UIAlertController(title: "Fill out the Bio", message: "Let others know a little bit about you...", preferredStyle: .alert)
+        let alertController = UIAlertController(title: "Fill out your Bio!", message: "Tell others about your plant-based journey, hobbies and lifestyle", preferredStyle: .alert)
         
         let okayAction = UIAlertAction(title: "Okay", style: .default)
         
@@ -104,7 +104,7 @@ extension EditProfileViewController {
     
     func addCityAlertToCreateUser(name: String, bio: String, type: String, unsavedImages: [UIImage], dateOfBirth: Date, latitude: Double, longitude: Double, uuid: String ) {
         
-        let alertController = UIAlertController(title: "Which city are you closest to?", message: "You can change your metropolitan area at any time in your settings.", preferredStyle: .alert)
+        let alertController = UIAlertController(title: "Which city are you closest to?", message: "This will determine who shows up in your news feed! Please make sure you are using the legal city name (e.g. 'Philadelphia' instead of 'Philly'). You can change your metropolitan area at any time in your settings.", preferredStyle: .alert)
         
         alertController.addTextField { (textfield) in
             textfield.autocapitalizationType = .words
@@ -192,7 +192,7 @@ extension ProfileViewController {
     }
     
     func presentReportUserAlert() {
-        let alertController = UIAlertController(title: "Are you sure you want to report this user?", message: "Users should be reported for WHAT ARE WE HAVING PEOPLE REPORT USERS FOR?", preferredStyle: .alert)
+        let alertController = UIAlertController(title: "Report for inappropriate content", message: "Are you sure you want to report this user?", preferredStyle: .alert)
         
         let reportAction = UIAlertAction(title: "Report", style: .destructive) { (_) in
             self.reportUser()
@@ -267,10 +267,7 @@ extension SettingsViewController {
                 let loginNavController = storyboard.instantiateViewController(identifier: "LoginNavigationController")
                 
                 (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeRootViewController(loginNavController)
-//                let storyboard = UIStoryboard(name: "LogInSignUp", bundle: nil)
-//                guard let vc = storyboard.instantiateInitialViewController() else { return }
-//                vc.modalPresentationStyle = .fullScreen
-//                strongSelf.present(vc, animated: true)
+
             } catch {
                 print("Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")
             }
