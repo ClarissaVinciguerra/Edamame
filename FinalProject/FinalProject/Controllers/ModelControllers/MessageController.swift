@@ -127,9 +127,8 @@ extension MessageController {
 extension MessageController {
     
     /// Creates a new conversation with the target user email and first message sent
-    public func createNewConversation(with otherUserUid: String, otherUserName: String, firstMessage: Message, completion: @escaping (Bool) -> Void) {
-        guard let currentUid = UserDefaults.standard.value(forKey: LogInStrings.firebaseUidKey) as? String,
-              let currentName = UserDefaults.standard.value(forKey: "name") as? String else {
+    public func createNewConversation(userName: String, otherUserUid: String, otherUserName: String, firstMessage: Message, completion: @escaping (Bool) -> Void) {
+        guard let currentUid = UserDefaults.standard.value(forKey: LogInStrings.firebaseUidKey) as? String else {
             return
         }
         //let safeEmail = MessageController.safeEmail(emailAddress: currentUid)
@@ -187,7 +186,7 @@ extension MessageController {
             let recipient_newConversationData: [String: Any] = [
                 "id" : conversationID,
                 "other_user_uid": currentUid,
-                "other_user_name": currentName,
+                "other_user_name": userName,
                 "latest_message" : [
                     "date": dateString,
                     "message" : message,
