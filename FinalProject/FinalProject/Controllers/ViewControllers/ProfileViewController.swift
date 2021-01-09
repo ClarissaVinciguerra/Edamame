@@ -135,7 +135,7 @@ class ProfileViewController: UIViewController {
         MessageController.shared.userExists(with: userUid) { (result) in
             switch result {
             case true:
-                return
+                print("chat app user already exists")
             case false:
                 let chatUser = MessageAppUser(name: UserController.shared.currentUser!.name, uid: userUid)
                 MessageController.shared.insertUser(with: chatUser) { (success) in
@@ -146,14 +146,15 @@ class ProfileViewController: UIViewController {
         MessageController.shared.userExists(with: otherUser.uuid) { (result) in
             switch result {
             case true:
-                return
+                print("chat app user already exists")
+                completion(true)
             case false:
                 let chatUser = MessageAppUser(name: otherUser.name, uid: otherUser.uuid)
                 MessageController.shared.insertUser(with: chatUser) { (success) in
                     print("created chat app user successfully")
+                    completion(true)
                 }
             }
-            completion(true)
         }
     }
     
@@ -167,7 +168,7 @@ class ProfileViewController: UIViewController {
                               sentDate: Date(),
                               kind: .text("Say hello to your new friend!"))
         
-        MessageController.shared.createNewConversation (with: otherUser.uuid, otherUserName: otherUser.name, firstMessage: message) { (success) in
+        MessageController.shared.createNewConversation(userName: currentUser.name, otherUserUid: otherUser.uuid, otherUserName: otherUser.name, firstMessage: message) { (success) in
             switch success {
             case true:
                 print("created new conversation")

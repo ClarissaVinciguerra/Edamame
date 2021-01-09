@@ -152,8 +152,10 @@ extension ChatViewController: InputBarAccessoryViewDelegate {
                               kind: .text(text))
         // Send Message
         if isNewConversation {
+            
+            guard let userName = UserController.shared.currentUser?.name else { return }
             // create conversation in Database
-            MessageController.shared.createNewConversation(with: otherUserUid, otherUserName: self.title ?? "User", firstMessage: message) { [weak self] (success) in
+            MessageController.shared.createNewConversation(userName: userName, otherUserUid: otherUserUid, otherUserName: self.title ?? "User", firstMessage: message) { [weak self] (success) in
                 if success {
                     PushNotificationService.shared.sendPushNotificationTo(userID: self!.otherUserUid, title: UserController.shared.currentUser?.name ?? "", body: text)
                     print("message sent")
