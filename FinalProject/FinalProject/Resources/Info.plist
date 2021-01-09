@@ -36,9 +36,9 @@
 	<key>NSCameraUsageDescription</key>
 	<string>Allows the user to take profile pictures using the camera. </string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Permission for this app to access your location is required for our services.</string>
+	<string>Enables Edamame to customize your experience based on your current location, including helping you find other users &amp; restaurants near you.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Allows the user to select profile pictures from "Photos"</string>
+	<string>Allows the user to select profile pictures from &quot;Photos&quot;</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>SourceSansPro-ExtraLight.ttf</string>
