@@ -8,6 +8,7 @@
 import UIKit
 
 class PendingTableViewController: UITableViewController {
+    
     // MARK: - Properties
     var refresher: UIRefreshControl = UIRefreshControl()
     lazy var emptyMessage: UILabel = {
@@ -19,7 +20,7 @@ class PendingTableViewController: UITableViewController {
         messageLabel.numberOfLines = 0
         messageLabel.textAlignment = .center
         messageLabel.sizeToFit()
-
+        
         return messageLabel
     }()
     
@@ -38,8 +39,6 @@ class PendingTableViewController: UITableViewController {
         setupViews()
         loadData()
     }
-    
-   
     
     // MARK: - Class Methods
     func setupViews() {

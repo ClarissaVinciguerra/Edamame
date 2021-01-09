@@ -106,6 +106,7 @@ class SignUpViewController: UIViewController {
         setupConfirmPasswordTextField()
         setupBirthdayDatePicker()
         setupSignUpButton()
+        dismissKeyboard()
     }
     
     // MARK: - Views
@@ -146,5 +147,11 @@ class SignUpViewController: UIViewController {
         signUpButton.layer.cornerRadius = 12
         signUpButton.layer.masksToBounds = true
         signUpButton.backgroundColor = .edamameGreen
+    }
+    
+    func dismissKeyboard() {
+        
+        let tapGesture = UITapGestureRecognizer(target: view, action: #selector(UIView.endEditing))
+        view.addGestureRecognizer(tapGesture)
     }
 }

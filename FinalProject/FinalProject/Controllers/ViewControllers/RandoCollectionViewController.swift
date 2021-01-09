@@ -26,7 +26,7 @@ class RandoCollectionViewController: UICollectionViewController {
         messageLabel.numberOfLines = 0
         messageLabel.textAlignment = .center
         messageLabel.sizeToFit()
-
+        
         return messageLabel
     }()
     
@@ -88,7 +88,6 @@ class RandoCollectionViewController: UICollectionViewController {
             case .failure(_):
                 print("User does not yet exist in database")
                 self.tabBarController?.selectedIndex = 3
-
             }
         }
     }
@@ -128,14 +127,14 @@ class RandoCollectionViewController: UICollectionViewController {
     }
     
     func showEmptyState() {
-          collectionView.addSubview(emptyMessage)
-          emptyMessage.centerXAnchor.constraint(equalTo: collectionView.centerXAnchor).isActive = true
-          emptyMessage.centerYAnchor.constraint(equalTo: collectionView.centerYAnchor).isActive = true
-      }
-
-      func hideEmptyState() {
-          emptyMessage.removeFromSuperview()
-      }
+        collectionView.addSubview(emptyMessage)
+        emptyMessage.centerXAnchor.constraint(equalTo: collectionView.centerXAnchor).isActive = true
+        emptyMessage.centerYAnchor.constraint(equalTo: collectionView.centerYAnchor).isActive = true
+    }
+    
+    func hideEmptyState() {
+        emptyMessage.removeFromSuperview()
+    }
     
     func updateViews() {
         DispatchQueue.main.async {
