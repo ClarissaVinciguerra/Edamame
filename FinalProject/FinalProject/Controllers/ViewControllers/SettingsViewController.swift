@@ -55,7 +55,6 @@ class SettingsViewController: UIViewController {
     func setupViews() {
         guard let currentUser = UserController.shared.currentUser else { return }
         deleteButton.tintColor = .red
-        
         currentCityTextField.backgroundColor = .whiteSmoke
         changeCityButton.setTitle("Save", for: .normal)
         changeCityButton.backgroundColor = .edamameGreen
@@ -86,6 +85,5 @@ class SettingsViewController: UIViewController {
             }
         }
     }
-   
 }
 

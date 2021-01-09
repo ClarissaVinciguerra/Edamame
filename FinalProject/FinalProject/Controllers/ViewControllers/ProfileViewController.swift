@@ -33,7 +33,6 @@ class ProfileViewController: UIViewController {
     
     var otherUserImages: [Image]?
     
-    
     // MARK: - Lifecyle Functions
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -80,7 +79,7 @@ class ProfileViewController: UIViewController {
         guard let otherUser = otherUser, let currentUser = UserController.shared.currentUser else { return }
         
         if currentUser.pendingRequests.contains(otherUser.uuid) {
-           // hide button so user can't keep clicking and begin loading icon
+            // hide button so user can't keep clicking and begin loading icon
             addAcceptRevokeButton.isEnabled = false
             declineButton.isHidden = true
             activityIndicator.startAnimating()
@@ -91,7 +90,6 @@ class ProfileViewController: UIViewController {
             currentUser.friends.append(otherUser.uuid)
             otherUser.friends.append(currentUser.uuid)
             
-
             createMessageUsers(otherUser: otherUser) { (success) in
                 switch success {
                 case true:
@@ -100,11 +98,11 @@ class ProfileViewController: UIViewController {
                     print("unable to create Message Users")
                 }
             }
-  
+            
             // add to respective friends arrays
             addToFriendsArray(of: currentUser, and: otherUser)
-           
-
+            
+            
             updateViews()
             
             PushNotificationService.shared.sendPushNotificationTo(userID: otherUser.uuid, title: "\(currentUser.name) has accepted your friend request!", body: "Start a conversation.")
@@ -131,7 +129,6 @@ class ProfileViewController: UIViewController {
         }
     }
     
-
     private func createMessageUsers(otherUser: User, completion: @escaping (Bool) -> Void) {
         
         guard let userUid = UserDefaults.standard.value(forKey: LogInStrings.firebaseUidKey) as? String else { return }
@@ -191,7 +188,6 @@ class ProfileViewController: UIViewController {
         }
     }
     
-
     private func updateSentArray(of user: User) {
         UserController.shared.updateSentArray (with: user) { (result) in
             switch result {
@@ -283,7 +279,6 @@ class ProfileViewController: UIViewController {
                 }
             }
         }
-        
         
         currentUser.blockedArray.append(otherUser.uuid)
         UserController.shared.updateBlockedArray(with: currentUser) { (result) in

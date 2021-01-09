@@ -120,11 +120,18 @@ class LogInViewController: UIViewController {
         }
     }
     
+    func dismissKeyboard() {
+        
+        let tapGesture = UITapGestureRecognizer(target: view, action: #selector(UIView.endEditing))
+        view.addGestureRecognizer(tapGesture)
+    }
+    
     func setupViews() {
         setupLogoImageView()
         setupEmailTextField()
         setupPasswordTextField()
         setupLogInButton()
+        dismissKeyboard()
     }
     
     // MARK: - Views

@@ -45,7 +45,7 @@ class EditProfileViewController: UIViewController, UITextViewDelegate {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         //validateAuth()
-       
+        
     }
     
     override func viewDidLayoutSubviews() {
@@ -61,7 +61,7 @@ class EditProfileViewController: UIViewController, UITextViewDelegate {
         NotificationCenter.default.removeObserver(self)
         
     }
-   
+    
     // MARK: - Actions
     @IBAction private func textFieldDidChange(_ sender: Any) {
         textFieldChanged()
@@ -181,21 +181,20 @@ class EditProfileViewController: UIViewController, UITextViewDelegate {
     }
     
     @objc func keyboardWillAppear(notification: Notification) {
-       
+        
         if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
             scrollView.contentOffset = CGPoint(x: 0, y: keyboardSize.height)
         }
     }
     
     @objc func keyboardWillHide(notification: Notification) {
-       
-        scrollView.contentOffset = CGPoint(x: 0, y: scrollView.contentSize.height - view.frame.height)
+        
+        scrollView.contentOffset = CGPoint(x: 0, y: 0)
     }
     
     func updateViews() {
         if let currentUser = UserController.shared.currentUser {
             
-//            typeOfVeganTextField.placeholder = currentUser.type
             typeOfVeganTextField.attributedPlaceholder = NSAttributedString(string: currentUser.type, attributes: [NSAttributedString.Key.foregroundColor: UIColor.spaceBlack])
             bioTextView.text = currentUser.bio
             saveChangesButton.setTitle("Save Changes", for: .normal)
@@ -231,9 +230,9 @@ class EditProfileViewController: UIViewController, UITextViewDelegate {
         bioTextView.addCornerRadius(radius: 6)
         
         dismissKeyboard()
-                
+        
         view.backgroundColor = .white
-
+        
         navigationItem.leftBarButtonItem = editButtonItem
     }
     

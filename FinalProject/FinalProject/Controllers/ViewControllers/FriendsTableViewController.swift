@@ -10,9 +10,9 @@ import UIKit
 class FriendsTableViewController: UITableViewController {
     
     // MARK: - Properties
-
+    
     private var conversations = [Conversation]()
-
+    
     var refresher: UIRefreshControl = UIRefreshControl()
     lazy var emptyMessage: UILabel = {
         let messageLabel = UILabel()
@@ -23,10 +23,10 @@ class FriendsTableViewController: UITableViewController {
         messageLabel.numberOfLines = 0
         messageLabel.textAlignment = .center
         messageLabel.sizeToFit()
-
+        
         return messageLabel
     }()
-
+    
     
     // MARK: - Outlets
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
@@ -89,7 +89,6 @@ class FriendsTableViewController: UITableViewController {
                         self.tableView.reloadData()
                         self.activityIndicator.stopAnimating()
                     }
-
                 }
             case .failure(let error):
                 print("Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")
