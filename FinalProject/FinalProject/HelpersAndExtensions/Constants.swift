@@ -12,3 +12,5 @@ public let serverKey = "AAAA3gIBxLM:APA91bGG1BbYUx3p_WaG7rA7v7mPrPfnsThlBLkg0OcT
 public let yelpAPIKey = [
     "Authorization" : "Bearer cvNn1hjiH75zWVNtEwt75YOT8mlMJMB2NPCxAZF3UeY9ufpAYwxfW_ahE3C40VpCuV6qjloF3FSpBxtY0B-5XGpxB0uPMsTcLGRJKs9oPf5ln2xsOFDqfSBEfC-sX3Yx"
 ]
+
+let apikey = ""
