@@ -88,7 +88,6 @@ class EditProfileViewController: UIViewController, UITextViewDelegate {
     }
     
     // MARK: - Class Methods
-    
     private func initiateFetchUser() {
         guard let uidKey = UserDefaults.standard.value(forKey: LogInStrings.firebaseUidKey) else { return }
         let uidString = "\(uidKey)"
@@ -278,7 +277,6 @@ class EditProfileViewController: UIViewController, UITextViewDelegate {
         
         return UICollectionViewCompositionalLayout(section: section)
     }
-    
 }
 
 //MARK: - Extensions

@@ -99,5 +99,4 @@ final class StorageController {
             completion(.success(()))
         }
     }
-    
 }

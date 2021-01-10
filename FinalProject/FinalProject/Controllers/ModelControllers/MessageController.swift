@@ -91,7 +91,6 @@ final class MessageController {
                 completion(false)
                 return
             }
-            
         })
         completion(true)
     }
@@ -605,7 +604,7 @@ extension MessageController {
                         break
                     }
                     conversationIndex += 1
-                    }
+                }
                 let targetConversation = conversations[conversationIndex]
                 guard let conversationID = targetConversation["id"] as? String,
                       let name = targetConversation["other_user_name"] as? String,
@@ -623,8 +622,8 @@ extension MessageController {
                 completion(.failure(DatabaseError.failedToFetch))
                 return
             }
-            }
         }
+    }
     
     public func conversationExists(with targetRecipientUid: String, completion: @escaping(Result<String,Error>) ->Void) {
         //let safeRecipientEmail = MessageController.safeEmail(emailAddress: targetRecipientEmail)
