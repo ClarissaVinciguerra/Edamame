@@ -86,15 +86,14 @@ class LogInViewController: UIViewController {
                 self?.spinner.dismiss()
             }
             
-            
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
             let mainTabBarController = storyboard.instantiateViewController(identifier: "MainTabBarController")
             
             (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeRootViewController(mainTabBarController)
             
             //Dismisses the current view controller and returns to the main storyboard.
-//            strongSelf.tabBarController?.selectedIndex = 3
-//            strongSelf.navigationController?.dismiss(animated: true, completion: nil)
+            //            strongSelf.tabBarController?.selectedIndex = 3
+            //            strongSelf.navigationController?.dismiss(animated: true, completion: nil)
         }
     }
     
@@ -115,7 +114,7 @@ class LogInViewController: UIViewController {
                 }
             case .failure(_):
                 print("User does not yet exist in database")
-                //self.updateViews()
+            //self.updateViews()
             }
         }
     }

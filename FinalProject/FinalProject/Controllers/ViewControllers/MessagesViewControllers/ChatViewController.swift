@@ -26,7 +26,6 @@ class ChatViewController: MessagesViewController {
     var otherUser: User?
     private var conversationID: String?
     private var messages = [Message]()
-    
     private var selfSender: Sender? {
         guard let userUid = UserDefaults.standard.value(forKey: LogInStrings.firebaseUidKey)  as? String else { return nil }
         //let safeEmail = MessageController.safeEmail(emailAddress: email)
@@ -41,7 +40,6 @@ class ChatViewController: MessagesViewController {
         self.otherUserName = otherUserName
         self.conversationID = id
         super.init(nibName: nil, bundle: nil)
-        
     }
     
     required init?(coder: NSCoder) {
@@ -59,8 +57,8 @@ class ChatViewController: MessagesViewController {
         messageInputBar.delegate = self
         
         if let layout = messagesCollectionView.collectionViewLayout as? MessagesCollectionViewFlowLayout {
-                   layout.setMessageIncomingAvatarSize(.zero)
-                   layout.setMessageOutgoingAvatarSize(.zero)
+            layout.setMessageIncomingAvatarSize(.zero)
+            layout.setMessageOutgoingAvatarSize(.zero)
         }
         
         setupViews()
@@ -113,7 +111,6 @@ class ChatViewController: MessagesViewController {
         
         navigationController?.pushViewController(vc, animated: true)
         //self.present(vc, animated: true, completion: nil)
-        
     }
     
     // MARK: - Views
@@ -217,32 +214,31 @@ extension ChatViewController: MessagesDataSource, MessagesLayoutDelegate, Messag
     }
     
     func backgroundColor(for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> UIColor {
-            let sender = message.sender
-            if sender.senderId == selfSender?.senderId {
-                // our message that we've sent
-                return .edamameGreen
-            }
-
-            return .secondarySystemBackground
+        let sender = message.sender
+        if sender.senderId == selfSender?.senderId {
+            // our message that we've sent
+            return .edamameGreen
         }
+        
+        return .secondarySystemBackground
+    }
     
     func configureAvatarView(_ avatarView: AvatarView, for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) {
         if let layout = messagesCollectionView.collectionViewLayout as? MessagesCollectionViewFlowLayout {
-                   //
-                   // set avatar size zero
-                   //
-                   layout.setMessageIncomingAvatarSize(.zero)
-                   layout.setMessageOutgoingAvatarSize(.zero)
-                   //
-                   // set top\bottom label position
-                   //
-                   layout.setMessageOutgoingMessageTopLabelAlignment(LabelAlignment(textAlignment: .right, textInsets: UIEdgeInsets(top: 0, left:0, bottom: 0, right: 10)))
-                   layout.setMessageIncomingMessageTopLabelAlignment(LabelAlignment(textAlignment: .left, textInsets: UIEdgeInsets(top: 0, left:10, bottom: 0, right: 0)))
-                   
-                   layout.setMessageOutgoingMessageBottomLabelAlignment(LabelAlignment(textAlignment: .right, textInsets: UIEdgeInsets(top: 0, left:0, bottom: 0, right: 10)))
-                   layout.setMessageIncomingCellBottomLabelAlignment(LabelAlignment(textAlignment: .left, textInsets: UIEdgeInsets(top: 0, left:10, bottom: 0, right: 0)))
-                 }
-        
+            //
+            // set avatar size zero
+            //
+            layout.setMessageIncomingAvatarSize(.zero)
+            layout.setMessageOutgoingAvatarSize(.zero)
+            //
+            // set top\bottom label position
+            //
+            layout.setMessageOutgoingMessageTopLabelAlignment(LabelAlignment(textAlignment: .right, textInsets: UIEdgeInsets(top: 0, left:0, bottom: 0, right: 10)))
+            layout.setMessageIncomingMessageTopLabelAlignment(LabelAlignment(textAlignment: .left, textInsets: UIEdgeInsets(top: 0, left:10, bottom: 0, right: 0)))
+            
+            layout.setMessageOutgoingMessageBottomLabelAlignment(LabelAlignment(textAlignment: .right, textInsets: UIEdgeInsets(top: 0, left:0, bottom: 0, right: 10)))
+            layout.setMessageIncomingCellBottomLabelAlignment(LabelAlignment(textAlignment: .left, textInsets: UIEdgeInsets(top: 0, left:10, bottom: 0, right: 0)))
+        }
     }
 }
 

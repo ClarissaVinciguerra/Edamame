@@ -108,7 +108,6 @@ extension EditProfileViewController {
         
         alertController.addTextField { (textfield) in
             textfield.autocapitalizationType = .words
-            
         }
         
         let createUserAction = UIAlertAction(title: "Add City", style: .default) { (result) in
@@ -130,7 +129,6 @@ extension EditProfileViewController {
                     print("Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")
                     self.activityIndicator.stopAnimating()
                     self.didNotCreateUserAlert()
-                    
                 }
             }
         }
@@ -168,7 +166,6 @@ extension ProfileViewController {
         let okayAction = UIAlertAction(title: "Okay", style: .default) { (_) in
             
             self.navigationController?.popViewController(animated: true)
-            
         }
         
         alertController.addAction(okayAction)
@@ -206,8 +203,7 @@ extension ProfileViewController {
     }
 }
 
-// MARK: - RandoCollectionViewController
-//extension RandoCollectionViewController {
+// MARK: - Extensions
 extension UIViewController {
     
     func presentLocationPermissionsAlert() {
@@ -245,9 +241,7 @@ extension UIViewController {
         alertController.addAction(deleteUserAction)
         
         present(alertController, animated: true, completion: nil)
-        
     }
-
 }
 
 //MARK: - SettingsViewController
@@ -267,7 +261,7 @@ extension SettingsViewController {
                 let loginNavController = storyboard.instantiateViewController(identifier: "LoginNavigationController")
                 
                 (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeRootViewController(loginNavController)
-
+                
             } catch {
                 print("Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")
             }

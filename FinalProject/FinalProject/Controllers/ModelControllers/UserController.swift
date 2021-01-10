@@ -26,9 +26,9 @@ class UserController {
     // MARK: - CREATE
     func createUser(name: String, bio: String, type: String, city: String, cityRef: String, unsavedImages: [UIImage], dateOfBirth: Date, latitude: Double, longitude: Double, uuid: String, completion: @escaping (Result<User, UserError>) -> Void) {
         
-
+        
         let newUser = User(name: name, dateOfBirth: dateOfBirth, bio: bio, type: type, city: city, cityRef: cityRef, latitude: latitude, longitude: longitude, uuid: uuid, pushID: UserController.shared.pushID ?? "")
-
+        
         let timeInterval = newUser.dateOfBirth.timeIntervalSince1970
         
         let dispatchGroup = DispatchGroup()
@@ -85,7 +85,6 @@ class UserController {
     }
     
     // MARK: - READ
-    
     func fetchUserBy(_ uuid: String, completion: @escaping (Result<User, UserError>) -> Void) {
         let userDocRef = database.collection(userCollection).document(uuid)
         
@@ -110,7 +109,7 @@ class UserController {
                 }
                 
                 dispatchGroup.notify(queue: .main) {
-//                    self.currentUser = user
+                    //                    self.currentUser = user
                     completion(.success(user))
                 }
                 
@@ -124,7 +123,7 @@ class UserController {
         }
         //        completion(.failure(.noExistingUser))
     }
-
+    
     func checkThatUserExists(with uuid: String, completion: @escaping ((Bool) -> Void)) {
         let docRef = database.collection(userCollection).document(uuid)
         
@@ -169,7 +168,7 @@ class UserController {
                             // add to filter for location within 35 mi    || myLocation.distance(from: randoLocation) > 56327
                             
                             if currentUser.sentRequests.contains(rando.uuid) || currentUser.friends.contains(rando.uuid) || currentUser.uuid == rando.uuid || currentUser.blockedArray.contains(rando.uuid) || rando.reportCount >= 3 || rando.blockedArray.contains(currentUser.uuid)  {
-                            
+                                
                                 
                                 dispatchGroup.leave()
                                 
@@ -206,7 +205,7 @@ class UserController {
         let userDocRef = database.collection(userCollection)
         let dispatchGroup = DispatchGroup()
         // Once app has a sufficient user base
-//        let myLocation = CLLocation(latitude: currentUser.latitude, longitude: currentUser.longitude)
+        //        let myLocation = CLLocation(latitude: currentUser.latitude, longitude: currentUser.longitude)
         
         userDocRef.whereField(UserStrings.cityRefKey, isEqualTo: currentUser.cityRef).getDocuments { (querySnapshot, error) in
             if let error = error {
@@ -229,7 +228,7 @@ class UserController {
                             // add to filter for location within 35 mi    || myLocation.distance(from: randoLocation) > 56327
                             
                             if currentUser.sentRequests.contains(rando.uuid) || currentUser.friends.contains(rando.uuid) || currentUser.uuid == rando.uuid || currentUser.blockedArray.contains(rando.uuid) || rando.reportCount >= 3 || rando.blockedArray.contains(currentUser.uuid)  {
-                            
+                                
                                 dispatchGroup.leave()
                                 
                             } else {
@@ -340,7 +339,7 @@ class UserController {
                 }
             }  
         }
-   
+        
         let documentReference = database.collection(userCollection).document(user.uuid)
         
         documentReference.updateData([
@@ -363,7 +362,7 @@ class UserController {
     
     func updateBadgeCountAndPushID(with user: User, completion: @escaping (Result<Void, UserError>) -> Void) {
         let docRef = database.collection("users").document(user.uuid)
-
+        
         docRef.updateData([
             UserStrings.badgeCountKey : user.badgeCount,
             UserStrings.pushIDKey : user.pushID ?? ""
@@ -380,7 +379,7 @@ class UserController {
     
     func updatePushID(with user: User, completion: @escaping (Result<Void, UserError>) -> Void) {
         let docRef = database.collection("users").document(user.uuid)
-
+        
         docRef.updateData([
             UserStrings.pushIDKey : user.pushID ?? ""
         ]) { err in
@@ -396,7 +395,7 @@ class UserController {
     
     func updateUserCurrentLocation(with user: User, completion: @escaping (Result<User, UserError>) -> Void) {
         let docRef = database.collection("users").document(user.uuid)
-
+        
         docRef.updateData([
             UserStrings.latitudeKey : user.latitude,
             UserStrings.longitudeKey : user.longitude
@@ -413,7 +412,7 @@ class UserController {
     
     func updatePendingArray (with user: User, completion: @escaping (Result<Void, UserError>) -> Void) {
         let docRef = database.collection("users").document(user.uuid)
-
+        
         docRef.updateData([
             UserStrings.pendingRequestsKey : user.pendingRequests,
         ]) { err in
@@ -427,10 +426,9 @@ class UserController {
         }
     }
     
-
     func updateSentArray (with user: User, completion: @escaping (Result<Void, UserError>) -> Void) {
         let docRef = database.collection("users").document(user.uuid)
-
+        
         docRef.updateData([
             UserStrings.sentRequestsKey : user.sentRequests
         ]) { err in
@@ -448,7 +446,7 @@ class UserController {
     func updateFriendsArrays (with user: User, and otherUser: User, completion: @escaping (Result<Void, UserError>) -> Void) {
         let userDocRef = database.collection("users").document(user.uuid)
         let otherUserDocRef = database.collection("users").document(otherUser.uuid)
-
+        
         userDocRef.updateData([
             UserStrings.friendsKey : user.friends
         ]) { err in
@@ -475,7 +473,7 @@ class UserController {
     
     func updateBlockedArray (with user: User, completion: @escaping (Result<Void, UserError>) -> Void) {
         let docRef = database.collection("users").document(user.uuid)
-
+        
         docRef.updateData([
             UserStrings.blockedArrayKey : user.blockedArray
         ]) { err in
@@ -484,17 +482,16 @@ class UserController {
                 return completion(.failure(UserError.noExistingUser))
             } else {
                 print("Document successfully updated")
-
+                
                 self.currentUser = user
                 return completion(.success(()))
-
             }
         }
     }
     
     func updateReportCount (with user: User, completion: @escaping (Result<Void, UserError>) -> Void) {
         let docRef = database.collection("users").document(user.uuid)
-
+        
         docRef.updateData([
             UserStrings.reportCountKey : user.reportCount
         ]) { err in
@@ -510,7 +507,7 @@ class UserController {
     
     func updateCity (with user: User, completion: @escaping (Result<Void, UserError>) -> Void) {
         let docRef = database.collection("users").document(user.uuid)
-
+        
         docRef.updateData([
             UserStrings.reportCountKey : user.reportCount
         ]) { err in
@@ -524,7 +521,6 @@ class UserController {
             }
         }
     }
-    
     
     // MARK: - REMOVE
     func removeFromSentRequestsOf (_ otherUserUUID: String, andPendingRequestOf currentUserUUID: String, completion: @escaping (Result<[String], UserError>) -> Void) {
@@ -602,7 +598,7 @@ class UserController {
     }
     
     func deleteUserFromOtherUserArrays(_ user: User, completion: @escaping (Result<Void, UserError>) -> Void) {
-       
+        
         let dispatchGroup = DispatchGroup()
         
         for userID in user.friends {
@@ -632,7 +628,6 @@ class UserController {
                     return completion(.failure(UserError.couldNotRemove))
                 }
             }
-            
         }
         
         for userID in user.sentRequests {
@@ -653,7 +648,7 @@ class UserController {
             return completion(.success(()))
         }
     }
-        
+    
     // MARK: - DELETE USER
     func deleteCurrentUser(completion: @escaping (Result<Void, UserError>) -> Void) {
         
@@ -715,6 +710,4 @@ class UserController {
             }
         }
     }
-    
-
 }

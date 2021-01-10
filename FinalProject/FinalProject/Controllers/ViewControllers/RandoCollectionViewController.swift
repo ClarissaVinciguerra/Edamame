@@ -52,7 +52,7 @@ class RandoCollectionViewController: UICollectionViewController {
     }
     
     override func viewDidAppear(_ animated: Bool) {
-    
+        
     }
     
     // MARK: - Class methods

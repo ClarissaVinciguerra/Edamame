@@ -10,7 +10,6 @@ import UIKit
 class FriendsTableViewController: UITableViewController {
     
     // MARK: - Properties
-    
     private var conversations = [Conversation]()
     
     var refresher: UIRefreshControl = UIRefreshControl()

@@ -12,6 +12,7 @@ protocol EditPhotoCollectionViewDelegate: class {
 }
 
 class EditPhotoCollectionViewCell: UICollectionViewCell {
+    
     // MARK: - Outlets
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var visualEffectView: UIVisualEffectView!
