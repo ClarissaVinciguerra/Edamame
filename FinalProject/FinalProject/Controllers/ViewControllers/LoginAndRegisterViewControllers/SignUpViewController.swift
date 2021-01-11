@@ -13,7 +13,6 @@ struct SignUpStrings {
     static let emailKey = "email"
     static let nameKey = "name"
     static let firebaseUid = "firebaseUid"
-    static let birthday = "birthday"
 }
 
 class SignUpViewController: UIViewController {
@@ -23,7 +22,7 @@ class SignUpViewController: UIViewController {
     @IBOutlet weak var emailTextField: UITextField!
     @IBOutlet weak var passwordTextField: UITextField!
     @IBOutlet weak var confirmPasswordTextField: UITextField!
-    @IBOutlet weak var birthdayDatePicker: UIDatePicker!
+    @IBOutlet weak var completeButton: UIButton!
     @IBOutlet weak var signUpButton: UIButton!
     
     // MARK: - Properties
@@ -38,6 +37,18 @@ class SignUpViewController: UIViewController {
     }
     
     // MARK: - Actions
+    @IBAction func completeButtonTapped(_ sender: UIButton) {
+        UIView.animate(withDuration: 0.5, delay: 0.1, options: .curveLinear, animations: {
+            sender.transform = CGAffineTransform(scaleX: 0.1, y: 0.1)
+            
+        }) { (success) in
+            UIView.animate(withDuration: 0.5, delay: 0.1, options: .curveLinear, animations: {
+                sender.isSelected = !sender.isSelected
+                sender.transform = .identity
+            }, completion: nil)
+        }
+    }
+    
     @IBAction func signUpButtonTapped(_ sender: Any) {
         nameTextField.resignFirstResponder()
         emailTextField.resignFirstResponder()
@@ -65,7 +76,10 @@ class SignUpViewController: UIViewController {
             return
         }
         
-        let birthday = birthdayDatePicker.date
+        guard completeButton.isSelected else {
+            alertForCheckbox()
+            return
+        }
         
         //spinner.show(in: view)
         
@@ -88,7 +102,6 @@ class SignUpViewController: UIViewController {
             UserDefaults.standard.setValue(email, forKey: SignUpStrings.emailKey)
             UserDefaults.standard.setValue(name, forKey: SignUpStrings.nameKey)
             UserDefaults.standard.setValue(firebaseUid, forKey: SignUpStrings.firebaseUid)
-            UserDefaults.standard.setValue(birthday, forKey: SignUpStrings.birthday)
             
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
             let mainTabBarController = storyboard.instantiateViewController(identifier: "MainTabBarController")
@@ -104,8 +117,8 @@ class SignUpViewController: UIViewController {
         setupEmailTextField()
         setupPasswordTextField()
         setupConfirmPasswordTextField()
-        setupBirthdayDatePicker()
         setupSignUpButton()
+        setupCompleteButton()
         dismissKeyboard()
     }
     
@@ -139,18 +152,19 @@ class SignUpViewController: UIViewController {
         confirmPasswordTextField.layer.cornerRadius = 12
         confirmPasswordTextField.isSecureTextEntry = true
     }
-    
-    func setupBirthdayDatePicker(){
-    }
-    
+
     func setupSignUpButton(){
         signUpButton.layer.cornerRadius = 12
         signUpButton.layer.masksToBounds = true
         signUpButton.backgroundColor = .edamameGreen
     }
     
+    func setupCompleteButton() {
+        completeButton.setImage(UIImage(named: "incomplete"), for: .normal)
+        completeButton.setImage(UIImage(named: "complete"), for: .selected)
+    }
+    
     func dismissKeyboard() {
-        
         let tapGesture = UITapGestureRecognizer(target: view, action: #selector(UIView.endEditing))
         view.addGestureRecognizer(tapGesture)
     }

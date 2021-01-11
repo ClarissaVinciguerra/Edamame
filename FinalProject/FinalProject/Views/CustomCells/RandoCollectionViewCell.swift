@@ -11,7 +11,7 @@ class RandoCollectionViewCell: UICollectionViewCell {
     // MARK: - Outlets
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var nameLabel: UILabel!
-    @IBOutlet weak var ageLabel: UILabel!
+    @IBOutlet weak var distanceLabel: UILabel!
     @IBOutlet weak var backgroundPlaceHolder: UIView!
     
     //MARK: - Properties

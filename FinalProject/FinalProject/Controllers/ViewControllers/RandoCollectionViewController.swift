@@ -214,8 +214,7 @@ class RandoCollectionViewController: UICollectionViewController {
         }
         
         cell.nameLabel.text = rando.name
-        cell.ageLabel.text = rando.dateOfBirth.calcAge()
-        
+    
         return cell
     }
     

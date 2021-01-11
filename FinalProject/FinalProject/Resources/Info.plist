@@ -30,7 +30,7 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>1</string>
+	<string>$(CURRENT_PROJECT_VERSION)</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSCameraUsageDescription</key>
@@ -38,7 +38,7 @@
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Enables Edamame to customize your experience based on your current location, including helping you find other users &amp; restaurants near you.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Allows the user to select profile pictures from &quot;Photos&quot;</string>
+	<string>Allows the user to select profile pictures from "Photos"</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>SourceSansPro-ExtraLight.ttf</string>

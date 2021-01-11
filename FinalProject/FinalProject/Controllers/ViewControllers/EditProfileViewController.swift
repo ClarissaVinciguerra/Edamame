@@ -152,7 +152,6 @@ class EditProfileViewController: UIViewController, UITextViewDelegate {
     private func createUser() {
         guard let uidKey = UserDefaults.standard.value(forKey: LogInStrings.firebaseUidKey),
               let nameKey = UserDefaults.standard.value(forKey: SignUpStrings.nameKey),
-              let birthdayKey = UserDefaults.standard.value(forKey: SignUpStrings.birthday) as? Date,
               let type = typeOfVeganTextField.text,
               let bio = bioTextView.text,
               !bio.isEmpty else { return presentBioAlert() }
@@ -166,7 +165,7 @@ class EditProfileViewController: UIViewController, UITextViewDelegate {
         }
         
         if profileImages.count > 1 {
-            addCityAlertToCreateUser(name: name, bio: bio, type: type, unsavedImages: images, dateOfBirth: birthdayKey, latitude: 0.0, longitude: 0.0, uuid: firebaseuid)
+            addCityAlertToCreateUser(name: name, bio: bio, type: type, unsavedImages: images, latitude: 0.0, longitude: 0.0, uuid: firebaseuid)
         } else {
             self.activityIndicator.stopAnimating()
             presentImageAlert()
