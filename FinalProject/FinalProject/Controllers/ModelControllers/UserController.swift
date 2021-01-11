@@ -24,12 +24,9 @@ class UserController {
     var friends: [User] = []
     
     // MARK: - CREATE
-    func createUser(name: String, bio: String, type: String, city: String, cityRef: String, unsavedImages: [UIImage], dateOfBirth: Date, latitude: Double, longitude: Double, uuid: String, completion: @escaping (Result<User, UserError>) -> Void) {
+    func createUser(name: String, bio: String, type: String, city: String, cityRef: String, unsavedImages: [UIImage], latitude: Double, longitude: Double, uuid: String, completion: @escaping (Result<User, UserError>) -> Void) {
         
-        
-        let newUser = User(name: name, dateOfBirth: dateOfBirth, bio: bio, type: type, city: city, cityRef: cityRef, latitude: latitude, longitude: longitude, uuid: uuid, pushID: UserController.shared.pushID ?? "")
-        
-        let timeInterval = newUser.dateOfBirth.timeIntervalSince1970
+        let newUser = User(name: name, bio: bio, type: type, city: city, cityRef: cityRef, latitude: latitude, longitude: longitude, uuid: uuid, pushID: UserController.shared.pushID ?? "")
         
         let dispatchGroup = DispatchGroup()
         
@@ -60,7 +57,6 @@ class UserController {
                 UserStrings.typeKey : "\(type)",
                 UserStrings.cityKey : "\(city)",
                 UserStrings.cityRefKey : "\(cityRef)",
-                UserStrings.dateOfBirthKey : timeInterval,
                 UserStrings.latitudeKey : newUser.latitude,
                 UserStrings.longitudeKey : newUser.longitude,
                 UserStrings.friendsKey : newUser.friends,
@@ -284,7 +280,6 @@ class UserController {
                             print("Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")
                             fetchedUsers.append(user)
                             dispatchGroup.leave()
-                            
                         }
                     }
                 } else if let error = error {
@@ -706,7 +701,6 @@ class UserController {
                     print("Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")
                     completion (.failure(UserError.couldNotRemove))
                 }
-                
             }
         }
     }

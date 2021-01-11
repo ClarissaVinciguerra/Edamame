@@ -9,7 +9,6 @@ import Firebase
 
 struct UserStrings {
     static let nameKey = "name"
-    static let dateOfBirthKey = "dateOfBirth"
     static let bioKey = "bio"
     static let typeKey = "type"
     static let cityKey = "city"
@@ -34,7 +33,6 @@ struct Image {
 class User {
     var name: String
     let uuid: String
-    let dateOfBirth: Date
     var bio: String
     var type: String
     var city: String
@@ -52,9 +50,8 @@ class User {
     var badgeCount: Int
     var dist: Double
     
-    init(name: String, dateOfBirth: Date, bio: String, type: String, city: String, cityRef: String, latitude: Double, longitude: Double, uuid: String, images: [Image] = [], friends: [String] = [], pendingRequests: [String] = [], sentRequests: [String] = [], blockedArray: [String] = [], reportCount: Int = 0, pushID: String, badgeCount: Int = 0, dist: Double = 0.0) {
+    init(name: String, bio: String, type: String, city: String, cityRef: String, latitude: Double, longitude: Double, uuid: String, images: [Image] = [], friends: [String] = [], pendingRequests: [String] = [], sentRequests: [String] = [], blockedArray: [String] = [], reportCount: Int = 0, pushID: String, badgeCount: Int = 0, dist: Double = 0.0) {
         self.name = name
-        self.dateOfBirth = dateOfBirth
         self.bio = bio
         self.type = type
         self.city = city
@@ -75,7 +72,6 @@ class User {
     
     convenience init?(document: DocumentSnapshot) {
         guard let name = document[UserStrings.nameKey] as? String,
-              let timeInterval = document[UserStrings.dateOfBirthKey] as? Double,
               let bio = document[UserStrings.bioKey] as? String,
               let type = document[UserStrings.typeKey] as? String,
               let city = document[UserStrings.cityKey] as? String,
@@ -89,9 +85,8 @@ class User {
               let reportCount = document[UserStrings.reportCountKey] as? Int,
               let pushID = document[UserStrings.pushIDKey] as? String,
               let badgeCount = document[UserStrings.badgeCountKey] as? Int else { return nil }
-        let dateOfBirth = Date(timeIntervalSince1970: timeInterval)
         
-        self.init(name: name, dateOfBirth: dateOfBirth, bio: bio, type: type, city: city, cityRef: cityRef, latitude: latitude, longitude: longitude, uuid: document.documentID, images: [], friends: friends, pendingRequests: pendingRequests, sentRequests: sentRequests, blockedArray: blockedArray, reportCount: reportCount, pushID: pushID, badgeCount: badgeCount)
+        self.init(name: name, bio: bio, type: type, city: city, cityRef: cityRef, latitude: latitude, longitude: longitude, uuid: document.documentID, images: [], friends: friends, pendingRequests: pendingRequests, sentRequests: sentRequests, blockedArray: blockedArray, reportCount: reportCount, pushID: pushID, badgeCount: badgeCount)
     }
 }
 

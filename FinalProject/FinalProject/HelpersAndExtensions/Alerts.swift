@@ -45,7 +45,14 @@ extension SignUpViewController {
         present(signUpError, animated: true)
     }
     
-    
+    func alertForCheckbox() {
+        let checkboxError = UIAlertController(title: "Error Signing Up", message: "You must be 18 or older to use this app.", preferredStyle: .alert)
+        
+        let okAction = UIAlertAction(title: "Ok", style: .cancel, handler: nil)
+        
+        checkboxError.addAction(okAction)
+        present(checkboxError, animated: true)
+    }
 }
 
 // MARK: - EditProfileViewController
@@ -102,7 +109,7 @@ extension EditProfileViewController {
         present(alertVC, animated: true)
     }
     
-    func addCityAlertToCreateUser(name: String, bio: String, type: String, unsavedImages: [UIImage], dateOfBirth: Date, latitude: Double, longitude: Double, uuid: String ) {
+    func addCityAlertToCreateUser(name: String, bio: String, type: String, unsavedImages: [UIImage], latitude: Double, longitude: Double, uuid: String ) {
         
         let alertController = UIAlertController(title: "Which city are you closest to?", message: "This will determine who shows up in your news feed! Please make sure you are using the legal city name (e.g. 'Philadelphia' instead of 'Philly'). You can change your metropolitan area at any time in your settings.", preferredStyle: .alert)
         
@@ -116,7 +123,7 @@ extension EditProfileViewController {
             
             let cityRef = text.lowercased().replacingOccurrences(of: " ", with: "")
             
-            UserController.shared.createUser(name: name, bio: bio, type: type, city: text, cityRef: cityRef, unsavedImages: unsavedImages, dateOfBirth: dateOfBirth, latitude: latitude, longitude: longitude, uuid: uuid) { (result) in
+            UserController.shared.createUser(name: name, bio: bio, type: type, city: text, cityRef: cityRef, unsavedImages: unsavedImages, latitude: latitude, longitude: longitude, uuid: uuid) { (result) in
                 switch result {
                 case .success(_):
                     DispatchQueue.main.async {
@@ -261,7 +268,7 @@ extension SettingsViewController {
                 let loginNavController = storyboard.instantiateViewController(identifier: "LoginNavigationController")
                 
                 (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeRootViewController(loginNavController)
-                
+
             } catch {
                 print("Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")
             }
