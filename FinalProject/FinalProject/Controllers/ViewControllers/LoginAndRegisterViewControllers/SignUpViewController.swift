@@ -13,7 +13,6 @@ struct SignUpStrings {
     static let emailKey = "email"
     static let nameKey = "name"
     static let firebaseUid = "firebaseUid"
-    static let birthday = "birthday"
 }
 
 class SignUpViewController: UIViewController {
@@ -23,21 +22,33 @@ class SignUpViewController: UIViewController {
     @IBOutlet weak var emailTextField: UITextField!
     @IBOutlet weak var passwordTextField: UITextField!
     @IBOutlet weak var confirmPasswordTextField: UITextField!
-    @IBOutlet weak var birthdayDatePicker: UIDatePicker!
+    @IBOutlet weak var completeButton: UIButton!
     @IBOutlet weak var signUpButton: UIButton!
     
     // MARK: - Properties
     private let spinner = JGProgressHUD(style: .dark)
+    var SignUpAlertMessage = "Please enter all information to register."
     
     // MARK: - Lifecycle Functions
     override func viewDidLoad() {
         super.viewDidLoad()
         
         setupViews()
-
     }
     
     // MARK: - Actions
+    @IBAction func completeButtonTapped(_ sender: UIButton) {
+        UIView.animate(withDuration: 0.5, delay: 0.1, options: .curveLinear, animations: {
+            sender.transform = CGAffineTransform(scaleX: 0.1, y: 0.1)
+            
+        }) { (success) in
+            UIView.animate(withDuration: 0.5, delay: 0.1, options: .curveLinear, animations: {
+                sender.isSelected = !sender.isSelected
+                sender.transform = .identity
+            }, completion: nil)
+        }
+    }
+    
     @IBAction func signUpButtonTapped(_ sender: Any) {
         nameTextField.resignFirstResponder()
         emailTextField.resignFirstResponder()
@@ -46,16 +57,29 @@ class SignUpViewController: UIViewController {
         
         guard let name = nameTextField.text,
               let email = emailTextField.text,
-              passwordTextField.text == confirmPasswordTextField.text,
               let password = passwordTextField.text,
               !email.isEmpty,
-              !name.isEmpty,
-              password.count >= 6 else {
+              !name.isEmpty else {
             alertUserSignUpError()
             return
         }
-        let birthday = birthdayDatePicker.date
         
+        guard passwordTextField.text == confirmPasswordTextField.text else {
+            SignUpAlertMessage = SignUpAlertStrings.passwordMatchKey
+            alertUserSignUpError()
+            return
+        }
+        
+        guard password.count >= 6 else {
+            SignUpAlertMessage = SignUpAlertStrings.passwordCharacterCountKey
+            alertUserSignUpError()
+            return
+        }
+        
+        guard completeButton.isSelected else {
+            alertForCheckbox()
+            return
+        }
         
         //spinner.show(in: view)
         
@@ -78,22 +102,13 @@ class SignUpViewController: UIViewController {
             UserDefaults.standard.setValue(email, forKey: SignUpStrings.emailKey)
             UserDefaults.standard.setValue(name, forKey: SignUpStrings.nameKey)
             UserDefaults.standard.setValue(firebaseUid, forKey: SignUpStrings.firebaseUid)
-            UserDefaults.standard.setValue(birthday, forKey: SignUpStrings.birthday)
             
+            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+            let mainTabBarController = storyboard.instantiateViewController(identifier: "MainTabBarController")
             
-            // Creates a new User from the User Model
-            // let newUser = User(name: name, bio: "", type: "", latitude: 33.8121, longitude: 117.9190, uuid: firebaseUser.uid, images: <#T##[UIImage]#>, friends: <#T##[String]#>, pendingRequests: <#T##[String]#>, sentRequests: <#T##[String]#>, blockedArray: <#T##[String]#>)
-            
-            
-            
-            // Insert newUser into the realtime Database
-            
-            
-            
+            (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeRootViewController(mainTabBarController)
+            //self.navigationController?.dismiss(animated: true, completion: nil)
         }
-        
-        //When user is successfully create, take the user to the main storyboard.
-        self.navigationController?.dismiss(animated: true, completion: nil)
     }
     
     // MARK: - Helper Methods
@@ -102,17 +117,9 @@ class SignUpViewController: UIViewController {
         setupEmailTextField()
         setupPasswordTextField()
         setupConfirmPasswordTextField()
-        setupBirthdayDatePicker()
         setupSignUpButton()
-    }
-    
-    
-    func alertUserSignUpError() {
-        let signUpError = UIAlertController(title: "Error Signing Up", message: "Please enter all information to register.", preferredStyle: .alert)
-        let okAction = UIAlertAction(title: "Ok", style: .cancel, handler: nil)
-        
-        signUpError.addAction(okAction)
-        present(signUpError, animated: true)
+        setupCompleteButton()
+        dismissKeyboard()
     }
     
     // MARK: - Views
@@ -135,7 +142,7 @@ class SignUpViewController: UIViewController {
         passwordTextField.autocorrectionType = .no
         passwordTextField.returnKeyType = .continue
         passwordTextField.layer.cornerRadius = 12
-        passwordTextField.isSecureTextEntry = false
+        passwordTextField.isSecureTextEntry = true
     }
     
     func setupConfirmPasswordTextField(){
@@ -143,15 +150,22 @@ class SignUpViewController: UIViewController {
         confirmPasswordTextField.autocorrectionType = .no
         confirmPasswordTextField.returnKeyType = .done
         confirmPasswordTextField.layer.cornerRadius = 12
-        confirmPasswordTextField.isSecureTextEntry = false
+        confirmPasswordTextField.isSecureTextEntry = true
     }
-    
-    func setupBirthdayDatePicker(){
-    }
-    
+
     func setupSignUpButton(){
         signUpButton.layer.cornerRadius = 12
         signUpButton.layer.masksToBounds = true
+        signUpButton.backgroundColor = .edamameGreen
     }
     
+    func setupCompleteButton() {
+        completeButton.setImage(UIImage(named: "incomplete"), for: .normal)
+        completeButton.setImage(UIImage(named: "complete"), for: .selected)
+    }
+    
+    func dismissKeyboard() {
+        let tapGesture = UITapGestureRecognizer(target: view, action: #selector(UIView.endEditing))
+        view.addGestureRecognizer(tapGesture)
+    }
 }

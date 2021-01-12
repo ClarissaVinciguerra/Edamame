@@ -19,6 +19,9 @@ class EditProfileViewController: UIViewController, UITextViewDelegate {
     @IBOutlet weak var cameraBarButton: UIBarButtonItem!
     @IBOutlet weak var infoButton: UIButton!
     @IBOutlet weak var settingsButton: UIButton!
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
+    @IBOutlet weak var scrollViewBottomConstraint: NSLayoutConstraint!
+    @IBOutlet weak var scrollView: UIScrollView!
     
     //MARK: - Properties
     var viewsLaidOut = false
@@ -27,18 +30,22 @@ class EditProfileViewController: UIViewController, UITextViewDelegate {
     // MARK: - Lifecycle Functions
     override func viewDidLoad() {
         super.viewDidLoad()
+        activityIndicator.startAnimating()
         bioTextView.delegate = self
         updateViews()
+        addObserver()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         disableCameraBarButton()
+        initiateFetchUser()
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        validateAuth()
+        //validateAuth()
+        
     }
     
     override func viewDidLayoutSubviews() {
@@ -46,13 +53,18 @@ class EditProfileViewController: UIViewController, UITextViewDelegate {
         if viewsLaidOut == false {
             setupViews()
             viewsLaidOut = true
+            activityIndicator.stopAnimating()
         }
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+        
     }
     
     // MARK: - Actions
     @IBAction private func textFieldDidChange(_ sender: Any) {
-        saveChangesButton.setTitle("Save Changes", for: .normal)
-        saveChangesButton.isEnabled = true
+        textFieldChanged()
     }
     
     func textViewDidBeginEditing(_ textView: UITextView) {
@@ -67,6 +79,7 @@ class EditProfileViewController: UIViewController, UITextViewDelegate {
     }
     
     @IBAction func saveChangesButtonTapped(_ sender: Any) {
+        activityIndicator.startAnimating()
         createOrUpdateUser()
     }
     
@@ -75,34 +88,31 @@ class EditProfileViewController: UIViewController, UITextViewDelegate {
     }
     
     // MARK: - Class Methods
-    private func validateAuth() {
-        if FirebaseAuth.Auth.auth().currentUser == nil {
-            let storyboard = UIStoryboard(name: "LogInSignUp", bundle: nil)
-            guard let vc = storyboard.instantiateInitialViewController() else { return }
-            vc.modalPresentationStyle = .fullScreen
-            present(vc, animated: false)
-        } else {
-            guard let uidKey = UserDefaults.standard.value(forKey: LogInStrings.firebaseUidKey) else { return }
-            let uidString = "\(uidKey)"
-            fetchUser(with: uidString)
-        }
+    private func initiateFetchUser() {
+        guard let uidKey = UserDefaults.standard.value(forKey: LogInStrings.firebaseUidKey) else { return }
+        let uidString = "\(uidKey)"
+        fetchUser(with: uidString)
     }
-    
+    // CHECK IF THIS IS NECESSARY BEFORE SUBMISSION
     private func fetchUser(with firebaseUID: String) {
+        // this wont be necessary when the fetchUser function is moved
         profileImages = []
         
         UserController.shared.fetchUserBy(firebaseUID) { (result) in
             switch result {
             case .success(let user):
                 DispatchQueue.main.async {
+                    // if success - the user needs to be set to the current user and taken to the randoVC (index[0])
                     UserController.shared.currentUser = user
                     self.profileImages = user.images
+                    // these can be called in VDL of this VC
                     self.setupViews()
                     self.updateViews()
                     self.disableCameraBarButton()
                 }
             case .failure(_):
                 print("User does not yet exist in database")
+                // If the user is not fetched send to index[3] of tab bar controller and disable other tab bars - maybe we should add an alert
                 self.updateViews()
             }
         }
@@ -123,13 +133,15 @@ class EditProfileViewController: UIViewController, UITextViewDelegate {
         currentUser.type = type
         
         if profileImages.count > 1 {
-            UserController.shared.updateUserBy(currentUser, updatedImages: profileImages) { (result) in
+            UserController.shared.updateUserInfoBy(currentUser, updatedImages: profileImages) { (result) in
                 switch result {
                 case .success(_):
                     self.saveChangesButton.setTitle("Saved", for: .normal)
                     self.saveChangesButton.isEnabled = false
+                    self.activityIndicator.stopAnimating()
                 case .failure(let error):
                     print("Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")
+                    self.activityIndicator.stopAnimating()
                 }
             }
         } else {
@@ -140,12 +152,11 @@ class EditProfileViewController: UIViewController, UITextViewDelegate {
     private func createUser() {
         guard let uidKey = UserDefaults.standard.value(forKey: LogInStrings.firebaseUidKey),
               let nameKey = UserDefaults.standard.value(forKey: SignUpStrings.nameKey),
-              let birthdayKey = UserDefaults.standard.value(forKey: SignUpStrings.birthday) as? Date,
               let type = typeOfVeganTextField.text,
               let bio = bioTextView.text,
               !bio.isEmpty else { return presentBioAlert() }
         
-        let uid = "\(uidKey)"
+        let firebaseuid = "\(uidKey)"
         let name = "\(nameKey)"
         var images: [UIImage] = []
         
@@ -153,60 +164,36 @@ class EditProfileViewController: UIViewController, UITextViewDelegate {
             images.append(image.image)
         }
         
-        
         if profileImages.count > 1 {
-            UserController.shared.createUser(name: name, bio: bio, type: type, unsavedImages: images, dateOfBirth: birthdayKey, latitude: 0.0, longitude: 0.0, uuid: uid) { (result) in
-                switch result {
-                case .success(_):
-                    DispatchQueue.main.async {
-                        self.saveChangesButton.isEnabled = false
-                        self.saveChangesButton.setTitle("Saved", for: .normal)
-                        
-                    }
-                case .failure(let error):
-                    print("Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")
-                // if it doesnt work alert user here
-                }
-            }
+            addCityAlertToCreateUser(name: name, bio: bio, type: type, unsavedImages: images, latitude: 0.0, longitude: 0.0, uuid: firebaseuid)
         } else {
+            self.activityIndicator.stopAnimating()
             presentImageAlert()
         }
     }
     
-    private func presentImageAlert() {
-        let alertController = UIAlertController(title: "Add some photos!", message: "Show off at least 2 pictures of yourself to save to your profile 📸", preferredStyle: .alert)
+    private func addObserver() {
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillAppear(notification:)), name: UIResponder.keyboardWillShowNotification, object: nil)
         
-        let okayAction = UIAlertAction(title: "Okay", style: .default)
-        
-        alertController.addAction(okayAction)
-        
-        present(alertController, animated: true, completion: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(notification:)), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
     
-    private func presentInfoAlert() {
-        let alertController = UIAlertController(title: "The type of plant based diet you identify most with 🌱", message: "Common types include but are not limited to: dietary vegan, cheegan, vegetarian, ovo-vegetarian, 98% vegan, vegan, etc.", preferredStyle: .alert)
+    @objc func keyboardWillAppear(notification: Notification) {
         
-        let okayAction = UIAlertAction(title: "Okay", style: .default)
-        
-        alertController.addAction(okayAction)
-        
-        present(alertController, animated: true, completion: nil)
+        if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
+            scrollView.contentOffset = CGPoint(x: 0, y: keyboardSize.height)
+        }
     }
     
-    private func presentBioAlert() {
-        let alertController = UIAlertController(title: "Fill out the Bio", message: "Let others know a little bit about you...", preferredStyle: .alert)
+    @objc func keyboardWillHide(notification: Notification) {
         
-        let okayAction = UIAlertAction(title: "Okay", style: .default)
-        
-        alertController.addAction(okayAction)
-        
-        present(alertController, animated: true, completion: nil)
+        scrollView.contentOffset = CGPoint(x: 0, y: 0)
     }
     
     func updateViews() {
         if let currentUser = UserController.shared.currentUser {
             
-            typeOfVeganTextField.placeholder = currentUser.type
+            typeOfVeganTextField.attributedPlaceholder = NSAttributedString(string: currentUser.type, attributes: [NSAttributedString.Key.foregroundColor: UIColor.spaceBlack])
             bioTextView.text = currentUser.bio
             saveChangesButton.setTitle("Save Changes", for: .normal)
             saveChangesButton.isEnabled = true
@@ -214,7 +201,6 @@ class EditProfileViewController: UIViewController, UITextViewDelegate {
         } else {
             
             saveChangesButton.setTitle("Create Profile", for: .normal)
-            
         }
     }
     
@@ -232,19 +218,20 @@ class EditProfileViewController: UIViewController, UITextViewDelegate {
         typeOfVeganTextField.addAccentBorder(width: 0.5, color: .whiteSmoke)
         typeOfVeganTextField.addCornerRadius(radius: 6)
         typeOfVeganTextField.backgroundColor = .whiteSmoke
+        typeOfVeganTextField.textColor = .spaceBlack
         bioTextLabel.textColor = .spaceBlack
         
-        settingsButton.tintColor = .spaceBlack
         infoButton.tintColor = .darkerGreen
         
         bioTextView.textColor = .spaceBlack
         bioTextView.backgroundColor = .whiteSmoke
         bioTextView.addCornerRadius(radius: 6)
         
+        dismissKeyboard()
+        
         view.backgroundColor = .white
         
         navigationItem.leftBarButtonItem = editButtonItem
-        
     }
     
     func disableCameraBarButton() {
@@ -253,25 +240,20 @@ class EditProfileViewController: UIViewController, UITextViewDelegate {
         }
     }
     
-    private func selectPhotoAlert() {
+    public func dismissKeyboard() {
         
-        let alertVC = UIAlertController(title: "Add a Photo", message: nil, preferredStyle: .alert)
+        let tapGesture = UITapGestureRecognizer(target: view, action: #selector(UIView.endEditing))
+        view.addGestureRecognizer(tapGesture)
+    }
+    
+    func textFieldChanged () {
+        guard let currentUser = UserController.shared.currentUser, let typeOfVegan = typeOfVeganTextField.text else { return }
         
-        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
+        typeOfVeganTextField.attributedPlaceholder = NSAttributedString(string: "", attributes: [NSAttributedString.Key.foregroundColor: UIColor.spaceBlack])
         
-        let cameraAction = UIAlertAction(title: "Camera", style: .default) { (_) in
-            self.openCamera()
-        }
-        
-        let photoLibraryAction = UIAlertAction(title: "Photo Library", style: .default) { (_) in
-            self.openPhotoLibrary()
-        }
-        
-        alertVC.addAction(cancelAction)
-        alertVC.addAction(cameraAction)
-        alertVC.addAction(photoLibraryAction)
-        
-        present(alertVC, animated: true)
+        currentUser.type = typeOfVegan
+        saveChangesButton.setTitle("Save Changes", for: .normal)
+        saveChangesButton.isEnabled = true
     }
     
     func configureCollectionViewLayout() -> UICollectionViewLayout {
@@ -294,25 +276,6 @@ class EditProfileViewController: UIViewController, UITextViewDelegate {
         
         return UICollectionViewCompositionalLayout(section: section)
     }
-    
-
-//    private func appendImageToCloud(image: UIImage) {
-//        guard let currentUser = UserController.shared.currentUser else { return }
-//        UserController.shared.appendImage(image: image, user: currentUser) { (result) in
-//            switch result {
-//            case .success():
-//                DispatchQueue.main.async {
-//                    guard let currentUser = UserController.shared.currentUser else { return }
-//                    currentUser.images.append(image)
-//                    self.collectionView.reloadData()
-//                }
-//            case .failure(let error):
-//                print("Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")
-//                // present alert to user that iamge didnt save
-//            }
-//        }
-//    }
-
 }
 
 //MARK: - Extensions

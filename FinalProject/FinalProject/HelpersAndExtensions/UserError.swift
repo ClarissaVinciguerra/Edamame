@@ -13,6 +13,7 @@ enum UserError: LocalizedError {
     case noExistingUser
     case errorConvertingImage
     case couldNotRemove
+    case errorDeletingUser(Error)
     
     var errorDescription: String {
         switch self {
@@ -26,6 +27,8 @@ enum UserError: LocalizedError {
             return "Image could not be converted into data to store in Firebase."     
         case.couldNotRemove:
             return "Unable to delete user account"
+        case .errorDeletingUser(let error):
+            return "There was an error trying to delete a user from authentication ===> \(error.localizedDescription)"
         }
     }
 }

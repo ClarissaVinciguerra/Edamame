@@ -12,7 +12,6 @@ struct FontNames {
     static let sourceSansProRegular = "SourceSansPro-Regular"
     static let sourceSansProLight = "SourceSansPro-Light"
     static let sourceSansProExtraLight = "SourceSansPro-ExtraLight"
-    
 }
 
 extension UIColor {
@@ -27,7 +26,7 @@ extension UIColor {
 }
 
 extension UIView {
-
+    
     func addCornerRadius(radius: CGFloat = 4) {
         self.layer.cornerRadius = radius
     }

@@ -7,28 +7,52 @@
 
 import UIKit
 import CoreLocation
+import FirebaseAuth
 
 class RandoCollectionViewController: UICollectionViewController {
+    
     // MARK: - Properties
     var refresher: UIRefreshControl = UIRefreshControl()
     let locationManager = CLLocationManager()
     var latitude: Double?
     var longitude: Double?
+    lazy var emptyMessage: UILabel = {
+        let messageLabel = UILabel()
+        messageLabel.translatesAutoresizingMaskIntoConstraints = false
+        messageLabel.textColor = .whiteSmoke
+        messageLabel.font = UIFont(name: "SourceSansPro-Bold", size: 48)
+        messageLabel.text = "You are one of the first\nto join edamame in \(UserController.shared.currentUser?.city ?? "your area")!\n\n Make sure all notifications\nare turned on so you\ndon't miss out as our\ncommunity continues to grow."
+        messageLabel.backgroundColor = .edamameGreen
+        messageLabel.numberOfLines = 0
+        messageLabel.textAlignment = .center
+        messageLabel.sizeToFit()
+        
+        return messageLabel
+    }()
+    
+    // MARK: - Outlets
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     
     // MARK: - Lifecycle Functions
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        activityIndicator.startAnimating()
         locationManager.delegate = self
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
-        
         retrieveCurrentLocation()
         
+        guard let currentUid = UserDefaults.standard.value(forKey: LogInStrings.firebaseUidKey) as? String else { return }
+        fetchUser(with: currentUid)
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        hideEmptyState()
         setupViews()
         loadData()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        
     }
     
     // MARK: - Class methods
@@ -43,6 +67,42 @@ class RandoCollectionViewController: UICollectionViewController {
         collectionView.backgroundColor = .edamameGreen
     }
     
+    private func fetchUser(with firebaseUID: String) {
+        
+        UserController.shared.fetchUserBy(firebaseUID) { (result) in
+            switch result {
+            case .success(let user):
+                DispatchQueue.main.async {
+                    user.badgeCount = 0
+                    if let pushID = UserController.shared.pushID {
+                        user.pushID = pushID
+                    }
+                    
+                    UserController.shared.currentUser = user
+                    self.updateBadgeCountAndPushID(with: user)
+                    if user.reportCount >= 3 {
+                        self.presentAccountReportedAlert(user)
+                    }
+                    self.loadData()
+                }
+            case .failure(_):
+                print("User does not yet exist in database")
+                self.tabBarController?.selectedIndex = 3
+            }
+        }
+    }
+    
+    private func updateBadgeCountAndPushID(with user: User) {
+        UserController.shared.updateBadgeCountAndPushID(with: user) { (result) in
+            switch result {
+            case .success(_):
+                print("PushID and badge count updated successfully.")
+            case .failure(let error):
+                print("Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")
+            }
+        }
+    }
+    
     @objc func loadData() {
         guard let currentUser = UserController.shared.currentUser else { return }
         
@@ -51,19 +111,37 @@ class RandoCollectionViewController: UICollectionViewController {
             case .success(let randos):
                 DispatchQueue.main.async {
                     UserController.shared.randos = randos
-                    self.updateViews()
+                    self.collectionView.reloadData()
+                    if randos.isEmpty {
+                        self.showEmptyState()
+                        self.activityIndicator.stopAnimating()
+                    } else {
+                        self.hideEmptyState()
+                        self.updateViews()
+                    }
                 }
             case .failure(let error):
                 print("Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")
-                
             }
         }
     }
     
+    func showEmptyState() {
+        collectionView.addSubview(emptyMessage)
+        emptyMessage.centerXAnchor.constraint(equalTo: collectionView.centerXAnchor).isActive = true
+        emptyMessage.centerYAnchor.constraint(equalTo: collectionView.centerYAnchor).isActive = true
+    }
+    
+    func hideEmptyState() {
+        emptyMessage.removeFromSuperview()
+    }
+    
     func updateViews() {
         DispatchQueue.main.async {
+            self.collectionView.isHidden = false
             self.collectionView.reloadData()
             self.refresher.endRefreshing()
+            self.activityIndicator.stopAnimating()
         }
     }
     
@@ -71,7 +149,6 @@ class RandoCollectionViewController: UICollectionViewController {
         let status = CLLocationManager().authorizationStatus
         
         if (status == .denied || status == .restricted || !CLLocationManager.locationServicesEnabled()) {
-            presentLocationPermissionsAlert()
             return
         }
         
@@ -81,24 +158,6 @@ class RandoCollectionViewController: UICollectionViewController {
         }
         
         locationManager.startUpdatingLocation()
-    }
-    
-    func presentLocationPermissionsAlert() {
-        let alertController = UIAlertController(title: "Unable to access location", message: "This app cannot be used without permission to access your location.", preferredStyle: .alert)
-        
-        let settingsAction = UIAlertAction(title: "Settings", style: .default) { (_) -> Void in
-            guard let settingsUrl = URL(string: UIApplication.openSettingsURLString) else {
-                return
-            }
-            if UIApplication.shared.canOpenURL(settingsUrl) {
-                UIApplication.shared.open(settingsUrl, completionHandler: { (success) in
-                })
-            }
-        }
-        
-        alertController.addAction(settingsAction)
-        
-        present(alertController, animated: true, completion: nil)
     }
     
     func configureCollectionViewLayout() -> UICollectionViewLayout {
@@ -150,12 +209,12 @@ class RandoCollectionViewController: UICollectionViewController {
         if let image = rando.images.first {
             cell.photo = image.image
         } else {
-            // add default image here - perhaps a logo?
+            cell.backgroundColor = .spaceBlack
+            cell.photo = nil
         }
         
         cell.nameLabel.text = rando.name
-        cell.ageLabel.text = rando.dateOfBirth.calcAge()
-        
+    
         return cell
     }
     
@@ -197,7 +256,7 @@ extension RandoCollectionViewController: CLLocationManagerDelegate {
             currentUser.latitude = location.coordinate.latitude
             currentUser.longitude = location.coordinate.longitude
             
-            UserController.shared.updateUserBy(currentUser) { (result) in
+            UserController.shared.updateUserCurrentLocation(with: currentUser) { (result) in
                 switch result{
                 case .success(let user):
                     DispatchQueue.main.async {

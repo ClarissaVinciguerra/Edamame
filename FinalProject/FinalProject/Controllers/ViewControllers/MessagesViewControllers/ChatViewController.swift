@@ -26,7 +26,6 @@ class ChatViewController: MessagesViewController {
     var otherUser: User?
     private var conversationID: String?
     private var messages = [Message]()
-    
     private var selfSender: Sender? {
         guard let userUid = UserDefaults.standard.value(forKey: LogInStrings.firebaseUidKey)  as? String else { return nil }
         //let safeEmail = MessageController.safeEmail(emailAddress: email)
@@ -36,30 +35,32 @@ class ChatViewController: MessagesViewController {
                       displayName: "Me")
     }
     
-    
-    
     init(with otherUserUid: String, otherUserName: String?, id: String?) {
         self.otherUserUid = otherUserUid
         self.otherUserName = otherUserName
         self.conversationID = id
         super.init(nibName: nil, bundle: nil)
-        
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    
     // MARK: - Lifecycle Functions
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
-
+        
         messagesCollectionView.messagesDataSource = self
         messagesCollectionView.messagesLayoutDelegate = self
         messagesCollectionView.messagesDisplayDelegate = self
         messageInputBar.delegate = self
+        
+        if let layout = messagesCollectionView.collectionViewLayout as? MessagesCollectionViewFlowLayout {
+            layout.setMessageIncomingAvatarSize(.zero)
+            layout.setMessageOutgoingAvatarSize(.zero)
+        }
+        
         setupViews()
     }
     
@@ -86,7 +87,7 @@ class ChatViewController: MessagesViewController {
                     self?.messagesCollectionView.reloadDataAndKeepOffset()
                     
                     if shouldScrollToBottom {
-                        self?.messagesCollectionView.scrollToBottom()
+                        self?.messagesCollectionView.scrollToLastItem()
                     }
                 }
             case .failure(let error):
@@ -104,13 +105,13 @@ class ChatViewController: MessagesViewController {
     
     @objc private func titleButtonTapped() {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        var story = storyboard.instantiateViewController(withIdentifier: "profileVC") as! ProfileViewController
-        story.otherUser = otherUser
+        var vc = storyboard.instantiateViewController(withIdentifier: "profileVC") as! ProfileViewController
+        vc.otherUser = otherUser
         //vc.updateViews()
-        self.present(story, animated: true, completion: nil)
-    
+        
+        navigationController?.pushViewController(vc, animated: true)
+        //self.present(vc, animated: true, completion: nil)
     }
-    
     
     // MARK: - Views
     func setupViews(){
@@ -119,7 +120,7 @@ class ChatViewController: MessagesViewController {
                                                             target: self,
                                                             action: #selector(meetupSpotsTapped))
         createTitleButton()
-      
+        
     }
     
     private func createTitleButton() {
@@ -131,14 +132,9 @@ class ChatViewController: MessagesViewController {
         titleButton.addTarget(self, action: #selector(titleButtonTapped), for:. touchUpInside)
         navigationItem.titleView = titleButton
     }
-    
-    
-   
-    
-}// End of Class
+}
 
 // MARK: - Extensions
-
 extension ChatViewController: InputBarAccessoryViewDelegate {
     func inputBar(_ inputBar: InputBarAccessoryView, didPressSendButtonWith text: String) {
         guard !text.replacingOccurrences(of: " ", with: "").isEmpty, let selfSender = self.selfSender, let messageID = createMessageID() else {
@@ -153,9 +149,12 @@ extension ChatViewController: InputBarAccessoryViewDelegate {
                               kind: .text(text))
         // Send Message
         if isNewConversation {
+            
+            guard let userName = UserController.shared.currentUser?.name else { return }
             // create conversation in Database
-            MessageController.shared.createNewConversation(with: otherUserUid, otherUserName: self.title ?? "User", firstMessage: message) { [weak self] (success) in
+            MessageController.shared.createNewConversation(userName: userName, otherUserUid: otherUserUid, otherUserName: self.title ?? "User", firstMessage: message) { [weak self] (success) in
                 if success {
+                    PushNotificationService.shared.sendPushNotificationTo(userID: self!.otherUserUid, title: UserController.shared.currentUser?.name ?? "", body: text)
                     print("message sent")
                     self?.isNewConversation = false
                     let newConversationID = "conversation_\(message.messageId)"
@@ -171,6 +170,7 @@ extension ChatViewController: InputBarAccessoryViewDelegate {
             // append to existing conversation data
             MessageController.shared.sendMessage(to: conversationID, otherUserUid: otherUserUid, newMessage: message, name: name) { (success) in
                 if success {
+                    PushNotificationService.shared.sendPushNotificationTo(userID: self.otherUserUid, title: UserController.shared.currentUser?.name ?? "", body: text)
                     print("message sent")
                 } else {
                     print("failed to send")
@@ -180,7 +180,7 @@ extension ChatViewController: InputBarAccessoryViewDelegate {
         inputBar.inputTextView.text = ""
     }
     
-    private func createMessageID() -> String? {
+    public func createMessageID() -> String? {
         // date, otherUserEmail, senderEmail, randomInt
         
         guard let currentUserUid = UserDefaults.standard.value(forKey: LogInStrings.firebaseUidKey) as? String else { return nil }
@@ -211,6 +211,34 @@ extension ChatViewController: MessagesDataSource, MessagesLayoutDelegate, Messag
     
     func numberOfSections(in messagesCollectionView: MessagesCollectionView) -> Int {
         return messages.count
+    }
+    
+    func backgroundColor(for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> UIColor {
+        let sender = message.sender
+        if sender.senderId == selfSender?.senderId {
+            // our message that we've sent
+            return .edamameGreen
+        }
+        
+        return .secondarySystemBackground
+    }
+    
+    func configureAvatarView(_ avatarView: AvatarView, for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) {
+        if let layout = messagesCollectionView.collectionViewLayout as? MessagesCollectionViewFlowLayout {
+            //
+            // set avatar size zero
+            //
+            layout.setMessageIncomingAvatarSize(.zero)
+            layout.setMessageOutgoingAvatarSize(.zero)
+            //
+            // set top\bottom label position
+            //
+            layout.setMessageOutgoingMessageTopLabelAlignment(LabelAlignment(textAlignment: .right, textInsets: UIEdgeInsets(top: 0, left:0, bottom: 0, right: 10)))
+            layout.setMessageIncomingMessageTopLabelAlignment(LabelAlignment(textAlignment: .left, textInsets: UIEdgeInsets(top: 0, left:10, bottom: 0, right: 0)))
+            
+            layout.setMessageOutgoingMessageBottomLabelAlignment(LabelAlignment(textAlignment: .right, textInsets: UIEdgeInsets(top: 0, left:0, bottom: 0, right: 10)))
+            layout.setMessageIncomingCellBottomLabelAlignment(LabelAlignment(textAlignment: .left, textInsets: UIEdgeInsets(top: 0, left:10, bottom: 0, right: 0)))
+        }
     }
 }
 

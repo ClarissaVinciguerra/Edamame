@@ -11,4 +11,5 @@ public enum StorageErrors: LocalizedError {
     case failedToUpload
     case failedToGetDownloadURL
     case imageNotFound
+    case failedToDelete
 }

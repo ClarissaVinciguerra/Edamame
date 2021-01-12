@@ -11,7 +11,7 @@ class RandoCollectionViewCell: UICollectionViewCell {
     // MARK: - Outlets
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var nameLabel: UILabel!
-    @IBOutlet weak var ageLabel: UILabel!
+    @IBOutlet weak var distanceLabel: UILabel!
     @IBOutlet weak var backgroundPlaceHolder: UIView!
     
     //MARK: - Properties
@@ -26,12 +26,17 @@ class RandoCollectionViewCell: UICollectionViewCell {
     
     //MARK: - Helper Functions
     func updateViews() {
-        guard let photo = photo else { return }
-        imageView.image = photo
+        if let photo = photo {
+            imageView.image = photo
+        } else {
+            // set default image
+            imageView.image = nil
+        }
+        
         imageView.clipsToBounds = true
         imageView.contentMode = .scaleAspectFill
         imageView.layer.cornerRadius = 5.0
-    
+        
         setGradientBackground()
     }
     

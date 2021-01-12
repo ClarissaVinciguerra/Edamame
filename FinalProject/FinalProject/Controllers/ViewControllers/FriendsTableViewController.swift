@@ -8,35 +8,102 @@
 import UIKit
 
 class FriendsTableViewController: UITableViewController {
-
+    
     // MARK: - Properties
+    private var conversations = [Conversation]()
+    
+    var refresher: UIRefreshControl = UIRefreshControl()
+    lazy var emptyMessage: UILabel = {
+        let messageLabel = UILabel()
+        messageLabel.translatesAutoresizingMaskIntoConstraints = false
+        messageLabel.textColor = .spaceBlack
+        messageLabel.font = UIFont(name: "SourceSansPro-Bold", size: 60)
+        messageLabel.text = "You haven't made any new friends. \nGet out there and meet other veegans!"
+        messageLabel.numberOfLines = 0
+        messageLabel.textAlignment = .center
+        messageLabel.sizeToFit()
+        
+        return messageLabel
+    }()
+    
+    
+    // MARK: - Outlets
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     
     // MARK: - Lifecycle Functions
     override func viewDidLoad() {
         super.viewDidLoad()
+        activityIndicator.startAnimating()
+        startListeningForConversations()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
-        updateViews()
+        hideEmptyState()
+        setupViews()
+        loadData()
     }
     
-    // MARK: - Class Metobarhods
-    func updateViews() {
+    // MARK: - Class Methods
+    private func startListeningForConversations() {
+        print("starting conversation fetch")
         
-        guard let friends = UserController.shared.currentUser?.friends else { return }
+        guard let userUid = UserDefaults.standard.value(forKey: LogInStrings.firebaseUidKey) as? String else { return }
         
-        UserController.shared.fetchUsersFrom(friends) { (result) in
+        MessageController.shared.getAllConversations(for: userUid) { [weak self] (result) in
             switch result {
-            case .success(let friends):
+            case .success(let conversations):
+                print("succesfully got conversation models")
+                guard !conversations.isEmpty else {
+                    self?.tableView.isHidden = true
+                    return
+                }
+                self?.tableView.isHidden = false
+                self?.conversations = conversations
+                
                 DispatchQueue.main.async {
-                    UserController.shared.friends = friends
-                    self.tableView.reloadData()
+                    self?.tableView.reloadData()
                 }
             case .failure(let error):
                 print("Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")
             }
         }
+    }
+    func setupViews() {
+    }
+    
+    @objc func loadData() {
+        guard let friends = UserController.shared.currentUser?.friends else { return }
+        
+        UserController.shared.fetchUserUUIDsFrom(friends) { (result) in
+            switch result {
+            case .success(let friends):
+                DispatchQueue.main.async {
+                    UserController.shared.friends = friends
+                    if friends.isEmpty {
+                        self.showEmptyState()
+                        self.activityIndicator.stopAnimating()
+                    }else {
+                        self.hideEmptyState()
+                        self.tableView.reloadData()
+                        self.activityIndicator.stopAnimating()
+                    }
+                }
+            case .failure(let error):
+                print("Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")
+                self.activityIndicator.stopAnimating()
+            }
+        }
+    }
+    
+    func showEmptyState() {
+        tableView.addSubview(emptyMessage)
+        emptyMessage.centerXAnchor.constraint(equalTo: tableView.centerXAnchor).isActive = true
+        emptyMessage.centerYAnchor.constraint(equalTo: tableView.centerYAnchor).isActive = true
+    }
+    
+    func hideEmptyState() {
+        emptyMessage.removeFromSuperview()
     }
     
     func openConversation(_ model: Conversation) {
@@ -47,18 +114,18 @@ class FriendsTableViewController: UITableViewController {
         navigationController?.pushViewController(vc, animated: true)
     }
     
-    private func createNewConversation(otherUserName: String, otherUserUid: String, otherUser: User) {
-        //let uid = MessageController.safeEmail(uid: result.uid)
+    private func createNewConversation(otherUser: User) {
         
-        MessageController.shared.conversationExists(with: otherUserUid, completion: { [weak self] result in
+        MessageController.shared.conversationExists(with: otherUser.uuid, completion: { [weak self] result in
             guard let strongSelf = self else {
                 return
             }
             switch result {
             case .success(let conversationId):
-                let vc = ChatViewController(with: otherUserUid, otherUserName: otherUserName, id: conversationId)
+                let vc = ChatViewController(with: otherUser.uuid, otherUserName: otherUser.name, id: conversationId)
                 vc.isNewConversation = false
-                vc.title = otherUserName
+                vc.title = otherUser.name
+                vc.otherUser = otherUser
                 vc.navigationItem.largeTitleDisplayMode = .never
                 strongSelf.navigationController?.pushViewController(vc, animated: true)
                 
@@ -75,7 +142,7 @@ class FriendsTableViewController: UITableViewController {
                         }
                     }
                 }
-                MessageController.shared.userExists(with: otherUserUid) { (result) in
+                MessageController.shared.userExists(with: otherUser.uuid) { (result) in
                     switch result {
                     case true:
                         return
@@ -86,45 +153,65 @@ class FriendsTableViewController: UITableViewController {
                         }
                     }
                 }
-                let vc = ChatViewController(with: otherUserUid, otherUserName: otherUserName, id: nil)
+                let vc = ChatViewController(with: otherUser.uuid, otherUserName: otherUser.name, id: nil)
                 vc.isNewConversation = true
-                vc.title = otherUserName
+                vc.title = otherUser.name
                 vc.otherUser = otherUser
                 vc.navigationItem.largeTitleDisplayMode = .never
                 strongSelf.navigationController?.pushViewController(vc, animated: true)
             }
         })
     }
-
+    
     // MARK: - Table view data source
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return UserController.shared.friends.count
+        return self.conversations.count
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "friendCell", for: indexPath)
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "friendTableViewCell", for: indexPath) as? FriendTableViewCell else { return UITableViewCell() }
         
-        let friend = UserController.shared.friends[indexPath.row]
+        let conversation = conversations[indexPath.row]
         
-        cell.textLabel?.text = friend.name
+        let otherUserUid = conversation.otherUserUid
         
-        if let firstImage = friend.images.first {
-            cell.imageView?.image = firstImage.image
-        } else {
-            // create and insert default image here
+        let friends = UserController.shared.friends
+        var foundFriend: User?
+        for friend in friends {
+            if friend.uuid == otherUserUid {
+                foundFriend = friend
+            }
         }
         
+        cell.conversation = conversation
+        
+        if let image = foundFriend?.images.first {
+            cell.photo = image.image
+        } else {
+            cell.photo = nil
+        }
+        cell.updateViews()
         return cell
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        let otherUser = UserController.shared.friends[indexPath.row]
-
-        createNewConversation(otherUserName: otherUser.name, otherUserUid: otherUser.uuid)
-
+        let otherUser = self.conversations[indexPath.row]
+        
+        let otherUserUid = otherUser.otherUserUid
+        let friends = UserController.shared.friends
+        var foundFriend: User?
+        for friend in friends {
+            if friend.uuid == otherUserUid {
+                foundFriend = friend
+            }
+        }
+        
+        if let friend = foundFriend {
+            createNewConversation(otherUser: friend)
+        }
     }
-
+    
     // DO WE WANT TO REMOVE FRIENDSHIPS THIS WAY OR IS IT TOO RISKY?
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
@@ -132,12 +219,5 @@ class FriendsTableViewController: UITableViewController {
             tableView.deleteRows(at: [indexPath], with: .fade)
         }
     }
-
-    // MARK: - Navigation
-//    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-//        if segue.identifier == "toMessagesTVC" {
-//
-//        }
-//    }
 }
 

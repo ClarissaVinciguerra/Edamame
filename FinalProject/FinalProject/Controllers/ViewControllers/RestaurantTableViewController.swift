@@ -15,10 +15,12 @@ class RestaurantTableViewController: UIViewController {
     var restaurants: [Restaurant] = []
     
     //MARK: - Outlets
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     @IBOutlet weak var tableView: UITableView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        activityIndicator.startAnimating()
         fetchRestaurants()
     }
     
@@ -39,8 +41,10 @@ class RestaurantTableViewController: UIViewController {
                 case .success(let restaurants):
                     self.restaurants = restaurants
                     self.tableView.reloadData()
+                    self.activityIndicator.startAnimating()
                 case .failure(let error):
                     print(error.localizedDescription)
+                    self.activityIndicator.startAnimating()
                 }
             }
         }
@@ -59,7 +63,7 @@ extension RestaurantTableViewController: UITableViewDelegate, UITableViewDataSou
         
         let selectedRestaurant = restaurants[indexPath.row]
         let vc = SFSafariViewController(url: selectedRestaurant.url)
-      
+        
         present(vc, animated: true)
     }
     

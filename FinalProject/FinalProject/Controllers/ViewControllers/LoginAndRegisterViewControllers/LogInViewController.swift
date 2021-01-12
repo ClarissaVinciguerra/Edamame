@@ -16,11 +16,12 @@ struct LogInStrings {
 }
 
 class LogInViewController: UIViewController {
-
+    
     // MARK: - Outlets
     @IBOutlet weak var emailTextField: UITextField!
     @IBOutlet weak var passwordTextField: UITextField!
     @IBOutlet weak var logInButton: UIButton!
+    @IBOutlet weak var logoImageView: UIImageView!
     
     // MARK: - Properties
     private let spinner = JGProgressHUD(style: .dark)
@@ -63,6 +64,7 @@ class LogInViewController: UIViewController {
             
             guard let result = authResult, error == nil else {
                 print("Failed to log in user with email: \(email)")
+                self?.alertIncorrectPasswordOrEmail()
                 return
             }
             
@@ -73,28 +75,69 @@ class LogInViewController: UIViewController {
             UserDefaults.standard.set(firebaseUid, forKey: LogInStrings.firebaseUidKey)
             
             print("Logged In User: \(firebaseUser)")
+            
+            DispatchQueue.main.async {
+                self?.spinner.show(in: (self?.view)!)
+            }
+            
+            self?.fetchUser(with: firebaseUid)
+            
+            DispatchQueue.main.async {
+                self?.spinner.dismiss()
+            }
+            
+            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+            let mainTabBarController = storyboard.instantiateViewController(identifier: "MainTabBarController")
+            
+            (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeRootViewController(mainTabBarController)
+            
             //Dismisses the current view controller and returns to the main storyboard.
-            strongSelf.navigationController?.dismiss(animated: true, completion: nil)
+            //            strongSelf.tabBarController?.selectedIndex = 3
+            //            strongSelf.navigationController?.dismiss(animated: true, completion: nil)
         }
     }
     
-    
     // MARK: - Helper Methods
+    private func initiateFetchUser() {
+        guard let uidKey = UserDefaults.standard.value(forKey: LogInStrings.firebaseUidKey) else { return }
+        let uidString = "\(uidKey)"
+        fetchUser(with: uidString)
+    }
+    // CHECK IF THIS IS NECESSARY BEFORE SUBMISSION
+    private func fetchUser(with firebaseUID: String) {
+        
+        UserController.shared.fetchUserBy(firebaseUID) { (result) in
+            switch result {
+            case .success(let user):
+                DispatchQueue.main.async {
+                    UserController.shared.currentUser = user
+                }
+            case .failure(_):
+                print("User does not yet exist in database")
+            //self.updateViews()
+            }
+        }
+    }
+    
+    func dismissKeyboard() {
+        
+        let tapGesture = UITapGestureRecognizer(target: view, action: #selector(UIView.endEditing))
+        view.addGestureRecognizer(tapGesture)
+    }
+    
     func setupViews() {
+        setupLogoImageView()
         setupEmailTextField()
         setupPasswordTextField()
         setupLogInButton()
-    }
-    
-    func alertUserLoginError() {
-        let loginError = UIAlertController(title: "Error Logging In", message: "Please enter all information to log in.", preferredStyle: .alert)
-        let okAction = UIAlertAction(title: "Ok", style: .cancel, handler: nil)
-        
-        loginError.addAction(okAction)
-        present(loginError, animated: true)
+        dismissKeyboard()
     }
     
     // MARK: - Views
+    func setupLogoImageView() {
+        self.logoImageView.image = UIImage(named: "edamameLogo")
+    }
+    
     func setupEmailTextField() {
         self.emailTextField.autocapitalizationType = .none
         self.emailTextField.autocorrectionType = .no
@@ -113,6 +156,7 @@ class LogInViewController: UIViewController {
     func setupLogInButton() {
         logInButton.layer.cornerRadius = 12
         logInButton.layer.masksToBounds = true
+        logInButton.backgroundColor = .edamameGreen
     }
 }
 
