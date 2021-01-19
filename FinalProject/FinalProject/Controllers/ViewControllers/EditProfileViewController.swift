@@ -334,6 +334,8 @@ extension EditProfileViewController: UIImagePickerControllerDelegate, UINavigati
             
             let imagePicker = UIImagePickerController()
             imagePicker.sourceType = .camera
+            imagePicker.cameraCaptureMode = .photo
+            imagePicker.modalPresentationStyle = .fullScreen
             imagePicker.allowsEditing = true
             self.present(imagePicker, animated: true)
             
@@ -371,7 +373,6 @@ extension EditProfileViewController: UIImagePickerControllerDelegate, UINavigati
             picker.dismiss(animated: true)
             disableCameraBarButton()
             collectionView.reloadData()
-            
         }
     }
 }
