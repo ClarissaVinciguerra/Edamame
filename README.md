@@ -1,1 +1,2 @@
-# Edamame
+# Edamame - Let's Meet! 
+Edamame is a meet up app for people with plant based diets who are looking to meet (and possibly share a recipe or a meal) with like minded people. Users can create a profile with up to six pictures, a type (vegan, vegetarian, lacto-vegetarian, etc), and a bio. Users can become "friends" with one another upon request. Friends can message each other using a messaging feature. This app also fetches data from the Yelp API so friends can find a restaurant to meet at in center of their two locations that offers vegan food options.  
